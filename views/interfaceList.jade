@@ -12,7 +12,7 @@ block content
     div.container(ng-controller='main')
         div.ui.centered.grid
             //- 新增接口按键
-            div.three.wide.column#add-interface-container
+            div.four.wide.column#add-interface-container
                 button.massive.ui.button.blue.labeled.icon#add-interface(ng-click='showModal()') 新添接口
                     i.plus.icon
 
@@ -33,7 +33,7 @@ block content
                             td
                                 a(href='/responseSurvey#?interfaceId={{interfaceURL._id}}') 编辑
                         tr.center.aligned(ng-if="interfaceList.length == 0")
-                            td 暂无数据
+                            td(colspan=2)暂无数据
 
         //- 点击新添接口的modal浮窗部分
         div.ui.modal#add-interface-modal

@@ -9,7 +9,7 @@ block content
         //- 主界面接口列表table部分
         div.ui.grid.centered
             //- 新增接口按键
-            div.three.wide.column#add-interface-container
+            div.four.wide.column#add-interface-container
                 a(href='/newJSONResponse?interfaceID={{interfaceId}}')
                     button.massive.ui.button.blue.labeled.icon#add-interface 新添JSON响应
                         i.plus.icon
@@ -29,7 +29,7 @@ block content
                             td
                                 a(href="/editResponse?responseId={{data._id}}") 编辑
                         tr.center.aligned(ng-if="responseData.length == 0")
-                            td 暂无数据
+                            td(colspan=3) 暂无数据
 
 block javascript
     script.
