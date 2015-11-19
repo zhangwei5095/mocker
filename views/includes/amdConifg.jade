@@ -1,0 +1,27 @@
+script.
+    require.config({
+        // 基础路径
+        baseUrl: 'dep',
+        paths: {
+            src: '../javascripts',
+            ace: 'lib/ace',
+            semanticComponents: 'semantic/dist/components',
+            angular: ['angular/angular.min'],
+            validator: 'validator-js/validator.min'
+        },
+        packages: [
+            {
+                name: 'jquery',
+                location: 'jquery/dist',
+                main: 'jquery.min'
+            }
+        ],
+        shim: {
+            semanticComponents: {
+                deps: ['jquery']
+            },
+            angular: {
+                exports: 'angular'
+            }
+        }
+    });

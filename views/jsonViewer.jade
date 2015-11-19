@@ -1,0 +1,28 @@
+extends layout
+
+block statics
+    include ./includes/commonDep
+    link(rel='stylesheet', href='/stylesheets/jsonViewer/main.css')
+    include ./includes/amdConifg
+    script.
+        require(['src/jsonViewer/main']);
+
+block content
+    -
+        if (!response) {
+            response = {};
+            response.name = '';
+        }
+
+    div.container
+        div.ui.centered.grid
+            div.row
+                div.eight.wide.column
+                    div.ui.fluid.input
+                        input#response-name(type='text' placeholder='响应名称' value=response.name)
+            div.row
+                div.eight.wide.column
+                    div#editor!=JSON.stringify(response.data)
+            div.row
+                div.five.wide.column
+                    button.fluid.ui.button.blue#save(data-id='#{id}') 保存

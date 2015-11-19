@@ -1,0 +1,71 @@
+extends layout
+
+block statics
+    include ./includes/commonDep
+    link(rel='stylesheet', href='stylesheets/interfaceList/main.css')
+    include ./includes/amdConifg
+    script.
+        require(['src/interfaceList/main']);
+
+
+block content
+    div.container(ng-controller='main')
+        div.ui.centered.grid
+            //- 新增接口按键
+            div.three.wide.column#add-interface-container
+                button.massive.ui.button.blue.labeled.icon#add-interface(ng-click='showModal()') 新添接口
+                    i.plus.icon
+
+        //- 主界面接口列表table部分
+        div.ui.grid
+            // 整个table占semantic 16格系统中的15格
+            div.fifteen.wide.column.centered
+                table.ui.celled.blue.table
+                    thead
+                        tr
+                            th 接口地址
+                            th 操作
+                    tbody
+                        //- 循环生成表格，注意这里是angular,依靠ajax数据绘制
+                        tr(ng-repeat='interfaceURL in interfaceList track by $index')
+                            td {{interfaceURL.url}}
+                            //- 来自mongoDB的唯一id,mongo没有自增功能，所以暂时这么搞
+                            td
+                                a(href='/responseSurvey#?interfaceId={{interfaceURL._id}}') 编辑
+                        tr.center.aligned(ng-if="interfaceList.length == 0")
+                            td 暂无数据
+
+        //- 点击新添接口的modal浮窗部分
+        div.ui.modal#add-interface-modal
+            i.close.icon
+            div.header 新增模拟接口
+            div.content
+                div.field
+                    div.ui.labeled.input.fluid
+                        //- 显示mocker所在地址的地址前缀
+                        div.ui.label#host-prefix #{hostBaseURL}/mock/
+                        input#url-input(
+                        type='text'
+                        placeholder='请输入模拟接口地址'
+                        )
+                    div.ui.pointing.red.basic.label(ng-show='!URLisValid') {{errorTip}}
+            div.actions
+                div.ui.green.button(ng-click='validateURL()') 确定
+                div.ui.deny.button 取消
+
+        //- 保存提示模态窗口
+        div.ui.small.basic.modal#result-model
+            div.ui.icon.header(ng-if='saveOK')
+                i.smile.icon.green
+                ='保存成功!'
+            div.content(ng-if='saveOk')
+                p 恭喜，模拟接口新增成功!
+            div.ui.icon.header(ng-if='!saveOK')
+                i.frown.icon.red
+                ='保存失败!'
+            div.content(ng-if='!saveOk')
+                p {{errorResult}}
+            div.actions
+                div.ui.green.ok.inverted.button
+                    i.checkmark.icon
+                    ='确定'

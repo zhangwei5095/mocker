@@ -1,0 +1,36 @@
+extends layout
+
+block statics
+    include ./includes/commonDep
+    include ./includes/amdConifg
+
+block content
+    div.container(ng-controller='main')
+        //- 主界面接口列表table部分
+        div.ui.grid.centered
+            //- 新增接口按键
+            div.three.wide.column#add-interface-container
+                a(href='/newJSONResponse?interfaceID={{interfaceId}}')
+                    button.massive.ui.button.blue.labeled.icon#add-interface 新添JSON响应
+                        i.plus.icon
+            // 整个table占semantic 16格系统中的15格
+            div.fifteen.wide.column.centered
+                table.ui.celled.blue.table
+                    thead
+                        tr
+                            th 响应名称
+                            th 响应类型
+                            th 操作
+                    tbody
+                        //- 循环生成表格，注意这里是angular,依靠ajax数据绘制
+                        tr(ng-repeat='data in responseData track by $index')
+                            td {{data.name}}
+                            td {{data.type}}
+                            td
+                                a(href="/editResponse?responseId={{data._id}}") 编辑
+                        tr.center.aligned(ng-if="responseData.length == 0")
+                            td 暂无数据
+
+block javascript
+    script.
+        require(['src/responseSurvey/main']);
