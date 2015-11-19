@@ -64,12 +64,18 @@ router.post('/getResponseList', function(req, res) {
     );
 });
 
-router.post('/saveJSON', function (req, res) {
+/**
+ * 添加新JSON响应接口
+ */
+router.post('/addNewJSONRes', function (req, res) {
+    // post数据
     var postData = req.body;
-    var interfaceId = postData.id;
+
+    var interfaceId = postData.interfaceId;
     var responseName = postData.name;
     var dataValue = postData.value;
 
+    // 添加新的JSON相应
     interfaceModel.addNewJSONRes(interfaceId, responseName, dataValue);
 
     res.end('ok!');

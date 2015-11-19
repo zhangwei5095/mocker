@@ -13,8 +13,9 @@ define(function (require) {
         var value = editor.getValue();
         var target = $(e.target);
 
-        $.post('/saveJSON', {
-            id: target.attr('data-id'),
+        $.post('/addNewJSONRes', {
+            // ½Ó¿ÚµÄid
+            interfaceId: target.attr('data-id'),
             name: $('#response-name').val(),
             value: value
         });

@@ -137,7 +137,15 @@ exports.getInterfaceDataById = function (id) {
     return promise;
 };
 
-exports.addNewJSONRes = function (id, name, data) {
+/**
+ * 为接口添加新的JSON相应
+ *
+ * @param {string} interfaceId 接口id
+ * @param {string} name 响应的名称
+ * @param {*} data 相应数据，目前只是json字符串
+ * @return {Promise} promise对象
+ */
+exports.addNewJSONRes = function (interfaceId, name, data) {
     // promise
     var deferred = Q.defer();
     var newPromise = deferred.promise;
@@ -148,7 +156,7 @@ exports.addNewJSONRes = function (id, name, data) {
         function (data) {
             InterfaceModel.findOneAndUpdate(
                 {
-                    '_id': id
+                    '_id': interfaceId
                 },
                 {
                     // 添加新的响应入数组
