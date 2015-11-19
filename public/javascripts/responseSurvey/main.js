@@ -22,7 +22,7 @@ define(function (require) {
         $scope.getResponseData = function () {
             $http
                 .post(
-                    'getResponseList',
+                    'admin/getResponseList',
                     {
                         interfaceId: $scope.interfaceId
                     }
@@ -37,5 +37,6 @@ define(function (require) {
         $scope.getResponseData();
     });
 
+    // 启动angular app
     angular.bootstrap(document, ['responseSurvey']);
 });

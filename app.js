@@ -24,8 +24,11 @@ app.use(cookieParser());
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// 挂载router，注意顺序
-app.use('/', adminAjaxRouter);
+/**
+ * router 注意挂载顺序
+ */
+// 设值端ajax接口，注意admin前缀
+app.use('/admin', adminAjaxRouter);
 // app.get('/jsonView', admin);
 app.use('/', admin);
 app.use('/', routes);

@@ -5,25 +5,28 @@ var router = express.Router();
 var interfaceModel = require('../model/interfaceModel');
 var responseModel = require('../model/responseModel');
 
+/**
+ * 新增JSON响应
+ */
 router.get('/newJSONResponse', function(req, res, next) {
     // 从查询字符串中获取interfaceID
-    var interfaceID = req.query.interfaceID;
+    var interfaceId = req.query.interfaceId;
     var promise = null;
 
-    if (interfaceID) {
-        promise = interfaceModel.getInterfaceDataById(interfaceID);
+    if (interfaceId) {
+        promise = interfaceModel.getInterfaceDataById(interfaceId);
 
         promise.then(
-            function (data) {
-                res.render('jsonViewer', {
-                    id: data.data._id,
-                    data: data.data
-                });
+            function () {
+                res.render('jsonViewer', {});
             }
         );
     }
 });
 
+/**
+ * 编辑某个JSON响应
+ */
 router.get('/editResponse', function(req, res, next) {
     // 从查询字符串中获取interfaceID
     var responseId = req.query.responseId;

@@ -67,6 +67,20 @@ router.post('/getResponseList', function(req, res) {
 /**
  * 添加新JSON响应接口
  */
+router.post('/editRes', function (req, res) {
+    // post数据
+    var postData = req.body;
+
+    var interfaceId = postData.interfaceId;
+    var responseName = postData.name;
+    var dataValue = postData.value;
+
+    // 添加新的JSON相应
+    interfaceModel.addNewJSONRes(interfaceId, responseName, dataValue);
+
+    res.end('ok!');
+});
+
 router.post('/addNewJSONRes', function (req, res) {
     // post数据
     var postData = req.body;
@@ -80,5 +94,6 @@ router.post('/addNewJSONRes', function (req, res) {
 
     res.end('ok!');
 });
+
 
 module.exports = router;

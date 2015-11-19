@@ -30,7 +30,10 @@ define(function (require) {
         // 获取接口地址集合
         $scope.getURLList = function () {
             $http
-                .post('getAllInterface')
+                .post(
+                    'admin/getAllInterface',
+                    {}
+                )
                 .then(
                     function (e) {
                         $scope.interfaceList = e.data.interfaceList;
@@ -76,7 +79,7 @@ define(function (require) {
 
             // 与后端通信，注册新接口
             var promise = $http.post(
-                'addInterfaceURL',
+                'admin/addInterfaceURL',
                 {
                     url: inputVal
                 }

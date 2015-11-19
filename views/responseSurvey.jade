@@ -10,7 +10,8 @@ block content
         div.ui.grid.centered
             //- 新增接口按键
             div.four.wide.column#add-interface-container
-                a(href='/newJSONResponse?interfaceID={{interfaceId}}')
+                //- hash参数用于angular程序
+                a(href='/newJSONResponse?interfaceId={{interfaceId}}#/?interfaceId={{interfaceId}}')
                     button.massive.ui.button.blue.labeled.icon#add-interface 新添JSON响应
                         i.plus.icon
             // 整个table占semantic 16格系统中的15格
@@ -27,7 +28,9 @@ block content
                             td {{data.name}}
                             td {{data.type}}
                             td
-                                a(href="/editResponse?responseId={{data._id}}") 编辑
+                                a(href="/editResponse?responseId={{data._id}}"
+                                + "#/?responseId={{data._id}}&interfaceId={{interfaceId}}") 编辑
+                        // - 没有数据的时候表格不能空
                         tr.center.aligned(ng-if="responseData.length == 0")
                             td(colspan=3) 暂无数据
 

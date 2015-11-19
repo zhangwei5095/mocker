@@ -9,12 +9,13 @@ block statics
 
 block content
     -
+        //- 如果不存在响应则填充上空内容，避免代码保存，数据来自模板渲染
         if (!response) {
             response = {};
             response.name = '';
         }
 
-    div.container
+    div.container(ng-controller='main')
         div.ui.centered.grid
             div.row
                 div.eight.wide.column
@@ -25,4 +26,4 @@ block content
                     div#editor!=JSON.stringify(response.data)
             div.row
                 div.five.wide.column
-                    button.fluid.ui.button.blue#save(data-id='#{id}') 保存
+                    button.fluid.ui.button.blue#save(ng-click='saveData()') 保存
