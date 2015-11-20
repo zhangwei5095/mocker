@@ -52,20 +52,5 @@ block content
             div.actions
                 div.ui.green.button(ng-click='validateURL()') 确定
                 div.ui.deny.button 取消
-
-        //- 保存提示模态窗口
-        div.ui.small.basic.modal#result-model
-            div.ui.icon.header(ng-if='saveOK')
-                i.smile.icon.green
-                ='保存成功!'
-            div.content(ng-if='saveOk')
-                p 恭喜，模拟接口新增成功!
-            div.ui.icon.header(ng-if='!saveOK')
-                i.frown.icon.red
-                ='保存失败!'
-            div.content(ng-if='!saveOk')
-                p {{errorResult}}
-            div.actions
-                div.ui.green.ok.inverted.button
-                    i.checkmark.icon
-                    ='确定'
+        //- 操作行为提示模态窗口
+        ng-include(src="'/angularTpls/operationResult.html'")

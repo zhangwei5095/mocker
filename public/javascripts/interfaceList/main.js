@@ -27,6 +27,14 @@ define(function (require) {
     var URLInput = $('#url-input');
 
     interfaceList.controller('main', function ($scope, $http) {
+        // 操作结果模态窗口参数
+        $scope.opModalData = {
+            modalId: 'result-model',
+            successTitle: '保存成功',
+            failTitle: '保存失败',
+            result: false
+        };
+
         // 获取接口地址集合
         $scope.getURLList = function () {
             $http
@@ -91,11 +99,11 @@ define(function (require) {
             promise.then(
                 function (e) {
                     if (e.data.status === 0) {
-                        $scope.saveOK = true;
+                        $scope.opModalData.result = true;
                     }
                     else {
-                        $scope.saveOK = false;
-                        $scope.errorResult = e.data.statusInfo;
+                        $scope.opModalData.result = false;
+                        $scope.opModalData.detail = e.data.statusInfo;
                     }
 
                     // 弹出保存结果浮窗
