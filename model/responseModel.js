@@ -43,10 +43,11 @@ exports.createNewResponseEntity = function (responseName, data) {
 
     // 创建一个新的响应document并保存
     var newEntity = new ResponseModel(doc);
-    newEntity.save(function(error, doc) {
+    newEntity.save(function(error, newResponseData) {
+        // 新的响应保存无误
         if (!error) {
             deferred.resolve({
-                doc: doc
+                newResponseData: newResponseData
             });
         }
         else {

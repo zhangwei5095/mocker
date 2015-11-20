@@ -89,9 +89,19 @@ router.post('/addNewJSONRes', function (req, res) {
     var dataValue = postData.value;
 
     // 添加新的JSON相应
-    interfaceModel.addNewJSONRes(interfaceId, responseName, dataValue);
+    var promise = interfaceModel.addNewJSONRes(interfaceId, responseName, dataValue);
 
-    res.end('ok!');
+    promise.then(
+        // 新创建的json响应保存成功了，将这个响应的id返回给前端
+        function (responseData) {
+            res.json({
+                status: 0,
+                // 响应id
+                responseId: responseData.responseId
+            });
+        },
+        function () {}
+    );
 });
 
 

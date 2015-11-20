@@ -156,10 +156,13 @@ exports.addNewJSONRes = function (interfaceId, name, data) {
     var deferred = Q.defer();
     var newPromise = deferred.promise;
 
+    // 创建一个新的响应并入库
     var promise = responseModel.createNewResponseEntity(name, data);
 
     promise.then(
         function (data) {
+            var newResponseData = data.newResponseData;
+
             InterfaceModel.findOneAndUpdate(
                 {
                     '_id': interfaceId
@@ -168,14 +171,15 @@ exports.addNewJSONRes = function (interfaceId, name, data) {
                     // 添加新的响应入数组
                     '$push': {
                         // doc即新document
-                        responses: data.doc
+                        responses: newResponseData
                     }
                 },
                 function (err) {
                     // TODO resolve,reject规则统一
                     if (!err) {
                         deferred.resolve({
-                            status: 0
+                            status: 0,
+                            responseId: newResponseData.toObject()._id
                         });
                     }
                     else {

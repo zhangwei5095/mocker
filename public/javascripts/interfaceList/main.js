@@ -31,8 +31,7 @@ define(function (require) {
         $scope.opModalData = {
             modalId: 'result-model',
             successTitle: '保存成功',
-            failTitle: '保存失败',
-            result: false
+            failTitle: '保存失败'
         };
 
         // 获取接口地址集合

@@ -62,8 +62,10 @@ define(function (require) {
                         }
                     )
                     .then(
+                        // 新响应保存成功了
                         function (e) {
-                            // TODO 成功提示，更新responseId
+                            var data = e.data;
+                            $scope.responseId = data.responseId;
                         },
                         function () {
                             // TODO 失败提示

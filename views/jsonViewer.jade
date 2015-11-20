@@ -27,3 +27,6 @@ block content
             div.row
                 div.five.wide.column
                     button.fluid.ui.button.blue#save(ng-click='saveData()') 保存
+
+        //- 操作行为提示模态窗口
+        ng-include(src="'/angularTpls/operationResult.html'")
