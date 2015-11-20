@@ -6,7 +6,7 @@
 
 // mongoose
 var mongoose = require('mongoose');
-var ObjectId = (require('mongoose').Types.ObjectId);
+var ObjectId = mongoose.Types.ObjectId;
 
 // 第三方依赖
 var _ = require('lodash');
@@ -18,7 +18,7 @@ var db = mongoose.createConnection('mongodb://127.0.0.1:27017/db');
 // schema
 var interfaceSchema = require('./schemas/interface');
 
-// collection名,TODO 走可配置路线
+// collection名
 var collectionName = 'interface';
 var InterfaceModel = db.model(collectionName, interfaceSchema);
 
@@ -225,7 +225,7 @@ exports.getReposeList = function (id) {
  * 根据URL查询接口数据
  *
  * @param {string} url 请求的url
- * @returns {Promise} promise对象
+ * @return {Promise} promise对象
  */
 exports.findInterfaceDataByURL = function (url) {
 };
