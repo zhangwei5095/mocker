@@ -56,11 +56,9 @@ router.post('/getResponseList', function(req, res) {
 
     promise.then(
         function (data) {
-            res.end(
-                JSON.stringify({
-                    responseData: data.responses
-                })
-            );
+            res.json({
+                responseData: data.responses
+            });
         }
     );
 });
@@ -81,7 +79,8 @@ router.post('/editRes', function (req, res) {
         responseId,
         {
             name: responseName,
-            data: dataValue
+            // TODO 目前只支持json
+            data: JSON.stringify(dataValue)
         }
     );
 
