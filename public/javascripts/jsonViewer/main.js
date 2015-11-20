@@ -54,15 +54,31 @@ define(function (require) {
          * 点击保存按键时的处理函数，主要功能是保存新建或修改的接口响应
          */
         $scope.saveData = function () {
+            // ace editor的内容
+            var value = editor.getValue();
+
             // 如果有responseId则代表这个响应已经存在，保存时更新
             if ($scope.responseId) {
-
+                $http
+                    .post(
+                        editResURL,
+                        {
+                            responseId: $scope.responseId,
+                            name: $('#response-name').val(),
+                            value: value
+                        }
+                    )
+                    .then(
+                        function () {
+                            // 正确状态
+                            $scope.opModalData.result = true;
+                            // 弹出保存结果浮窗
+                            $('#' + $scope.opModalData.modalId).modal('show');
+                        }
+                    );
             }
             // 如果不存在responseId那么就是新建响应
             else {
-                // ace editor的内容
-                var value = editor.getValue();
-
                 $http
                     .post(
                         addNewURL,

@@ -89,3 +89,32 @@ exports.getResponseDataById = function (responseId) {
 
     return promise;
 };
+
+/**
+ * 根据id定位响应，完成数据入库更新
+ *
+ * @param {string} responseId 响应id
+ * @param {*} data 数据
+ * @return {Promise} Promise对象
+ */
+exports.updateResponseDataById = function (responseId, data) {
+    // promise
+    var deferred = Q.defer();
+    var promise = deferred.promise;
+
+    ResponseModel.findByIdAndUpdate(
+        responseId,
+        data,
+        function (err, data) {
+            //callback
+            if (!err) {
+                deferred.resolve();
+            }
+            else {
+                deferred.reject();
+            }
+        }
+    );
+
+    return promise;
+};
