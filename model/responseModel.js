@@ -26,18 +26,18 @@ var ResponseModel = db.model(collectionName, responseSchema);
 /**
  * 生成新的响应实体，并入库
  *
- * @param {string} name 响应的名字
+ * @param {string} responseName 响应的名字
  * @param {*} data 响应内容
  * @return {Promise} Promise对象
  */
-exports.createNewResponseEntity = function (name, data) {
+exports.createNewResponseEntity = function (responseName, data) {
     // promise
     var deferred = Q.defer();
     var promise = deferred.promise;
 
     var doc = {
         // db中name是required, 必须有，且不能是空字符串
-        name: 'cf',
+        name: responseName,
         data: JSON.parse(data)
     };
 
@@ -57,13 +57,19 @@ exports.createNewResponseEntity = function (name, data) {
     return promise;
 };
 
-exports.getResponseDataById = function (id) {
+/**
+ * 根据响应id获取响应的相关数据
+ *
+ * @param {string} responseId 响应的id(每个响应、每个接口都有自己的id)
+ * @return {Promise}
+ */
+exports.getResponseDataById = function (responseId) {
     // promise
     var deferred = Q.defer();
     var promise = deferred.promise;
 
     // 根据mongodb的id来查找数据
-    ResponseModel.findById(id)
+    ResponseModel.findById(responseId)
         .select('')
         .lean()
         .exec(function (err, doc) {
