@@ -29,7 +29,7 @@ define(function (require) {
     interfaceList.controller('main', function ($scope, $http) {
         // 操作结果模态窗口参数
         $scope.opModalData = {
-            modalId: 'result-model',
+            modalId: 'result-modal',
             successTitle: '保存成功',
             failTitle: '保存失败'
         };

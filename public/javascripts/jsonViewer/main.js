@@ -10,6 +10,11 @@ define(function (require) {
     var angular = require('angular');
     var ace = require('ace/ace');
 
+    // semantic ui组件
+    require('semanticComponents/dimmer.min');
+    require('semanticComponents/transition.min');
+    require('semanticComponents/modal.min');
+
     // 配置ace
     ace.config.set('basePath', '..');
     // 生成编辑器
@@ -38,6 +43,13 @@ define(function (require) {
         // 响应id,hash参数中不一定有，没有就是新增接口
         $scope.responseId = hashData.responseId || '';
 
+        // 操作结果模态窗口初始参数
+        $scope.opModalData = {
+            modalId: 'result-modal',
+            successTitle: '保存成功',
+            failTitle: '保存失败'
+        };
+
         /**
          * 点击保存按键时的处理函数，主要功能是保存新建或修改的接口响应
          */
@@ -65,7 +77,14 @@ define(function (require) {
                         // 新响应保存成功了
                         function (e) {
                             var data = e.data;
+
+                            // 刷新responseId,下次保存的时候就走更新接口了
                             $scope.responseId = data.responseId;
+
+                            // 正确状态
+                            $scope.opModalData.result = true;
+                            // 弹出保存结果浮窗
+                            $('#' + $scope.opModalData.modalId).modal('show');
                         },
                         function () {
                             // TODO 失败提示
