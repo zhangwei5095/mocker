@@ -9,7 +9,6 @@ var express = require('express');
 var router = express.Router();
 
 // 模块
-var model = require('../model/db');
 var interfaceModel = require('../model/interfaceModel');
 
 /**
