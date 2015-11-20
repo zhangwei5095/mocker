@@ -109,15 +109,21 @@ exports.registerNewInterface = function (newInterfaceUrl, type) {
     return promise;
 };
 
-exports.getInterfaceDataById = function (id) {
+/**
+ * 根据接口的id获取该接口对应的数据
+ *
+ * @param interfaceId 接口id
+ * @return {Promise} Promise对象
+ */
+exports.getInterfaceDataById = function (interfaceId) {
     // promise
     var deferred = Q.defer();
     var promise = deferred.promise;
 
-    id = new ObjectId(id.toString());
+    interfaceId = new ObjectId(interfaceId.toString());
 
     // 根据mongodb的id来查找数据
-    InterfaceModel.findById(id)
+    InterfaceModel.findById(interfaceId)
         .select('')
         .lean()
         .exec(function (err, doc) {
@@ -243,6 +249,7 @@ exports.getActiveResponse = function (url) {
             if (!err) {
                 deferred.resolve({
                     status: 0,
+                    // TODO 未完成响应选择，所以这里暂时获取第一个响应
                     response: doc.responses[0]
                 });
             }
