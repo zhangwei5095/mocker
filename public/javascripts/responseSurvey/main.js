@@ -11,6 +11,7 @@ define(function (require) {
     // 注册angular程序
     var responseSurvey = angular.module('responseSurvey', []);
 
+    // angular app主controller,也是唯一的
     responseSurvey.controller('main', function ($scope, $http, $location) {
         // 获取通过hash传递而来的参数
         var hashData = $location.search();
@@ -40,6 +41,11 @@ define(function (require) {
                         controllerData.responseDataCollection = data.responseData;
                         // 目前启用的响应的id，没有则是个空字符串
                         controllerData.activeResponseId = data.activeResponseId;
+
+                        // 填充是否激活标志位，用于渲染
+                        controllerData.responseDataCollection.forEach(function (responseData) {
+                            responseData.isActive = (responseData._id === controllerData.activeResponseId);
+                        });
                     }
                 );
         };
