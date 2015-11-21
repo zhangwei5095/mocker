@@ -269,7 +269,8 @@ exports.getActiveResponse = function (url) {
                         statusInfo: '当前地址未被注册为接口'
                     });
 
-                    return promise;
+                    // 避免代码往下走，往下走就报错了
+                    return;
                 }
 
                 // 当前该接口激活的响应，目前只支持JSON

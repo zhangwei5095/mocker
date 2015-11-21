@@ -29,7 +29,6 @@ app.use(express.static(path.join(__dirname, 'public')));
  */
 // 设值端ajax接口，注意admin前缀
 app.use('/admin', adminAjaxRouter);
-// app.get('/jsonView', admin);
 app.use('/', admin);
 app.use('/', routes);
 
