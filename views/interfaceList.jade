@@ -24,14 +24,16 @@ block content
                     thead
                         tr
                             th 接口地址
+                            th 已注册响应数量
                             th 操作
                     tbody
                         //- 循环生成表格，注意这里是angular,依靠ajax数据绘制
-                        tr(ng-repeat='interfaceURL in interfaceList track by $index')
-                            td {{interfaceURL.url}}
+                        tr(ng-repeat='interfaceData in interfaceList track by $index')
+                            td {{interfaceData.url}}
+                            td {{interfaceData.responses.length}}
                             //- 来自mongoDB的唯一id,mongo没有自增功能，所以暂时这么搞
                             td
-                                a(href='/responseSurvey#?interfaceId={{interfaceURL._id}}') 编辑
+                                a(href='/responseSurvey#?interfaceId={{interfaceData._id}}') 编辑
                         tr.center.aligned(ng-if="interfaceList.length == 0")
                             td(colspan=2) 暂无数据
 

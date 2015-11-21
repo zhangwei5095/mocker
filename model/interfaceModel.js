@@ -36,8 +36,7 @@ exports.getInterfaceList = function () {
 
     // 查看全部接口 TODO 应该查询那些字段需要提炼，提高这里的性能
     InterfaceModel.find(
-        {
-        },
+        {},
         '',
         function (err, interfaceList) {
             if (!err) {
