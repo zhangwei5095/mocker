@@ -3,13 +3,14 @@ extends layout
 block statics
     include ./includes/commonDep
     include ./includes/amdConifg
+    link(rel='stylesheet', href='stylesheets/responseSurvey/main.css')
 
 block content
     div.container(ng-controller='main')
         //- 主界面接口列表table部分
         div.ui.grid.centered
             //- 新增接口按键
-            div.four.wide.column#add-interface-container
+            div.four.wide.column#add-response-container
                 //- hash参数用于angular程序
                 a(href='/newJSONResponse?interfaceId={{interfaceId}}#/?interfaceId={{interfaceId}}')
                     button.massive.ui.button.blue.labeled.icon#add-interface 新添JSON响应
