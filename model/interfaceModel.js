@@ -89,7 +89,7 @@ exports.registerNewInterface = function (newInterfaceUrl, type) {
                 };
 
                 var mongooseEntity = new InterfaceModel(doc);
-                mongooseEntity.save(function(error) {
+                mongooseEntity.save(function (error) {
                     if (!error) {
                         deferred.resolve({
                             status: 0
@@ -112,7 +112,7 @@ exports.registerNewInterface = function (newInterfaceUrl, type) {
 /**
  * 根据接口的id获取该接口对应的数据
  *
- * @param interfaceId 接口id
+ * @param {string} interfaceId 接口id
  * @return {Promise} Promise对象
  */
 exports.getInterfaceDataById = function (interfaceId) {
@@ -165,11 +165,11 @@ exports.addNewJSONRes = function (interfaceId, name, data) {
 
             InterfaceModel.findOneAndUpdate(
                 {
-                    '_id': interfaceId
+                    _id: interfaceId
                 },
                 {
                     // 添加新的响应入数组
-                    '$push': {
+                    $push: {
                         // doc即新document
                         responses: newResponseData
                     }
@@ -204,6 +204,7 @@ exports.addNewJSONRes = function (interfaceId, name, data) {
  * 根据接口id获取该接口的全部设置响应
  *
  * @param {string} id 接口id
+ * @return {Promise} Promise对象
  */
 exports.getResponseList = function (id) {
     // promise
@@ -220,7 +221,9 @@ exports.getResponseList = function (id) {
                     status: 0,
                     responses: doc.responses,
                     // 目前启动的响应的id,如果没有则返回空
-                    activeResponseId: doc.activeResponseId || ''
+                    activeResponseId: doc.activeResponse
+                        ? doc.activeResponse
+                        : ''
                 });
             }
             else {
@@ -237,26 +240,36 @@ exports.getResponseList = function (id) {
  * 根据URL查询接口数据
  *
  * @param {string} url 请求的url
- * @return {Promise} promise对象
  */
 exports.findInterfaceDataByURL = function (url) {
 };
 
+/**
+ * 返回指定url的模拟数据
+ *
+ * @param {string} url 请求的地址
+ * @return {*} 响应
+ */
 exports.getActiveResponse = function (url) {
     // promise
     var deferred = Q.defer();
     var promise = deferred.promise;
 
-    // 根据URL查询接口
-    InterfaceModel.findOne({url: url})
-        .populate('responses')
+    // 根据URL查询接口，取activeResponse ref并populate
+    InterfaceModel
+        .findOne({url: url})
+        .populate('activeResponse')
         .lean()
         .exec(function (err, doc) {
             if (!err) {
+                // 当前该接口激活的响应，目前只支持JSON
+                // TODO 处理没激活场景，返回404
+                var activeResponse = doc.activeResponse;
+
                 deferred.resolve({
                     status: 0,
-                    // TODO 未完成响应选择，所以这里暂时获取第一个响应
-                    response: doc.responses[0]
+                    // 响应内容，目前支持JSON，所以这将是个对象
+                    response: activeResponse.data
                 });
             }
             else {
@@ -274,6 +287,7 @@ exports.getActiveResponse = function (url) {
  *
  * @param {string} interfaceId 要更新启动响应的接口的id
  * @param {string} responseId 启用的响应的id
+ * @return {Promise} Promise对象
  */
 exports.setActiveResponse = function (interfaceId, responseId) {
     // promise
@@ -285,7 +299,7 @@ exports.setActiveResponse = function (interfaceId, responseId) {
         interfaceId,
         {
             // 注意id的类型
-            activeResponseId: new ObjectId(responseId)
+            activeResponse: new ObjectId(responseId)
         },
         function (err) {
             // 更新无误
