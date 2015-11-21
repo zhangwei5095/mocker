@@ -19,12 +19,21 @@ block content
                 table.ui.celled.blue.table
                     thead
                         tr
+                            th 启用
                             th 响应名称
                             th 响应类型
                             th 操作
                     tbody
-                        //- 循环生成表格，注意这里是angular,依靠ajax数据绘制
+                        //- 循环生成表格，注意这里是angular,依靠ajax数据绘制,注意ng-repeat生成新一级作用域
                         tr(ng-repeat='data in responseData track by $index')
+                            td
+                                div.ui.fitted.toggle.checkbox
+                                    input(type="radio"
+                                          id="switch-{{data._id}}"
+                                          name="response-active-switch"
+                                          ng-value="data._id"
+                                          ng-model="controllerData.activeResponseId")
+                                    label(for="switch-{{data._id}}")
                             td {{data.name}}
                             td {{data.type}}
                             td
@@ -32,7 +41,7 @@ block content
                                 + "#/?responseId={{data._id}}&interfaceId={{interfaceId}}") 编辑
                         // - 没有数据的时候表格不能空
                         tr.center.aligned(ng-if="responseData.length == 0")
-                            td(colspan=3) 暂无数据
+                            td(colspan=4) 暂无数据
 
 block javascript
     script.

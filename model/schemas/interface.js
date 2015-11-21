@@ -62,11 +62,10 @@ var interfaceSchema = new mongoose.Schema({
         default: Date.now
     },
     /**
-     * 激活的接口的序号
+     * 激活的接口的id
      */
-    activeResponseIndex: {
-        type: Number,
-        default: -1
+    activeResponseId: {
+        type: mongoose.Schema.Types.ObjectId
     }
 });
 

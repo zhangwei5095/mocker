@@ -205,7 +205,7 @@ exports.addNewJSONRes = function (interfaceId, name, data) {
  *
  * @param {string} id 接口id
  */
-exports.getReposeList = function (id) {
+exports.getResponseList = function (id) {
     // promise
     var deferred = Q.defer();
     var promise = deferred.promise;
@@ -218,7 +218,9 @@ exports.getReposeList = function (id) {
             if (!err) {
                 deferred.resolve({
                     status: 0,
-                    responses: doc.responses
+                    responses: doc.responses,
+                    // 目前启动的响应的id,如果没有则返回空
+                    activeResponseId: doc.activeResponseId || ''
                 });
             }
             else {

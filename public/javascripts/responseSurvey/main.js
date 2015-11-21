@@ -18,6 +18,10 @@ define(function (require) {
         // 这个接口的id
         $scope.interfaceId = hashData.interfaceId;
 
+        // 这个controller的数据用于解决子作用域问题
+        $scope.controllerData = {
+        };
+
         // 获取接口地址集合
         $scope.getResponseData = function () {
             $http
@@ -29,7 +33,11 @@ define(function (require) {
                 )
                 .then(
                     function (e) {
-                        $scope.responseData = e.data.responseData;
+                        var data = e.data;
+
+                        $scope.responseData = data.responseData;
+                        // 目前启用的响应的id，没有则是个空字符串
+                        $scope.controllerData.activeResponseId = data.activeResponseId;
                     }
                 );
         };

@@ -43,7 +43,9 @@ define(function (require) {
                 )
                 .then(
                     function (e) {
-                        $scope.interfaceList = e.data.interfaceList;
+                        var data = e.data;
+
+                        $scope.interfaceList = data.interfaceList;
                     }
                 );
         };
