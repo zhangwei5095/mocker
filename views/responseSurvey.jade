@@ -32,7 +32,6 @@ block content
                                     input(type="checkbox"
                                           id="switch-{{data._id}}"
                                           name="response-active-switch"
-                                          ng-checked="data._id === controllerData.activeResponseId"
                                           ng-change="changeActiveResponse(data)"
                                           ng-model="data.isActive")
                                     label(for="switch-{{data._id}}")
