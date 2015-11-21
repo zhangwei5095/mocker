@@ -26,8 +26,7 @@ var interfaceSchema = new mongoose.Schema({
     /**
      * 使用这个接口的用户，内嵌doc未来扩展
      */
-    user: {
-    },
+    user: {},
     /**
      * 响应集合
      */
@@ -62,11 +61,15 @@ var interfaceSchema = new mongoose.Schema({
         default: Date.now
     },
     /**
-     * 激活的接口的id
+     * 当前激活的响应
      */
-    activeResponseId: {
-        type: mongoose.Schema.Types.ObjectId
+    activeResponse: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'responses'
     }
 });
+
+// 注册schema
+mongoose.model('interfaceSchema', interfaceSchema);
 
 module.exports = interfaceSchema;
