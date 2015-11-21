@@ -20,6 +20,8 @@ define(function (require) {
 
         // 这个controller的数据用于解决子作用域问题,父子作用域得以联动
         var controllerData = $scope.controllerData = {
+            // 启用的响应是否发生了变化，首屏打开时肯定是没有
+            activeResNotChanged: true
         };
 
         // 获取接口地址集合

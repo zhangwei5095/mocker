@@ -42,6 +42,12 @@ block content
                         // - 没有数据的时候表格不能空
                         tr.center.aligned(ng-if="responseData.length == 0")
                             td(colspan=4) 暂无数据
+                    tfoot.full-width
+                        tr
+                            th(colspan=4)
+                                div(ng-class="['ui', 'basic', 'button',{disabled: controllerData.activeResNotChanged}]")
+                                    i.icon.save
+                                    ="保存启用设置"
 
 block javascript
     script.
