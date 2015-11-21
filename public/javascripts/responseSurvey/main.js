@@ -18,8 +18,8 @@ define(function (require) {
         // 这个接口的id
         $scope.interfaceId = hashData.interfaceId;
 
-        // 这个controller的数据用于解决子作用域问题
-        $scope.controllerData = {
+        // 这个controller的数据用于解决子作用域问题,父子作用域得以联动
+        var controllerData = $scope.controllerData = {
         };
 
         // 获取接口地址集合
@@ -35,11 +35,30 @@ define(function (require) {
                     function (e) {
                         var data = e.data;
 
-                        $scope.responseData = data.responseData;
+                        controllerData.responseDataCollection = data.responseData;
                         // 目前启用的响应的id，没有则是个空字符串
-                        $scope.controllerData.activeResponseId = data.activeResponseId;
+                        controllerData.activeResponseId = data.activeResponseId;
                     }
                 );
+        };
+
+        /**
+         * 启用响应checkbox变化时的处理函数，启动对应的响应，关闭其他的
+         *
+         * @param {Object} responseData checkbox对应的响应的数据
+         */
+        $scope.changeActiveResponse = function (responseData) {
+            // 响应数据
+            var responseDataCollection = controllerData.responseDataCollection;
+
+            // 启用选中的，关闭其他的，注意自身如果处于启用状态，则应该可以关闭
+            responseDataCollection.forEach(function (data) {
+                // 不能用 data.isActive === (data._id !== responseData._id)
+                if (data._id !== responseData._id) {
+                    // 其他的需要关闭
+                    data.isActive = false;
+                }
+            });
         };
 
         $scope.getResponseData();

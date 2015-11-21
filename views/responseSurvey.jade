@@ -25,14 +25,14 @@ block content
                             th 操作
                     tbody
                         //- 循环生成表格，注意这里是angular,依靠ajax数据绘制,注意ng-repeat生成新一级作用域
-                        tr(ng-repeat='data in responseData track by $index')
+                        tr(ng-repeat='data in controllerData.responseDataCollection track by $index')
                             td
                                 div.ui.fitted.toggle.checkbox
-                                    input(type="radio"
+                                    input(type="checkbox"
                                           id="switch-{{data._id}}"
                                           name="response-active-switch"
-                                          ng-value="data._id"
-                                          ng-model="controllerData.activeResponseId")
+                                          ng-change="changeActiveResponse(data)"
+                                          ng-model="data.isActive")
                                     label(for="switch-{{data._id}}")
                             td {{data.name}}
                             td {{data.type}}
