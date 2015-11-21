@@ -26,7 +26,7 @@ router.post('/addInterfaceURL', function(req, res) {
 
     promise.then(
         function (data) {
-            res.end(JSON.stringify(data));
+            res.json(data);
         },
         function () {
             // TODO
@@ -40,9 +40,9 @@ router.post('/getAllInterface', function(req, res) {
 
     promise.then(
         function (data) {
-            res.end(JSON.stringify({
+            res.json({
                 interfaceList: data.interfaceList
-            }));
+            });
         }
     );
 });
@@ -82,7 +82,7 @@ router.post('/editRes', function (req, res) {
         {
             name: responseName,
             // TODO 目前只支持json
-            data: JSON.stringify(dataValue)
+            data: dataValue
         }
     );
 
