@@ -35,7 +35,9 @@ block content
                             td {{interfaceData.activeResponse.name}}
                             //- 来自mongoDB的唯一id,mongo没有自增功能，所以暂时这么搞
                             td
-                                a(href='/responseSurvey#?interfaceId={{interfaceData._id}}') 编辑
+                                a(href='/responseSurvey#' +
+                                '?interfaceId={{interfaceData._id}}' +
+                                '&interfaceURL=#{hostBaseURL}/mock/{{interfaceData.url}}') 编辑
                         tr.center.aligned(ng-if="interfaceList.length == 0")
                             td(colspan=2) 暂无数据
 

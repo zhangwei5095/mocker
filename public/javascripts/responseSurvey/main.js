@@ -18,6 +18,8 @@ define(function (require) {
 
         // 这个接口的id
         $scope.interfaceId = hashData.interfaceId;
+        // 这个接口的地址
+        $scope.interfaceURL = hashData.interfaceURL;
 
         // 这个controller的数据用于解决子作用域问题,父子作用域得以联动
         var controllerData = $scope.controllerData = {};
