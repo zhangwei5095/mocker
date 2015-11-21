@@ -313,13 +313,28 @@ exports.setActiveResponse = function (interfaceId, responseId) {
     var deferred = Q.defer();
     var promise = deferred.promise;
 
+    var operation = {};
+
+    // responseId为空，操作行为是取消激活
+    if (responseId === '') {
+        operation = {
+            // 删除掉activeResponse字段，成功后接口没有处于激活状态的响应
+            $unset: {
+                activeResponse: ''
+            }
+        }
+    }
+    else {
+        operation = {
+            // 注意id的类型
+            activeResponse: new ObjectId(responseId)
+        }
+    }
+
     // 查找对应id的接口，更新数据
     InterfaceModel.findByIdAndUpdate(
         interfaceId,
-        {
-            // 注意id的类型
-            activeResponse: new ObjectId(responseId)
-        },
+        operation,
         function (err) {
             // 更新无误
             if (!err) {
