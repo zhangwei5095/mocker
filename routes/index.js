@@ -21,7 +21,8 @@ router.use('*', function(req, res, next) {
 
     promise.then(
         function (data) {
-            res.end(JSON.stringify(data.response.data));
+            // 目前只支持JSON响应
+            res.json(data.response);
         }
     );
 });
