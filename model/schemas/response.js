@@ -47,6 +47,13 @@ var response = new mongoose.Schema({
      */
     comment: {
         type: Object
+    },
+    /**
+     * 响应最后的更新时间
+     */
+    updateTime: {
+        type: Date,
+        default: Date.now
     }
 });
 
