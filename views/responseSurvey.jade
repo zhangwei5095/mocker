@@ -31,6 +31,7 @@ block content
                                     input(type="checkbox"
                                           id="switch-{{data._id}}"
                                           name="response-active-switch"
+                                          ng-checked="data._id === controllerData.activeResponseId"
                                           ng-change="changeActiveResponse(data)"
                                           ng-model="data.isActive")
                                     label(for="switch-{{data._id}}")
@@ -42,7 +43,7 @@ block content
                         // - 没有数据的时候表格不能空
                         tr.center.aligned(ng-if="responseData.length == 0")
                             td(colspan=4) 暂无数据
-                    tfoot.full-width
+                    tfoot.full-width(ng-if="responseData.length == 0")
                         tr
                             th(colspan=4)
                                 div.ui.blue.button(

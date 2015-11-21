@@ -119,5 +119,6 @@ define(function (require) {
         };
     });
 
+    // 启动angular app
     angular.bootstrap(document, ['interfaceList']);
 });
