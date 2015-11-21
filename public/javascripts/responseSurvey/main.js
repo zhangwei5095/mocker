@@ -19,10 +19,10 @@ define(function (require) {
         $scope.interfaceId = hashData.interfaceId;
 
         // 这个controller的数据用于解决子作用域问题,父子作用域得以联动
-        var controllerData = $scope.controllerData = {
-            // 启用的响应是否发生了变化，首屏打开时肯定是没有
-            activeResNotChanged: true
-        };
+        var controllerData = $scope.controllerData = {};
+
+        // 启用的响应是否发生了变化，首屏打开时肯定是没有
+        $scope.activeResNotChanged = true;
 
         // 获取接口地址集合
         $scope.getResponseData = function () {
@@ -52,6 +52,9 @@ define(function (require) {
         $scope.changeActiveResponse = function (responseData) {
             // 响应数据
             var responseDataCollection = controllerData.responseDataCollection;
+
+            // 启用的响应发生了变化，保存按键将启用
+            $scope.activeResNotChanged = false;
 
             // 启用选中的，关闭其他的，注意自身如果处于启用状态，则应该可以关闭
             responseDataCollection.forEach(function (data) {
