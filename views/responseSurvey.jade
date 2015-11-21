@@ -45,7 +45,9 @@ block content
                     tfoot.full-width
                         tr
                             th(colspan=4)
-                                div.ui.blue.button(ng-class="{disabled: activeResNotChanged}")
+                                div.ui.blue.button(
+                                ng-class="{disabled: activeResNotChanged}"
+                                ng-click="updateActiveRes()")
                                     i.white.icon.save
                                     ="保存启用设置"
 

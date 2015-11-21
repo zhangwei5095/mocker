@@ -56,6 +56,9 @@ define(function (require) {
             // 启用的响应发生了变化，保存按键将启用
             $scope.activeResNotChanged = false;
 
+            // 修改激活的响应
+            $scope.activeResponseId = responseData.isActive ? responseData._id : '';
+
             // 启用选中的，关闭其他的，注意自身如果处于启用状态，则应该可以关闭
             responseDataCollection.forEach(function (data) {
                 // 不能用 data.isActive === (data._id !== responseData._id)
@@ -64,6 +67,28 @@ define(function (require) {
                     data.isActive = false;
                 }
             });
+        };
+
+        /**
+         * 向后端发送请求，更新启用的响应
+         */
+        $scope.updateActiveRes = function () {
+            $http
+                .post(
+                    'admin/setActiveResponse',
+                    {
+                        // 接口id
+                        interfaceId: $scope.interfaceId,
+                        // 要启用的响应的id,如果是空则表示禁用所有响应
+                        responseId: $scope.activeResponseId
+                    }
+                )
+                .then(
+                    function () {
+                        // 保存成功后，置灰保存按键
+                        $scope.activeResNotChanged = true;
+                    }
+                );
         };
 
         $scope.getResponseData();

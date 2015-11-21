@@ -268,3 +268,39 @@ exports.getActiveResponse = function (url) {
 
     return promise;
 };
+
+/**
+ * 更新目标接口的启用响应
+ *
+ * @param {string} interfaceId 要更新启动响应的接口的id
+ * @param {string} responseId 启用的响应的id
+ */
+exports.setActiveResponse = function (interfaceId, responseId) {
+    // promise
+    var deferred = Q.defer();
+    var promise = deferred.promise;
+
+    // 查找对应id的接口，更新数据
+    InterfaceModel.findByIdAndUpdate(
+        interfaceId,
+        {
+            // 注意id的类型
+            activeResponseId: new ObjectId(responseId)
+        },
+        function (err) {
+            // 更新无误
+            if (!err) {
+                deferred.resolve({
+                    status: 0
+                });
+            }
+            else {
+                deferred.resolve({
+                    status: 1
+                });
+            }
+        }
+    );
+
+    return promise;
+};

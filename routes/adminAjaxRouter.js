@@ -128,4 +128,27 @@ router.post('/addNewJSONRes', function (req, res) {
     );
 });
 
+/**
+ * 修改接口激活响应接口
+ */
+router.post('/setActiveResponse', function (req, res) {
+    // post数据,由body-parser解析
+    var postData = req.body;
+
+    var interfaceId = postData.interfaceId;
+    var responseId = postData.responseId;
+
+    // 更新启用的id
+    var promise = interfaceModel.setActiveResponse(interfaceId, responseId);
+
+    promise.then(
+        function () {
+            res.json({
+                status: 0
+            });
+        },
+        function () {}
+    );
+});
+
 module.exports = router;
