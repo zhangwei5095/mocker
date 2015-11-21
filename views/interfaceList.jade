@@ -25,12 +25,14 @@ block content
                         tr
                             th 接口地址
                             th 已注册响应数量
+                            th 目前激活的响应
                             th 操作
                     tbody
                         //- 循环生成表格，注意这里是angular,依靠ajax数据绘制
                         tr(ng-repeat='interfaceData in interfaceList track by $index')
                             td {{interfaceData.url}}
                             td {{interfaceData.responses.length}}
+                            td {{interfaceData.activeResponse.name}}
                             //- 来自mongoDB的唯一id,mongo没有自增功能，所以暂时这么搞
                             td
                                 a(href='/responseSurvey#?interfaceId={{interfaceData._id}}') 编辑

@@ -25,7 +25,7 @@ var InterfaceModel = db.model(collectionName, interfaceSchema);
 var responseModel = require('./responseModel');
 
 /**
- * 获取站点列表
+ * 获取接口列表ajax接口
  *
  * @return {Promise} promise对象
  */
@@ -34,11 +34,17 @@ exports.getInterfaceList = function () {
     var deferred = Q.defer();
     var promise = deferred.promise;
 
-    // 查看全部接口 TODO 应该查询那些字段需要提炼，提高这里的性能
-    InterfaceModel.find(
-        {},
-        '',
-        function (err, interfaceList) {
+    // 查看全部接口
+    InterfaceModel
+        .find({})
+        .select('activeResponse responses url')
+        .populate({
+            path: 'activeResponse',
+            // populate目前激活的响应，需要的字段只有name
+            select: 'name'
+        })
+        .lean()
+        .exec(function (err, interfaceList) {
             if (!err) {
                 // 成功返回数据
                 deferred.resolve({
@@ -48,8 +54,7 @@ exports.getInterfaceList = function () {
             else {
                 deferred.reject(err);
             }
-        }
-    );
+        });
 
     return promise;
 };
