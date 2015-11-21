@@ -262,19 +262,37 @@ exports.getActiveResponse = function (url) {
         .lean()
         .exec(function (err, doc) {
             if (!err) {
+                // 没有doc，即这个url还没有注册成为接口，应该返回404
+                if (!doc) {
+                    deferred.resolve({
+                        status: 1,
+                        statusInfo: '当前地址未被注册为接口'
+                    });
+
+                    return promise;
+                }
+
                 // 当前该接口激活的响应，目前只支持JSON
-                // TODO 处理没激活场景，返回404
                 var activeResponse = doc.activeResponse;
 
-                deferred.resolve({
-                    status: 0,
-                    // 响应内容，目前支持JSON，所以这将是个对象
-                    response: activeResponse.data
-                });
+                if (activeResponse) {
+                    deferred.resolve({
+                        status: 0,
+                        // 响应内容，目前支持JSON，所以这将是个对象
+                        response: activeResponse.data
+                    });
+                }
+                else {
+                    deferred.resolve({
+                        status: 1,
+                        statusInfo: '该接口没有处于激活状态的响应，请尝试激活'
+                    });
+                }
             }
             else {
+                // reject一般为系统级错误
                 deferred.reject({
-                    status: 1
+                    statusInfo: '查询错误'
                 });
             }
         });
