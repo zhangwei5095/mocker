@@ -41,9 +41,9 @@ block content
                                 a(href="/editResponse?responseId={{data._id}}"
                                 + "#/?responseId={{data._id}}&interfaceId={{interfaceId}}") 编辑
                         // - 没有数据的时候表格不能空
-                        tr.center.aligned(ng-if="responseData.length == 0")
+                        tr.center.aligned(ng-if="controllerData.responseDataCollection.length === 0")
                             td(colspan=4) 暂无数据
-                    tfoot.full-width(ng-if="responseData.length == 0")
+                    tfoot.full-width(ng-if="controllerData.responseDataCollection.length > 0")
                         tr
                             th(colspan=4)
                                 div.ui.blue.button(
