@@ -1,10 +1,22 @@
-var express = require('express');
+/**
+ * @file express程序入口
+ * @author Franck Chen(chenfan02@baidu.com)
+ * @date 2015-11-22
+ */
+
+// 原生模块
 var path = require('path');
+
+// express
+var express = require('express');
+
+// 中间件
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+// routers
 var adminAjaxRouter = require('./routes/adminAjaxRouter');
 var admin = require('./routes/admin');
 var routes = require('./routes/index');
@@ -15,11 +27,11 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// uncomment after placing your favicon in /public
+// 挂载中间件
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -32,17 +44,18 @@ app.use('/admin', adminAjaxRouter);
 app.use('/', admin);
 app.use('/', routes);
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
+/**
+ * 无法匹配到响应会走到这里
+ */
+app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
 
-// development error handler
-// will print stacktrace
+// 开发环境下答应错误信息
 if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
+    app.use(function (err, req, res, next) {
         res.status(err.status || 500);
         res.render('error', {
             message: err.message,
@@ -51,9 +64,8 @@ if (app.get('env') === 'development') {
     });
 }
 
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
+// 生产环境下友好提示
+app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,
