@@ -69,7 +69,7 @@ var interfaceSchema = new mongoose.Schema({
     }
 });
 
-// 注册schema
-mongoose.model('interfaceSchema', interfaceSchema);
+// mongoose注册model
+mongoose.model('interface', interfaceSchema);
 
 module.exports = interfaceSchema;
