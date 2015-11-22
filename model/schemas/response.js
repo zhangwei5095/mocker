@@ -7,6 +7,9 @@
 // 依赖
 var mongoose = require('mongoose');
 
+// 第三方库
+var Q = require('q');
+
 var response = new mongoose.Schema({
     /**
      * 响应名
@@ -59,12 +62,16 @@ var response = new mongoose.Schema({
 
 /**
  * 删除文档middleware,主要用途是删除interface中对于该接口的所有引用
- * TODO 位置、结构优化
+ * TODO 代码有点烂 ~\(≧▽≦)/~
  */
 response.pre('remove', function (next) {
     var InterfaceModel = this.model('interface');
     // 正在准备删除的document
     var thisDoc = this.toObject();
+
+    // promise
+    var deferred = Q.defer();
+    var promise = deferred.promise;
 
     InterfaceModel
         .update(
@@ -89,13 +96,40 @@ response.pre('remove', function (next) {
         .exec(
             function (err) {
                 if (!err) {
-                    next();
+                    deferred.resolve();
                 }
                 else {
                     next(new Error());
                 }
             }
         );
+
+    promise.then(function () {
+        // 查找有没有接口以要删除的响应作为激活响应，有的话统一删除
+        InterfaceModel
+            .update(
+                {
+                    activeResponse: thisDoc._id
+                },
+                {
+                    $unset: {
+                        activeResponse: ''
+                    }
+                },
+                {
+                    // 虽然现在响应只对应一个接口，为未来扩展，所有接口都更新下
+                    multi: true
+                }
+            )
+            .exec(function (err) {
+                if (!err) {
+                    next();
+                }
+                else {
+                    next(new Error());
+                }
+            });
+    });
 });
 
 // 注册response
