@@ -35,6 +35,9 @@ router.post('/addInterfaceURL', function(req, res) {
     );
 });
 
+/**
+ * 获取全部已注册接口的ajax接口
+ */
 router.post('/getAllInterface', function(req, res) {
     var promise = interfaceModel.getInterfaceList();
 
@@ -151,12 +154,23 @@ router.post('/setActiveResponse', function (req, res) {
     );
 });
 
-// TODO 优化
+/**
+ * 删除指定响应ajax接口
+ */
 router.post('/deleteResponse', function (req, res) {
     // post数据,由body-parser解析
     var postData = req.body;
 
+    // 需要删除的响应的id
     var responseId = postData.responseId;
+
+    if (!responseId || typeof responseId !== 'string') {
+        // 没有提供有效id直接报错
+        res.json({
+            status: 1,
+            statusInfo: '请提供有效的响应id'
+        });
+    }
 
     var promise = responseModel.deleteResponseById(responseId);
 
