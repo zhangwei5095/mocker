@@ -118,3 +118,26 @@ exports.updateResponseDataById = function (responseId, data) {
 
     return promise;
 };
+
+// TODO 优化
+exports.deleteResponseById = function (responseId) {
+    // promise
+    var deferred = Q.defer();
+    var promise = deferred.promise;
+
+    ResponseModel
+        .findById(responseId)
+        .remove()
+        .exec(function (err) {
+            if (!err) {
+                deferred.resolve({
+                    status: 0
+                });
+            }
+            else {
+                deferred.reject();
+            }
+        });
+
+    return promise;
+};

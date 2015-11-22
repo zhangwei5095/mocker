@@ -57,6 +57,11 @@ var response = new mongoose.Schema({
     }
 });
 
+
+response.pre('remove', function () {
+    console.log('remove');
+});
+
 // 注册response
 mongoose.model('responses', response);
 

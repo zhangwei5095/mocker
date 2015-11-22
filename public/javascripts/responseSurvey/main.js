@@ -99,6 +99,23 @@ define(function (require) {
                 );
         };
 
+        // TODO 优化
+        $scope.deleteResponse = function (responseId) {
+            $http
+                .post(
+                    'admin/deleteResponse',
+                    {
+                        responseId: responseId
+                    }
+                )
+                .then(
+                    function (e) {
+                        // TODO 判断status
+                        $scope.getResponseData();
+                    }
+                );
+        };
+
         $scope.getResponseData();
     });
 

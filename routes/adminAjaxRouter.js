@@ -151,4 +151,23 @@ router.post('/setActiveResponse', function (req, res) {
     );
 });
 
+// TODO 优化
+router.post('/deleteResponse', function (req, res) {
+    // post数据,由body-parser解析
+    var postData = req.body;
+
+    var responseId = postData.responseId;
+
+    var promise = responseModel.deleteResponseById(responseId);
+
+    promise.then(
+        function () {
+            res.json({
+                status: 0
+            });
+        },
+        function () {}
+    );
+});
+
 module.exports = router;

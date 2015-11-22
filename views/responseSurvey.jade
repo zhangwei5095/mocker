@@ -48,6 +48,7 @@ block content
                             td
                                 a(href="/editResponse?responseId={{data._id}}"
                                 + "#/?responseId={{data._id}}&interfaceId={{interfaceId}}") 编辑
+                                a(ng-click="deleteResponse(data._id)") 删除
                         // - 没有数据的时候表格不能空
                         tr.center.aligned(ng-if="controllerData.responseDataCollection.length === 0")
                             td(colspan=4) 暂无数据
