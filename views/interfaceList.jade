@@ -32,7 +32,11 @@ block content
                         tr(ng-repeat='interfaceData in interfaceList track by $index')
                             td {{interfaceData.url}}
                             td {{interfaceData.responses.length}}
-                            td {{interfaceData.activeResponse.name}}
+                            //- 没有启用的响应时，给出友好的提示
+                            td(ng-if="interfaceData.activeResponse") {{interfaceData.activeResponse.name}}
+                            td.error(ng-if="!interfaceData.activeResponse")
+                                i.attention.icon
+                                ='没有处于激活的响应'
                             //- 来自mongoDB的唯一id,mongo没有自增功能，所以暂时这么搞
                             td
                                 a(href='/responseSurvey#' +
