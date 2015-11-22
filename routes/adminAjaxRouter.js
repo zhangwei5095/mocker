@@ -172,6 +172,7 @@ router.post('/deleteResponse', function (req, res) {
         });
     }
 
+    // model层删除对应的响应
     var promise = responseModel.deleteResponseById(responseId);
 
     promise.then(

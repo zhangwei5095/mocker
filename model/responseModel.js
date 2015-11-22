@@ -119,19 +119,32 @@ exports.updateResponseDataById = function (responseId, data) {
     return promise;
 };
 
-// TODO 优化
+/**
+ * 根据id删除指定的响应
+ *
+ * @param {string} responseId 响应id
+ * @returns {Promise} Promise对象
+ */
 exports.deleteResponseById = function (responseId) {
     // promise
     var deferred = Q.defer();
     var promise = deferred.promise;
 
     ResponseModel
-        .findById(responseId)
-        .remove()
-        .exec(function (err) {
-            if (!err) {
-                deferred.resolve({
-                    status: 0
+        .findById(responseId, function (err, doc) {
+            // 无误且查询到了document
+            if (!err && !!doc) {
+                // 删除这个响应的document，特别注意不要直接调用model层的remove删除文档，否则无法触发middleware
+                doc.remove(function (err) {
+                    if (!err) {
+                        deferred.resolve({
+                            status: 0
+                        });
+                    }
+                    else {
+                        // reject都是系统级错误
+                        deferred.reject();
+                    }
                 });
             }
             else {
