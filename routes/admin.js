@@ -18,7 +18,9 @@ router.get('/newJSONResponse', function(req, res, next) {
 
         promise.then(
             function () {
-                res.render('jsonViewer', {});
+                res.render('jsonViewer', {
+                    title: 'JSON响应编辑'
+                });
             }
         );
     }
@@ -38,7 +40,8 @@ router.get('/editResponse', function(req, res, next) {
         promise.then(
             function (data) {
                 res.render('jsonViewer', {
-                    response: data.response
+                    response: data.response,
+                    title: 'JSON响应编辑'
                 });
             }
         );
@@ -47,7 +50,9 @@ router.get('/editResponse', function(req, res, next) {
 
 // 指定接口的响应列表界面
 router.get('/responseSurvey', function (req, res, next) {
-    res.render('responseSurvey', {});
+    res.render('responseSurvey', {
+        title: '响应总览'
+    });
 });
 
 module.exports = router;

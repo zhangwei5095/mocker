@@ -8,7 +8,8 @@ var interfaceModel = require('../model/interfaceModel');
 router.get('/admin', function (req, res, next) {
     res.render('interfaceList', {
         // mock平台的地址+端口
-        hostBaseURL: req.get('host')
+        hostBaseURL: req.get('host'),
+        title: '注册接口总览'
     });
 });
 
