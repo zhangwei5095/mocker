@@ -108,7 +108,7 @@ define(function (require) {
                     }
 
                     // 弹出保存结果浮窗
-                    $('#result-model').modal('show');
+                    $('#' + $scope.opModalData.modalId).modal('show');
 
                     // 重新获取接口数据，刷新列表
                     $scope.getURLList();
