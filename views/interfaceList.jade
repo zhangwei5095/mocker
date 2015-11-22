@@ -31,7 +31,9 @@ block content
                         //- 循环生成表格，注意这里是angular,依靠ajax数据绘制
                         tr(ng-repeat='interfaceData in interfaceList track by $index')
                             td {{interfaceData.url}}
-                            td {{interfaceData.responses.length}}
+                            //- 没有添加响应的接口提示下
+                            td(ng-class="{warning: (+interfaceData.responses.length < 1)}")
+                                = '{{interfaceData.responses.length}}'
                             //- 没有启用的响应时，给出友好的提示
                             td(ng-if="interfaceData.activeResponse") {{interfaceData.activeResponse.name}}
                             td.error(ng-if="!interfaceData.activeResponse")
