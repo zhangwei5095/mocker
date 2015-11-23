@@ -43,7 +43,8 @@ block content
                             td
                                 a(href='/responseSurvey#' +
                                 '?interfaceId={{interfaceData._id}}' +
-                                '&interfaceURL=#{hostBaseURL}/mock/{{interfaceData.url}}') 编辑
+                                '&interfaceURL=#{hostBaseURL}/mock/{{interfaceData.url}}')
+                                    i.edit.icon
                         tr.center.aligned(ng-if="interfaceList.length == 0")
                             td(colspan=4) 暂无数据
 
