@@ -15,7 +15,7 @@ var responseModel = require('../model/responseModel');
 /**
  * 新添接口接口
  */
-router.post('/addInterfaceURL', function(req, res) {
+router.post('/addInterfaceURL', function (req, res) {
     // post数据，由body parser自动解析
     var postData = req.body;
     var newInterfaceURL = postData.url;
@@ -38,7 +38,7 @@ router.post('/addInterfaceURL', function(req, res) {
 /**
  * 获取全部已注册接口的ajax接口
  */
-router.post('/getAllInterface', function(req, res) {
+router.post('/getAllInterface', function (req, res) {
     var promise = interfaceModel.getInterfaceList();
 
     promise.then(
@@ -51,7 +51,7 @@ router.post('/getAllInterface', function(req, res) {
 });
 
 // 获取响应集合的接口
-router.post('/getResponseList', function(req, res) {
+router.post('/getResponseList', function (req, res) {
     // 需要获取响应列表的接口的id
     var interfaceId = req.body.interfaceId;
 
