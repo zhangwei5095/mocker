@@ -12,8 +12,8 @@ var ObjectId = mongoose.Types.ObjectId;
 var _ = require('lodash');
 var Q = require('q');
 
-// TODO 这么搞对吗？待探讨
-var db = mongoose.createConnection('mongodb://127.0.0.1:27017/db');
+// 连接数据库
+var db = require('../lib/dbConnection');
 
 // schema
 var interfaceSchema = require('./schemas/interface');
