@@ -10,7 +10,7 @@ module.exports = {
     context: path.join(__dirname, '/public/src'),
     // 需要打包的源文件，注意是不需要.js后缀的
     entry: {
-        cf: './test/cf'
+        'cf/wz': './test/cf'
     },
     // 输出
     output: {
