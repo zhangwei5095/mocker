@@ -17,10 +17,6 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "~2.1.4",
-    "angular": "~1.4.8",
-    "validator-js": "~4.2.0",
-    "semantic": "semantic-ui#~2.1.6",
-    "angular-route": "~1.4.7"
+    "semantic": "semantic-ui#~2.1.6"
   }
 }
