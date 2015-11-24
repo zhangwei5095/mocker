@@ -26,7 +26,9 @@ module.exports = {
          */
         alias: {
             jQuery: 'jquery/dist/jquery.min',
-            angular: 'angular/angular.min'
+            angular: 'angular/angular.min',
+            // 不想找麻烦就别用npm装semantic
+            semantic: '../../public/dep/semantic/dist/components'
         }
     },
     noParse: [
