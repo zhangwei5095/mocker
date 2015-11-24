@@ -19,6 +19,7 @@
         "mongoose": "^4.x.x",
         "webpack": "^1.12.x",
         "jquery": "^2.1.x",
-        "angular": "^1.4.x"
+        "angular": "^1.4.x",
+        "angular-route": "^1.4.x"
     }
 }
