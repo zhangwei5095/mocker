@@ -9,18 +9,25 @@ module.exports = {
     // 源文件代码根目录
     context: path.join(__dirname, '/public/src'),
     // 需要打包的源文件，注意是不需要.js后缀的
-    entry: './cf',
+    entry: {
+        cf: './test/cf'
+    },
     // 输出
     output: {
         // 输出路径
         path: path.join(__dirname, '/public/asset'),
         // 输出文件名
-        filename: 'bundle.js'
+        filename: '[name].js'
     },
     // 依赖配置
     resolve: {
         // 依赖根路径
-        root: path.resolve('./node_modules'),
+        root: [
+            // npm
+            path.resolve('./node_modules'),
+            // bower,主要是为了ace和semantic 这两个npm装起来蛋疼无比的家伙
+            path.resolve('./public/dep')
+        ],
         /**
          * 依赖
          */
@@ -28,7 +35,8 @@ module.exports = {
             jQuery: 'jquery/dist/jquery.min',
             angular: 'angular/angular.min',
             // 不想找麻烦就别用npm装semantic
-            semantic: '../../public/dep/semantic/dist/components'
+            semantic: 'semantic/dist/components',
+            ace: 'lib/ace/ace'
         }
     },
     noParse: [
