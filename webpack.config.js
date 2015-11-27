@@ -10,7 +10,9 @@ module.exports = {
     context: path.join(__dirname, '/public/src'),
     // 需要打包的源文件，注意是不需要.js后缀的
     entry: {
-        'cf/wz': './test/cf'
+        'interfaceList/main': './interfaceList/main',
+        'responseSurvey/main': './responseSurvey/main',
+        'jsonViewer/main': './jsonViewer/main'
     },
     // 输出
     output: {
@@ -36,11 +38,13 @@ module.exports = {
             angular: 'angular/angular.min',
             // 不想找麻烦就别用npm装semantic
             semantic: 'semantic/dist/components',
-            ace: 'lib/ace/ace'
+            ace: 'lib/ace/ace',
+            validator: 'validator/validator.min'
         }
     },
     noParse: [
         'jQuery',
-        'angular'
+        'angular',
+        'validator'
     ]
 };
