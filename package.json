@@ -21,6 +21,8 @@
         "jquery": "^2.1.x",
         "angular": "^1.4.x",
         "angular-route": "^1.4.x",
-        "imports-loader": "latest"
+        "imports-loader": "latest",
+        "validator": "latest",
+        "ace-builds": "^1.2.x"
     }
 }
