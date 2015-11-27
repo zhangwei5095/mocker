@@ -24,6 +24,7 @@ local.properties
 # CDT-specific
 .cproject
 /public/dep
+/public/asset
 
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
