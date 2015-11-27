@@ -38,13 +38,17 @@ module.exports = {
             angular: 'angular/angular.min',
             // 不想找麻烦就别用npm装semantic
             semantic: 'semantic/dist/components',
-            ace: 'lib/ace/ace',
+            // ace Editor，一定要弄nonconflict版本，因为ace有自己的require
+            aceEditor: 'ace-builds/src-min-noconflict/ace',
+            // ace Editor路径,主要用于mode
+            ace: 'ace-builds/src-min-noconflict/',
             validator: 'validator/validator.min'
         }
     },
     noParse: [
         'jQuery',
         'angular',
-        'validator'
+        'validator',
+        'ace'
     ]
 };
