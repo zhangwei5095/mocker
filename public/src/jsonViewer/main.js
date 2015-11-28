@@ -55,55 +55,70 @@ jsonViewer.controller('main', function ($scope, $http, $location) {
         // ace editor的内容
         var value = editor.getValue();
 
-        // 如果有responseId则代表这个响应已经存在，保存时更新
-        if ($scope.responseId) {
-            $http
-                .post(
-                    editResURL,
-                    {
-                        responseId: $scope.responseId,
-                        name: $('#response-name').val(),
-                        value: value
-                    }
-                )
-                .then(
-                    function () {
-                        // 正确状态
-                        $scope.opModalData.result = true;
-                        // 弹出保存结果浮窗
-                        $('#' + $scope.opModalData.modalId).modal('show');
-                    }
-                );
-        }
-        // 如果不存在responseId那么就是新建响应
-        else {
-            $http
-                .post(
-                    addNewURL,
-                    {
-                        // 对应接口的id
-                        interfaceId: $scope.interfaceId,
-                        name: $('#response-name').val(),
-                        value: value
-                    }
-                )
-                .then(
-                    // 新响应保存成功了
-                    function (e) {
-                        var data = e.data;
+        // 保存前开始校验，弹出错误提示
+        $scope.showErrors = true;
 
-                        // 刷新responseId,下次保存的时候就走更新接口了
-                        $scope.responseId = data.responseId;
+        // 目前ace editor中语法错误的数量
+        var jsonErrorsLen = editor.getSession().getAnnotations().length;
 
-                        // 正确状态
-                        $scope.opModalData.result = true;
-                        // 弹出保存结果浮窗
-                        $('#' + $scope.opModalData.modalId).modal('show');
-                    },
-                    function () {
-                        // TODO 失败提示
-                    }
-                );
+        // 表单
+        var form = $scope.jsonEditor;
+        // 只有表单校验通过才能触发保存逻辑
+        if (form.$valid && (jsonErrorsLen === 0)) {
+            // 如果有responseId则代表这个响应已经存在，保存时更新
+            if ($scope.responseId) {
+                $http
+                    .post(
+                        editResURL,
+                        {
+                            responseId: $scope.responseId,
+                            name: $scope.responseName,
+                            value: value
+                        }
+                    )
+                    .then(
+                        function () {
+                            // 正确状态
+                            $scope.opModalData.result = true;
+                            // 错误提示不要显示了
+                            $scope.showErrors = false;
+                            // 弹出保存结果浮窗
+                            $('#' + $scope.opModalData.modalId).modal('show');
+                        }
+                    );
+            }
+            // 如果不存在responseId那么就是新建响应
+            else {
+                $http
+                    .post(
+                        addNewURL,
+                        {
+                            // 对应接口的id
+                            interfaceId: $scope.interfaceId,
+                            name: $scope.responseName,
+                            value: value
+                        }
+                    )
+                    .then(
+                        // 新响应保存成功了
+                        function (e) {
+                            var data = e.data;
+
+                            // 刷新responseId,下次保存的时候就走更新接口了
+                            $scope.responseId = data.responseId;
+                            // 错误提示不要显示了
+                            $scope.showErrors = false;
+
+                            // 正确状态
+                            $scope.opModalData.result = true;
+                            // 弹出保存结果浮窗
+                            $('#' + $scope.opModalData.modalId).modal('show');
+                        },
+                        function () {
+                            // TODO 失败提示
+                        }
+                    );
+            }
         }
     };
 });
