@@ -2,11 +2,10 @@ extends layout
 
 block statics
     include ./includes/commonDep
-    include ./includes/amdConifg
     link(rel='stylesheet', href='stylesheets/responseSurvey/main.css')
 
 block content
-    div.container(ng-controller='main')
+    div.container(ng-app="responseSurvey" ng-controller='main')
         //- 主界面接口列表table部分
         div.ui.grid.centered
             div.row
@@ -62,5 +61,4 @@ block content
                                     ="保存启用设置"
 
 block javascript
-    script.
-        require(['src/responseSurvey/main']);
+    script(src='asset/responseSurvey/main.js')

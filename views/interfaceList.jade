@@ -3,13 +3,9 @@ extends layout
 block statics
     include ./includes/commonDep
     link(rel='stylesheet', href='stylesheets/interfaceList/main.css')
-    include ./includes/amdConifg
-    script.
-        require(['src/interfaceList/main']);
-
 
 block content
-    div.container(ng-controller='main')
+    div.container(ng-app='interfaceList' ng-controller='main')
         div.ui.centered.grid
             //- 新增接口按键
             div.four.wide.column#add-interface-container
@@ -68,3 +64,6 @@ block content
 
         //- 操作行为提示模态窗口
         ng-include(src="'/angularTpls/operationResult.html'")
+
+block javascript
+    script(src = '/asset/interfaceList/main.js')
