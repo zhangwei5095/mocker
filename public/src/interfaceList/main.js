@@ -4,7 +4,6 @@
  * @date 2015-10-25
  */
 
-
 // 第三方库
 var angular = require('exports?angular!angular');
 var $ = require('jQuery');

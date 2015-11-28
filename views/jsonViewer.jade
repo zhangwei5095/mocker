@@ -3,9 +3,7 @@ extends layout
 block statics
     include ./includes/commonDep
     link(rel='stylesheet', href='/stylesheets/jsonViewer/main.css')
-    include ./includes/amdConifg
-    script.
-        require(['src/jsonViewer/main']);
+    script(src='/dep/ace-builds/src-min-noconflict/ace.js')
 
 block content
     -
@@ -15,7 +13,7 @@ block content
             response.name = '';
         }
 
-    div.container(ng-controller='main')
+    div.container(ng-app='jsonViewer' ng-controller='main')
         div.ui.centered.grid
             div.row
                 div.eight.wide.column
@@ -30,3 +28,6 @@ block content
 
         //- 操作行为提示模态窗口
         ng-include(src="'/angularTpls/operationResult.html'")
+
+block javascript
+    script(src = '/asset/jsonViewer/main.js')
