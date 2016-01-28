@@ -94,25 +94,24 @@ exports.getResponseDataById = function (responseId) {
  * 根据id定位响应，完成数据入库更新
  *
  * @param {string} responseId 响应id
- * @param {*} data 数据
+ * @param {Object} responseData 响应数据
+ * @param {string} responseData.name 新增响应的名称
+ * @param {*} responseData.data 新增的响应主体
  * @return {Promise} Promise对象
  */
-exports.updateResponseDataById = function (responseId, data) {
+exports.updateResponseDataById = function (responseId, responseData) {
     // promise
     var deferred = Q.defer();
     var promise = deferred.promise;
 
+    // responseData是个序列化过的JSON，需要解析后入库
+    responseData.data = JSON.parse(responseData.data);
+
     ResponseModel.findByIdAndUpdate(
         responseId,
-        data,
+        responseData,
         function (err, data) {
-            //callback
-            if (!err) {
-                deferred.resolve();
-            }
-            else {
-                deferred.reject();
-            }
+            !err ? deferred.resolve() : deferred.reject();
         }
     );
 
