@@ -13,7 +13,7 @@ block content
             response.name = '';
         }
 
-    div.container(ng-app='jsonViewer' ng-controller='main')
+    div.container(ng-app='jsonViewer' ng-controller='main' ng-init="responseName='#{response.name}'")
         form(name='jsonEditor' autocomplete='off')
             div.ui.centered.grid
                 div.row#response-name-row
@@ -28,7 +28,6 @@ block content
                                         name='responseName'
                                         type='text'
                                         placeholder='响应名称'
-                                        value=response.name
                                         ng-required='true'
                                         ng-trim='true')
                             div.ui.error.message
