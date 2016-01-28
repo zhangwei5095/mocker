@@ -4,6 +4,9 @@
  * @date 2015-11-08
  */
 
+// node
+var URL = require('URL');
+
 // mongoose
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
@@ -71,10 +74,14 @@ exports.registerNewInterface = function (newInterfaceUrl, type) {
     var deferred = Q.defer();
     var promise = deferred.promise;
 
+    // 目前忽略查询字符串部分
+    var newInterfaceURL = URL.parse(newInterfaceUrl).pathname;
+
     // 根据url查找
     InterfaceModel.findOne(
         {
-            url: newInterfaceUrl
+            // 目前只支持常规路径，不支持查询字符串
+            url: newInterfaceURL
         },
         '',
         function (err, url) {
@@ -88,7 +95,7 @@ exports.registerNewInterface = function (newInterfaceUrl, type) {
             }
             else {
                 var doc = {
-                    url: newInterfaceUrl,
+                    url: newInterfaceURL,
                     type: type
                 };
 

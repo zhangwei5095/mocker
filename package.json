@@ -1,28 +1,28 @@
 {
-    "name": "express",
-    "version": "0.0.0",
-    "private": true,
-    "scripts": {
-        "start": "node ./bin/www"
-    },
-    "dependencies": {
-        "body-parser": "^1.x.x",
-        "cookie-parser": "^1.x.x",
-        "debug": "^2.x.x",
-        "express": "^4.x.x",
-        "jade": "^1.x.x",
-        "less-middleware": "^1.x.x",
-        "lodash": "^3.x.x",
-        "morgan": "^1.x.x",
-        "q": "^1.x.x",
-        "serve-favicon": "^2.x.x",
-        "mongoose": "^4.x.x",
-        "webpack": "^1.12.x",
-        "jquery": "^2.1.x",
-        "angular": "^1.4.x",
-        "angular-route": "^1.4.x",
-        "imports-loader": "latest",
-        "exports-loader": "latest",
-        "validator": "latest"
-    }
+  "name": "express",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "angular": "^1.4.x",
+    "angular-route": "^1.4.x",
+    "body-parser": "^1.x.x",
+    "cookie-parser": "^1.x.x",
+    "debug": "^2.x.x",
+    "exports-loader": "latest",
+    "express": "^4.x.x",
+    "imports-loader": "latest",
+    "jade": "^1.x.x",
+    "jquery": "^2.1.x",
+    "less-middleware": "^1.x.x",
+    "lodash": "^3.x.x",
+    "mongoose": "^4.x.x",
+    "morgan": "^1.x.x",
+    "q": "^1.x.x",
+    "serve-favicon": "^2.x.x",
+    "validator": "latest",
+    "webpack": "~1.12.12"
+  }
 }

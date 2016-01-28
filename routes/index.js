@@ -15,8 +15,11 @@ router.get('/admin', function (req, res, next) {
 
 // 模拟JSON返回的接口
 router.use('*', function(req, res, next) {
-    // 获取到用户请求的模拟接口地址
-    var url = req.originalUrl.replace(/^\//, '');
+    var originalUrl = req.originalUrl;
+    // 获取到用户请求的模拟接口地址，目前忽略查询字符串
+    var url = originalUrl
+        .replace(/^\//, '')
+        .split('?')[0];
 
     var promise = interfaceModel.getActiveResponse(url);
 
