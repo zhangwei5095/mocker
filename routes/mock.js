@@ -4,15 +4,6 @@ var router = express.Router();
 
 var interfaceModel = require('../model/interfaceModel');
 
-// 管理页面
-router.get('/admin', function (req, res, next) {
-    res.render('interfaceList', {
-        // mock平台的地址+端口
-        hostBaseURL: req.get('host'),
-        title: '注册接口总览'
-    });
-});
-
 // 模拟JSON返回的接口
 router.use('*', function(req, res, next) {
     var originalUrl = req.originalUrl;

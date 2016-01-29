@@ -19,11 +19,11 @@ var bodyParser = require('body-parser');
 // routers
 var adminAjaxRouter = require('./routes/adminAjaxRouter');
 var admin = require('./routes/admin');
-var routes = require('./routes/index');
+var mock = require('./routes/mock');
 
 var app = express();
 
-// view engine setup
+// TODO Jade最近不更新了，而且确实别扭，考虑Handlebars
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
@@ -41,8 +41,10 @@ app.use(express.static(path.join(__dirname, 'public')));
  */
 // 设值端ajax接口，注意admin前缀
 app.use('/admin', adminAjaxRouter);
-app.use('/', admin);
-app.use('/', routes);
+// 管理页面路由
+app.use('/admin', admin);
+// mock路由
+app.use('/mock', mock);
 
 /**
  * 无法匹配到响应会走到这里
@@ -53,7 +55,7 @@ app.use(function (req, res, next) {
     next(err);
 });
 
-// 开发环境下答应错误信息
+// 开发环境下应答错误信息
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
         res.status(err.status || 500);

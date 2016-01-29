@@ -6,6 +6,17 @@ var interfaceModel = require('../model/interfaceModel');
 var responseModel = require('../model/responseModel');
 
 /**
+ * 管理页面主页
+ */
+router.get('/', function (req, res, next) {
+    res.render('interfaceList', {
+        // mock平台的地址+端口
+        hostBaseURL: req.get('host'),
+        title: '注册接口总览'
+    });
+});
+
+/**
  * 新增JSON响应
  */
 router.get('/newJSONResponse', function(req, res, next) {

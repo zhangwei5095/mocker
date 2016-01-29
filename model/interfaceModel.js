@@ -266,6 +266,9 @@ exports.getActiveResponse = function (url) {
     var deferred = Q.defer();
     var promise = deferred.promise;
 
+    // 消除掉/mock前缀
+    url = url.replace(/^mock\//, '');
+
     // 根据URL查询接口，取activeResponse ref并populate
     InterfaceModel
         .findOne({url: url})
