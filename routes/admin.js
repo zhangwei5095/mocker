@@ -6,14 +6,25 @@ var interfaceModel = require('../model/interfaceModel');
 var responseModel = require('../model/responseModel');
 
 /**
- * 管理页面主页
+ * 管理页面主页,列出所有接口
  */
 router.get('/', function (req, res, next) {
-    res.render('interfaceList', {
-        // mock平台的地址+端口
-        hostBaseURL: req.get('host'),
-        title: '注册接口总览'
-    });
+    var promise = interfaceModel.getInterfaceList();
+
+    promise.then(
+        function (data) {
+            res.render('interfaceList', {
+                // mock平台的地址+端口
+                hostBaseURL: req.get('host'),
+                title: '注册接口总览',
+                // 首屏需要的数据,尽量减少一个AJAX请求
+                initialData: JSON.stringify(data.interfaceList)
+            });
+        },
+        function () {
+            next();
+        }
+    );
 });
 
 /**

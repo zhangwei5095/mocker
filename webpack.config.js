@@ -8,16 +8,11 @@ var path = require('path');
 module.exports = {
     // 源文件代码根目录
     context: path.join(__dirname, '/public/src'),
-    // 需要打包的源文件，注意是不需要.js后缀的
     entry: {
-        'interfaceList/main': './interfaceList/main',
-        'responseSurvey/main': './responseSurvey/main',
-        'jsonViewer/main': './jsonViewer/main'
+        'interfaceList/main': './interfaceList/main.jsx'
     },
     // 输出
     output: {
-        // 输出路径
-        path: path.join(__dirname, '/public/asset'),
         // 输出文件名
         filename: '[name].js'
     },
@@ -41,9 +36,29 @@ module.exports = {
             validator: 'validator/validator.min'
         }
     },
+    module: {
+        loaders: [
+            {
+                test: /\.jsx$/,
+                // 一定不能是loaders
+                loader: 'babel',
+                query: {
+                    presets: ['react', 'es2015']
+                }
+            },
+            {
+                test: /\.es6$/,
+                loader: 'babel',
+                query: {
+                    presets: ['es2015']
+                }
+            }
+        ]
+    },
     noParse: [
         'jQuery',
         'angular',
         'validator'
-    ]
+    ],
+    devtool: 'source-map'
 };

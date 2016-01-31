@@ -25,7 +25,9 @@ var app = express();
 
 // TODO Jade最近不更新了，而且确实别扭，考虑Handlebars
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'hbs');
+
+require('./lib/handlebarsHelpers/extend');
 
 // 挂载中间件
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -33,7 +35,6 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 /**
