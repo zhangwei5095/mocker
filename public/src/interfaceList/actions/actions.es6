@@ -16,7 +16,15 @@ const hideModal = () => {
     };
 };
 
+const urlErrorTip = (text) => {
+    return {
+        type: 'SHOW_URL_ERROR_TIP',
+        urlErrorTip: text
+    };
+};
+
 export {
     showModal,
-    hideModal
+    hideModal,
+    urlErrorTip
 };

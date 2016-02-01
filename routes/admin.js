@@ -14,11 +14,13 @@ router.get('/', function (req, res, next) {
     promise.then(
         function (data) {
             res.render('interfaceList', {
-                // mock平台的地址+端口
-                hostBaseURL: req.get('host'),
                 title: '注册接口总览',
                 // 首屏需要的数据,尽量减少一个AJAX请求
-                initialData: JSON.stringify(data.interfaceList)
+                initialData: JSON.stringify({
+                    interfaceList: data.interfaceList,
+                    // mock平台的地址+端口
+                    hostURL: req.get('host')
+                })
             });
         },
         function () {

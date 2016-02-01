@@ -5,7 +5,8 @@
 
 const initState = {
     open: false,
-    title: '添加新接口'
+    title: '添加新接口',
+    urlErrorTip: ''
 };
 
 function modalReducer(state = initState, action) {
@@ -15,14 +16,22 @@ function modalReducer(state = initState, action) {
                 {},
                 state,
                 {
+                    open: true,
                     title: action.title,
-                    open: true
+                    urlErrorTip: ''
                 }
             );
         case 'HIDE_MODAL':
             return {
                 open: false,
-                title: ''
+                title: '',
+                urlErrorTip: ''
+            };
+        case 'SHOW_URL_ERROR_TIP':
+            return {
+                open: true,
+                title: state.title,
+                urlErrorTip: action.urlErrorTip
             };
         default:
             return state;

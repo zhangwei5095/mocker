@@ -59,7 +59,8 @@ class App extends Component {
                     icon={<FontIcon className="icon-plus" />}
                     onMouseDown={this.onAddNewInterface} />
                 <InterfaceList />
-                <InterfaceCtrlModal />
+                <InterfaceCtrlModal
+                    hostURL={this.props.hostURL} />
             </div>
         );
     };

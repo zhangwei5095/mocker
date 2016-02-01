@@ -37,7 +37,8 @@ console.log(store.getState());
 
 render(
     <Provider store={store}>
-        <App />
+        <App
+            hostURL={initialData.hostURL} />
     </Provider>,
     rootElement
 );

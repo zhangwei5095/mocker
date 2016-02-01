@@ -13,9 +13,10 @@ import {connect} from 'react-redux';
 import Dialog from 'material-ui/lib/dialog';
 import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
+import validator from 'validator';
 
 // actions
-import {hideModal} from '../actions/actions.es6';
+import {hideModal, urlErrorTip} from '../actions/actions.es6';
 
 class InterfaceCtrlModal extends Component {
     constructor(props) {
@@ -26,6 +27,28 @@ class InterfaceCtrlModal extends Component {
         this.onCancel = () => {
             dispatch(hideModal());
         };
+
+        this.onConfirm = this.onConfirm.bind(this);
+    };
+
+    onConfirm() {
+        const dispatch = this.props.dispatch;
+
+        // 输入框内容
+        const userInput = this.refs.interfaceURL.getValue().trim();
+
+        const interfaceURL = `${this.props.hostURL}/mock/${userInput}`;
+
+        if (interfaceURL === '') {
+            dispatch(urlErrorTip('请输入URL'));
+        }
+        // 如果是合法有效的URL
+        else if (!validator.isURL(interfaceURL)) {
+            dispatch(urlErrorTip('请输入合法的URL'));
+        }
+        else {
+            dispatch(hideModal());
+        }
     };
 
     render() {
@@ -36,6 +59,7 @@ class InterfaceCtrlModal extends Component {
             <RaisedButton
                 label="确定"
                 secondary={true}
+                onTouchTap={this.onConfirm}
             />,
             <RaisedButton
                 label="取消"
@@ -50,10 +74,14 @@ class InterfaceCtrlModal extends Component {
                 open={modalData.open}
                 modal={true}
                 actions={actions}>
-                localhost:3000/mock/
-                <TextField
-                    hintText="请在这里输入模拟接口地址"
-                    floatingLabelText="模拟接口地址" />
+                <div className="url-container">
+                    <div className="hostURL">{this.props.hostURL}/mock/</div>
+                    <TextField
+                        hintText="请在这里输入模拟接口地址"
+                        floatingLabelText="模拟接口地址"
+                        errorText={this.props.modalData.urlErrorTip}
+                        ref="interfaceURL"/>
+                </div>
             </Dialog>
         );
     };
