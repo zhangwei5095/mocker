@@ -24,6 +24,16 @@ var webpackConfig = require('./webpack.config.js');
 var modules = fs.readdirSync('./public/src');
 
 /**
+ * 移除文件的后缀名
+ *
+ * @param {string} fileName 文件名
+ * @return {string} 移除后缀后的文件名
+ */
+var removeExtension = function (fileName) {
+    return fileName.substr(0, fileName.lastIndexOf('.')) || fileName;
+};
+
+/**
  * 执行webpack构建js文件
  */
 gulp.task('webpack', function () {
@@ -32,7 +42,7 @@ gulp.task('webpack', function () {
     return gulp.src(srcDirGlob + 'main.jsx', {base: './public/src'})
         .pipe(name(function (file) {
             // webpack entry point
-            return file.relative;
+            return removeExtension(file.relative);
         }))
         .pipe(webpack(webpackConfig))
         .pipe(gulp.dest('./public/asset/'));
@@ -93,6 +103,7 @@ gulp.task('dev', function () {
             // 变化的js文件能够匹配上所述的模块，则生成glob
             if (filePath.indexOf(module) >= 0) {
                 glob = path.join(srcDir, module) + '/**/main.jsx';
+
                 break;
             }
         }
@@ -102,8 +113,8 @@ gulp.task('dev', function () {
 
             gulp.src(glob, {base: srcDir})
                 .pipe(name(function (file) {
-                    // entry point
-                    return file.relative;
+                    // webpack entry point
+                    return removeExtension(file.relative);
                 }))
                 .pipe(webpack(webpackConfig))
                 .pipe(gulp.dest('./public/asset/'));
