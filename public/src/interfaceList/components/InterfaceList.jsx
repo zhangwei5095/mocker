@@ -26,6 +26,21 @@ import IconButton from 'material-ui/lib/icon-button';
 class InterfaceList extends Component {
     constructor(props) {
         super(props);
+
+        // 表单的列名集合
+        this.colNames = [
+            '接口地址', '接口类型', '注册响应数量',
+            '当前激活响应', '编辑'
+        ];
+
+        // 头部列样式
+        this.headerColStyle = {
+            fontSize: '14px',
+            fontWeight: 'bold',
+            color: '#fff',
+            backgroundColor: '#FD5B78',
+            fontFamily: 'Microsoft Yahei'
+        };
     };
 
     render() {
@@ -38,11 +53,11 @@ class InterfaceList extends Component {
                     displaySelectAll={false}
                     adjustForCheckbox={false}>
                     <TableRow>
-                        <TableHeaderColumn>接口地址</TableHeaderColumn>
-                        <TableHeaderColumn>接口类型</TableHeaderColumn>
-                        <TableHeaderColumn>注册响应数量</TableHeaderColumn>
-                        <TableHeaderColumn>当前激活响应</TableHeaderColumn>
-                        <TableHeaderColumn>编辑</TableHeaderColumn>
+                        {
+                            this.colNames.map(
+                                name => <TableHeaderColumn style={this.headerColStyle}>{name}</TableHeaderColumn>
+                            )
+                        }
                     </TableRow>
                 </TableHeader>
                 <TableBody displayRowCheckbox={false}

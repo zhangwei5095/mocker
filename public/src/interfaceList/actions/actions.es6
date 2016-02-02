@@ -1,5 +1,5 @@
 /**
- * @file 接口列表页接口列表reducer
+ * @file 接口列表页action集合
  * @author Franck Chen(chenfan02@baidu.com)
  */
 

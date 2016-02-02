@@ -40,8 +40,21 @@
     content: "\ea0a";
 }
 
+body {
+    margin: 0;
+}
+
 .app-container {
     text-align: center;
+}
+
+// 搞了这么个冗余的容器是为了方便未来扩展
+.top-btn-container {
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .url-container {

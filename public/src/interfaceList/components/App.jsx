@@ -50,15 +50,17 @@ class App extends Component {
 
         return (
             <div className="app-container">
-                <RaisedButton
-                    className="add-new-interface"
-                    label="添加新接口"
-                    labelPosition="after"
-                    labelStyle={this.buttonLabelStyle}
-                    secondary={true}
-                    style={this.addNewButtonStyle}
-                    icon={<FontIcon className="icon-plus" />}
-                    onMouseDown={this.onAddNewInterface} />
+                <div className="top-btn-container">
+                    <RaisedButton
+                        className="add-new-interface"
+                        label="添加新接口"
+                        labelPosition="after"
+                        labelStyle={this.buttonLabelStyle}
+                        secondary={true}
+                        style={this.addNewButtonStyle}
+                        icon={<FontIcon className="icon-plus" />}
+                        onMouseDown={this.onAddNewInterface} />
+                </div>
                 <InterfaceList />
                 <InterfaceCtrlModal
                     hostURL={this.props.hostURL} />
