@@ -13,7 +13,12 @@ import {combineReducers} from 'redux';
  * @return {Array}
  */
 function interfaceList(state = [], action) {
-    return state;
+    switch (action.type) {
+        case 'REFRESH':
+            return action.interfaceList;
+        default:
+            return state;
+    }
 }
 
 export default interfaceList;

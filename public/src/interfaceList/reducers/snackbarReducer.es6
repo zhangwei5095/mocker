@@ -8,18 +8,28 @@ import {combineReducers} from 'redux';
 const initState = {
     open: false,
     text: '',
-    autoHideDuration: 5000
+    // 设置为0则永久显示，代码控制显隐，不需要自动
+    autoHideDuration: 0
 };
 
 function snackbarReducer(state = initState, action) {
     switch (action.type) {
-        case 'SHOW_SAVE_SUCCESS':
+        case 'SHOW_SNACK_BAR':
             return Object.assign(
                 {},
                 state,
                 {
                     open: true,
-                    text: '新接口保存成功'
+                    text: action.text
+                }
+            );
+        case 'HIDE_SNACK_BAR':
+            return Object.assign(
+                {},
+                state,
+                {
+                    open: false,
+                    text: ''
                 }
             );
         default:
