@@ -16,7 +16,7 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import validator from 'validator';
 
 // actions
-import {hideModal, urlErrorTip} from '../actions/actions.es6';
+import {hideModal, urlErrorTip, saveInterface} from '../actions/actions.es6';
 
 class InterfaceCtrlModal extends Component {
     constructor(props) {
@@ -31,6 +31,7 @@ class InterfaceCtrlModal extends Component {
         this.onConfirm = this.onConfirm.bind(this);
     };
 
+    // 点击模态窗口的确定时
     onConfirm() {
         const dispatch = this.props.dispatch;
 
@@ -47,7 +48,7 @@ class InterfaceCtrlModal extends Component {
             dispatch(urlErrorTip('请输入合法的URL'));
         }
         else {
-            dispatch(hideModal());
+            dispatch(saveInterface(userInput));
         }
     };
 

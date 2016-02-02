@@ -8,8 +8,9 @@ import React from 'react';
 import {render} from 'react-dom';
 
 // redux
-import {createStore} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
+import thunk from 'redux-thunk';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -25,8 +26,13 @@ const rootElement = document.getElementById('main');
 // 初始数据,来自server
 let initialData = JSON.parse(document.getElementById('initial-data').innerHTML);
 
+// 添加redux中间件
+const createStoreWithMiddleware = applyMiddleware(
+    thunk
+)(createStore);
+
 // 创建store
-const store = createStore(
+const store = createStoreWithMiddleware(
     mainReducer,
     {
         interfaceList: initialData.interfaceList

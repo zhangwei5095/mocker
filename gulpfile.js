@@ -98,7 +98,8 @@ gulp.task('dev', function () {
         }
 
         if (glob) {
-            console.log(module + '模块发生变化，准备开始构建...');
+            console.log(module + '模块JS代码发生变化，准备开始构建...');
+
             gulp.src(glob, {base: srcDir})
                 .pipe(name(function (file) {
                     // entry point
