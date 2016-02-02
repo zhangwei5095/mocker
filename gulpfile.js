@@ -11,9 +11,11 @@ var path = require('path');
 var gulp = require('gulp');
 var webpack = require('webpack-stream');
 var less = require('gulp-less');
+var name = require('vinyl-named');
 
 var srcDirGlob = './public/src/**/';
 var srcDir = './public/src/';
+var webpackConfig = require('./webpack.config.js');
 
 /**
  * 前端模块集合
@@ -25,17 +27,22 @@ var modules = fs.readdirSync('./public/src');
  * 执行webpack构建js文件
  */
 gulp.task('webpack', function () {
+
     // 项目中规定入口文件只有一种形式main.jsx
-    return gulp.src(srcDirGlob + 'main.jsx')
-        .pipe(webpack(require('./webpack.config.js')))
-        .pipe(gulp.dest('./public/asset'));
+    return gulp.src(srcDirGlob + 'main.jsx', {base: './public/src'})
+        .pipe(name(function (file) {
+            // webpack entry point
+            return file.relative;
+        }))
+        .pipe(webpack(webpackConfig))
+        .pipe(gulp.dest('./public/asset/'));
 });
 
 /**
  * 编译less任务
  */
 gulp.task('less', function () {
-    return gulp.src(srcDirGlob + '*.less', {base: './public/src'})
+    return gulp.src(srcDirGlob + '*.less', {base: srcDir})
         .pipe(less())
         .pipe(gulp.dest('./public/asset'));
 });
@@ -44,7 +51,7 @@ gulp.task('less', function () {
  * 移动附加内容任务
  */
 gulp.task('moveAsset', function () {
-    return gulp.src(srcDirGlob + 'fonts/*.*', {base: './public/src'})
+    return gulp.src(srcDirGlob + 'fonts/*.*', {base: srcDir})
         .pipe(gulp.dest('./public/asset'));
 });
 
@@ -56,12 +63,12 @@ gulp.task('style', ['less', 'moveAsset']);
 /**
  * 构建任务
  */
-gulp.task('build', ['webpack']);
+gulp.task('build', ['webpack', 'style']);
 
 /**
  * 默认任务
  */
-gulp.task('default', ['webpack']);
+gulp.task('default', ['webpack', 'style']);
 
 /**
  * 开发时用的监控、增量构建任务
@@ -92,9 +99,13 @@ gulp.task('dev', function () {
 
         if (glob) {
             console.log(module + '模块发生变化，准备开始构建...');
-            gulp.src(glob)
-                .pipe(webpack(require('./webpack.config.js')))
-                .pipe(gulp.dest('./public/asset'));
+            gulp.src(glob, {base: srcDir})
+                .pipe(name(function (file) {
+                    // entry point
+                    return file.relative;
+                }))
+                .pipe(webpack(webpackConfig))
+                .pipe(gulp.dest('./public/asset/'));
         }
     });
 });
