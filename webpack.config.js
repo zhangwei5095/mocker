@@ -8,9 +8,6 @@ var path = require('path');
 module.exports = {
     // 源文件代码根目录
     context: path.join(__dirname, '/public/src'),
-    entry: {
-        'interfaceList/main': './interfaceList/main.jsx'
-    },
     // 输出
     output: {
         // 输出文件名
