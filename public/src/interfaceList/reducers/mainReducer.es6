@@ -8,6 +8,7 @@ import {combineReducers} from 'redux';
 // 需要combine的reducers
 import interfaceList from './interfaceListReducer.es6';
 import modalData from './modalReducer.es6';
+import snackbarData from './snackbarReducer.es6';
 
 // 组合reducers
-export default combineReducers({interfaceList, modalData});
+export default combineReducers({interfaceList, modalData, snackbarData});

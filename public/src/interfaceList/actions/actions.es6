@@ -37,13 +37,21 @@ const saveInterface = (url) => {
             .end((err, res) => {
                 if (err || !res.ok) {
                     // 保存失败分支
-                    dispatch(hideModal())
+                    dispatch(hideModal());
                 }
                 else {
-                    // 保存成功，隐藏模态窗口
-                    dispatch(hideModal())
+                    // 保存成功，并弹出成功提示
+                    dispatch(hideModal());
+                    dispatch(showSaveSuccess());
                 }
             });
+    };
+};
+
+// 保存接口地址
+const showSaveSuccess = () => {
+    return {
+        type: 'SHOW_SAVE_SUCCESS'
     };
 };
 
@@ -51,5 +59,6 @@ export {
     showModal,
     hideModal,
     urlErrorTip,
-    saveInterface
+    saveInterface,
+    showSaveSuccess
 };

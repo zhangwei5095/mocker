@@ -12,6 +12,7 @@ import {connect} from 'react-redux';
 // ui组件
 import FontIcon from 'material-ui/lib/font-icon';
 import RaisedButton from 'material-ui/lib/raised-button';
+import Snackbar from 'material-ui/lib/snackbar';
 
 // 模块组件
 import InterfaceList from './InterfaceList.jsx';
@@ -61,15 +62,22 @@ class App extends Component {
                 <InterfaceList />
                 <InterfaceCtrlModal
                     hostURL={this.props.hostURL} />
+                <Snackbar
+                    open={this.props.snackbarData.open}
+                    message={this.props.snackbarData.text}
+                    autoHideDuration={this.props.snackbarData.autoHideDuration}
+                />
             </div>
         );
     };
 }
 
 function extractData(state) {
+    console.log(state.snackbarData);
     return {
         modalData: state.modalData,
-        interfaceData: state.interfaceList
+        interfaceData: state.interfaceList,
+        snackbarData: state.snackbarData
     };
 }
 
