@@ -43,7 +43,7 @@ router.get('/newJSONResponse', function(req, res, next) {
 
         promise.then(
             function () {
-                res.render('jsonViewer', {
+                res.render('jsonResponseEdit', {
                     title: 'JSON响应编辑'
                 });
             }
@@ -64,7 +64,7 @@ router.get('/editResponse', function(req, res, next) {
 
         promise.then(
             function (data) {
-                res.render('jsonViewer', {
+                res.render('jsonResponseEdit', {
                     response: data.response,
                     title: 'JSON响应编辑'
                 });
