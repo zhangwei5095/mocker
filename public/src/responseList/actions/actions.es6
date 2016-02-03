@@ -27,8 +27,24 @@ const saveFailed = () => {
     };
 };
 
+// 删除响应成功action
+const deleteSuccess = () => {
+    return {
+        type: 'DELETE_SUCCESS'
+    };
+};
+
+// 删除响应失败的action
+const deleteFailed = () => {
+    return {
+        type: 'DELETE_FAILED'
+    };
+};
+
 export default {
     changeActiveResponse,
     saveSuccess,
-    saveFailed
+    saveFailed,
+    deleteSuccess,
+    deleteFailed
 };

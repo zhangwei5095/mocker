@@ -24,6 +24,9 @@ import Toggle from 'material-ui/lib/toggle';
 import tableStyle from 'common/tableStyle.es6';
 import actions from '../actions/actions.es6';
 
+// 第三方库
+import request from 'superagent';
+
 /**
  * 接口列表组件
  * @extend Component
@@ -37,6 +40,8 @@ class InterfaceList extends Component {
             '是否激活', '响应名称', '编辑',
             '删除'
         ];
+
+        this.onClickDelete = this.onClickDelete.bind(this);
     };
 
     /**
@@ -51,9 +56,31 @@ class InterfaceList extends Component {
         dispatch(actions.changeActiveResponse((activeResponseId === id) ? '' : id));
     };
 
+    /**
+     * 点击删除响应按键时的处理逻辑
+     *
+     * @param {string} responseId 想要删除的响应的id
+     */
+    onClickDelete(responseId) {
+        const {dispatch} = this.props;
+
+        request
+            .post('/admin/deleteResponse')
+            .send(
+                {
+                    responseId
+                }
+            )
+            .end((err, res) => {
+                // 保存成功和失败分别派发不同的action
+                (!err && res.ok)
+                    ? dispatch(actions.deleteSuccess())
+                    : dispatch(actions.deleteFailed());
+            });
+    };
+
     render() {
-        const {responses}  = this.props;
-        const activeResponseId = this.props.activeResponseId;
+        const {responses, activeResponseId} = this.props;
 
         return (
             <Table selectable={false}>
@@ -83,7 +110,8 @@ class InterfaceList extends Component {
                                         <IconButton iconClassName="icon-pencil" />
                                     </TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>
-                                        <IconButton iconClassName="icon-bin" />
+                                        <IconButton iconClassName="icon-bin"
+                                                    onMouseDown={() => {this.onClickDelete(response._id)}} />
                                     </TableRowColumn>
                                 </TableRow>
                             );

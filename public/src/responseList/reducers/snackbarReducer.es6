@@ -33,6 +33,18 @@ export default (state = initState, action) => {
                 text: '抱歉，保存失败',
                 action: ''
             };
+        case 'DELETE_SUCCESS':
+            return {
+                open: true,
+                text: '删除成功！',
+                action: ''
+            };
+        case 'DELETE_FAILED':
+            return {
+                open: true,
+                text: '抱歉，删除失败',
+                action: ''
+            };
         default:
             return state;
     }
