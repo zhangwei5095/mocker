@@ -9,7 +9,7 @@ const initState = {
     urlErrorTip: ''
 };
 
-function modalReducer(state = initState, action) {
+export default (state = initState, action) => {
     switch (action.type) {
         case 'SHOW_MODAL':
             return Object.assign(
@@ -36,6 +36,4 @@ function modalReducer(state = initState, action) {
         default:
             return state;
     }
-}
-
-export default modalReducer;
+};

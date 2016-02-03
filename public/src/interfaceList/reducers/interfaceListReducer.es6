@@ -5,20 +5,11 @@
 
 import {combineReducers} from 'redux';
 
-/**
- * 站点列表数据Reducer
- *
- * @param {Array} state reducer的state
- * @param {*} action Redux action
- * @return {Array}
- */
-function interfaceList(state = [], action) {
+export default (state = [], action) => {
     switch (action.type) {
         case 'REFRESH':
             return action.interfaceList;
         default:
             return state;
     }
-}
-
-export default interfaceList;
+};

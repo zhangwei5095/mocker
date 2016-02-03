@@ -12,7 +12,7 @@ const initState = {
     autoHideDuration: 0
 };
 
-function snackbarReducer(state = initState, action) {
+export default (state = initState, action) => {
     switch (action.type) {
         case 'SHOW_SNACK_BAR':
             return Object.assign(
@@ -35,6 +35,4 @@ function snackbarReducer(state = initState, action) {
         default:
             return state;
     }
-}
-
-export default snackbarReducer;
+};
