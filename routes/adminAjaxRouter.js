@@ -134,7 +134,7 @@ router.post('/addNewJSONRes', function (req, res) {
 /**
  * 修改接口激活响应接口
  */
-router.post('/setActiveResponse', function (req, res) {
+router.post('/setActiveResponse', function (req, res, next) {
     // post数据,由body-parser解析
     var postData = req.body;
 
@@ -150,7 +150,9 @@ router.post('/setActiveResponse', function (req, res) {
                 status: 0
             });
         },
-        function () {}
+        function () {
+            next();
+        }
     );
 });
 

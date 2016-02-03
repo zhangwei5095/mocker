@@ -95,6 +95,7 @@ router.get('/responseList', function (req, res, next) {
                 title: '响应总览',
                 // 首屏数据
                 initialData: JSON.stringify({
+                    interfaceId: interfaceId,
                     responses: data.responses,
                     activeResponseId: data.activeResponseId
                 })

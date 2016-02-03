@@ -21,6 +21,18 @@ export default (state = initState, action) => {
                 text: '您修改了接口激活情况，是否保存？',
                 action: '保存'
             };
+        case 'SAVE_SUCCESS':
+            return {
+                open: true,
+                text: '保存成功！',
+                action: ''
+            };
+        case 'SAVE_FAILED':
+            return {
+                open: true,
+                text: '抱歉，保存失败',
+                action: ''
+            };
         default:
             return state;
     }

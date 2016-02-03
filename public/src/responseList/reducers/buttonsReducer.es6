@@ -27,6 +27,17 @@ export default (state = initState, action) => {
                     }
                 }
             );
+        case 'SAVE_SUCCESS':
+            return Object.assign(
+                {},
+                state,
+                {
+                    save: {
+                        // 保存成功了，置灰按键
+                        disabled: true
+                    }
+                }
+            );
         default:
             return state;
     }

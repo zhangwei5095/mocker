@@ -13,6 +13,22 @@ const changeActiveResponse = (id) => {
     };
 };
 
+// 响应保存成功action
+const saveSuccess = () => {
+    return {
+        type: 'SAVE_SUCCESS'
+    };
+};
+
+// 响应保存失败action
+const saveFailed = () => {
+    return {
+        type: 'SAVE_FAILED'
+    };
+};
+
 export default {
-    changeActiveResponse
+    changeActiveResponse,
+    saveSuccess,
+    saveFailed
 };

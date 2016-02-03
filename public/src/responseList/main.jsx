@@ -46,7 +46,7 @@ const store = createStoreWithMiddleware(
 
 render(
     <Provider store={store}>
-        <App />
+        <App interfaceId={initialData.interfaceId} />
     </Provider>,
     rootElement
 );

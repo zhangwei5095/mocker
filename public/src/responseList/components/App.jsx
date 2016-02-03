@@ -14,8 +14,14 @@ import Snackbar from 'material-ui/lib/snackbar';
 import RaisedButton from 'material-ui/lib/raised-button';
 import FontIcon from 'material-ui/lib/font-icon';
 
+// 第三方库
+import request from 'superagent';
+
 // 组件
 import ResponseList from './ResponseList.jsx';
+
+// 模块
+import actions from '../actions/actions.es6';
 
 /**
  * 主容器组件
@@ -29,6 +35,30 @@ class App extends Component {
             width: '150px',
             fontFamily: 'Microsoft Yahei'
         };
+
+        this.onClickSave = this.onClickSave.bind(this);
+    };
+
+    onClickSave() {
+        const interfaceId = this.props.interfaceId;
+        const responseId = this.props.activeResponseId;
+        const dispatch = this.props.dispatch;
+
+        // 修改了激活的响应，保存！
+        request
+            .post('/admin/setActiveResponse')
+            .send(
+                {
+                    interfaceId,
+                    responseId
+                }
+            )
+            .end((err, res) => {
+                // 保存成功和失败分别派发不同的action
+                (!err && res.ok)
+                    ? dispatch(actions.saveSuccess())
+                    : dispatch(actions.saveFailed());
+            });
     };
 
     render() {
@@ -52,13 +82,14 @@ class App extends Component {
                         secondary={true}
                         disabled={this.props.saveBtnData.disabled}
                         icon={<FontIcon className="icon-floppy-disk" />}
-                        onMouseDown={() => {}} />
+                        onMouseDown={this.onClickSave} />
                 </div>
                 <ResponseList />
                 <Snackbar open={snackbarData.open}
                           message={snackbarData.text}
                           autoHideDuration={snackbarData.autoHideDuration}
-                          action={snackbarData.action} />
+                          action={snackbarData.action}
+                          onActionTouchTap={this.onClickSave} />
             </div>
         );
     };
@@ -66,6 +97,7 @@ class App extends Component {
 
 function extractData(state) {
     return {
+        activeResponseId: state.responseData.activeResponseId,
         snackbarData: state.snackbarData,
         saveBtnData: state.buttonsData.save,
         newBtnData: state.buttonsData.add

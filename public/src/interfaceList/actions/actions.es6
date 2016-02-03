@@ -32,7 +32,7 @@ const urlErrorTip = (text) => {
 const saveInterface = (url) => {
     return (dispatch) => {
         request
-            .post('admin/addInterfaceURL')
+            .post('/admin/addInterfaceURL')
             .send({url})
             .end((err, res) => {
                 if (err || !res.ok) {
