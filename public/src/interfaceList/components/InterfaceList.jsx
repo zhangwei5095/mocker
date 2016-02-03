@@ -19,6 +19,9 @@ import TableBody from 'material-ui/lib/table/table-body';
 import FontIcon from 'material-ui/lib/font-icon';
 import IconButton from 'material-ui/lib/icon-button';
 
+// 模块
+import tableStyle from 'common/tableStyle.es6'
+
 /**
  * 接口列表组件
  * @extend Component
@@ -32,16 +35,6 @@ class InterfaceList extends Component {
             '接口地址', '接口类型', '注册响应数量',
             '当前激活响应', '编辑'
         ];
-
-        // 头部列样式
-        this.headerColStyle = {
-            fontSize: '14px',
-            fontWeight: 'bold',
-            color: '#fff',
-            backgroundColor: '#fd5b78',
-            fontFamily: 'Microsoft Yahei',
-            borderRight: '1px solid #fff'
-        };
     };
 
     /**
@@ -69,7 +62,7 @@ class InterfaceList extends Component {
                     <TableRow>
                         {
                             this.colNames.map(
-                                name => <TableHeaderColumn style={this.headerColStyle}>{name}</TableHeaderColumn>
+                                name => <TableHeaderColumn style={tableStyle.headerCellStyle}>{name}</TableHeaderColumn>
                             )
                         }
                     </TableRow>
@@ -87,11 +80,6 @@ class InterfaceList extends Component {
                                 ? data.activeResponse.name
                                 : '暂无激活的响应';
 
-                            // 单元格基础样式
-                            const cellStyle = {
-                                borderRight: '1px solid #d9d6cf'
-                            };
-
                             // 为没有激活响应的接口添加个底色提示
                             let responseCellStyle = hasActiveResponse
                                 ? {}
@@ -101,15 +89,15 @@ class InterfaceList extends Component {
                                 };
 
                             // 融合上基础样式
-                            responseCellStyle = Object.assign({}, responseCellStyle, cellStyle);
+                            responseCellStyle = Object.assign({}, responseCellStyle, tableStyle.cellStyle);
 
                             return (
                                 <TableRow>
-                                    <TableRowColumn style={cellStyle}>{data.url}</TableRowColumn>
-                                    <TableRowColumn style={cellStyle}>JSON</TableRowColumn>
-                                    <TableRowColumn style={cellStyle}>{data.responses.length}</TableRowColumn>
+                                    <TableRowColumn style={tableStyle.cellStyle}>{data.url}</TableRowColumn>
+                                    <TableRowColumn style={tableStyle.cellStyle}>JSON</TableRowColumn>
+                                    <TableRowColumn style={tableStyle.cellStyle}>{data.responses.length}</TableRowColumn>
                                     <TableRowColumn style={responseCellStyle}>{activeResponseName}</TableRowColumn>
-                                    <TableRowColumn style={cellStyle}>
+                                    <TableRowColumn style={tableStyle.cellStyle}>
                                         <IconButton iconClassName="icon-pencil"
                                                     linkButton={true}
                                                     href={this.getResponseListURL(data._id)}>

@@ -52,7 +52,7 @@ gulp.task('webpack', function () {
  * 编译less任务
  */
 gulp.task('less', function () {
-    return gulp.src(srcDirGlob + '*.less', {base: srcDir})
+    return gulp.src(srcDirGlob + 'main.less', {base: srcDir})
         .pipe(less())
         .pipe(gulp.dest('./public/asset'));
 });
