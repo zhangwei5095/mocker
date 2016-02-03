@@ -22,15 +22,8 @@ module.exports = {
             // bower,主要是为了ace和semantic 这两个npm装起来蛋疼无比的家伙
             path.resolve('./public/dep')
         ],
-        /**
-         * 依赖
-         */
         alias: {
-            jQuery: 'jquery/dist/jquery.min',
-            angular: 'angular/angular.min',
-            // 不想找麻烦就别用npm装semantic
-            semantic: 'semantic/dist/components',
-            validator: 'validator/validator.min'
+            common: path.resolve('./public/src/common')
         }
     },
     module: {
