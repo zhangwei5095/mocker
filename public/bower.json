@@ -17,7 +17,6 @@
     "tests"
   ],
   "dependencies": {
-    "semantic": "semantic-ui#~2.1.6",
-    "ace-builds": "~1.2.2"
+    "ace-builds": "~1.2.3"
   }
 }
