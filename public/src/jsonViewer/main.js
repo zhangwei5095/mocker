@@ -27,9 +27,9 @@ editor.session.setMode('ace/mode/json');
 var jsonViewer = angular.module('jsonViewer', []);
 
 // 新添响应的地址
-var addNewURL = 'admin/addNewJSONRes';
+var addNewURL = '/admin/addNewJSONRes';
 // 编辑响应的地址
-var editResURL = 'admin/editRes';
+var editResURL = '/admin/editRes';
 
 // controller
 jsonViewer.controller('main', function ($scope, $http, $location) {

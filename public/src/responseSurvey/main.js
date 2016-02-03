@@ -82,7 +82,7 @@ responseSurvey.controller('main', function ($scope, $http, $location) {
     $scope.updateActiveRes = function () {
         $http
             .post(
-                'admin/setActiveResponse',
+                '/admin/setActiveResponse',
                 {
                     // 接口id
                     interfaceId: $scope.interfaceId,
@@ -102,7 +102,7 @@ responseSurvey.controller('main', function ($scope, $http, $location) {
     $scope.deleteResponse = function (responseId) {
         $http
             .post(
-                'admin/deleteResponse',
+                '/admin/deleteResponse',
                 {
                     responseId: responseId
                 }
