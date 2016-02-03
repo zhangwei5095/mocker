@@ -16,6 +16,17 @@ const initState = {
 
 export default (state = initState, action) => {
     switch (action.type) {
+        // 激活的响应发生了变化的时候，保存按键应该点亮
+        case 'CHANGE_ACTIVE_RESPONSE':
+            return Object.assign(
+                {},
+                state,
+                {
+                    save: {
+                        disabled: false
+                    }
+                }
+            );
         default:
             return state;
     }

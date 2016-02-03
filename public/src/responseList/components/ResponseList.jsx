@@ -49,8 +49,6 @@ class InterfaceList extends Component {
 
         // 包括反选逻辑
         dispatch(actions.changeActiveResponse((activeResponseId === id) ? '' : id));
-
-        dispatch(actions.saveCheck());
     };
 
     render() {
@@ -85,7 +83,7 @@ class InterfaceList extends Component {
                                         <IconButton iconClassName="icon-pencil" />
                                     </TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>
-                                        <IconButton iconClassName="icon-cog" />
+                                        <IconButton iconClassName="icon-bin" />
                                     </TableRowColumn>
                                 </TableRow>
                             );

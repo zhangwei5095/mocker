@@ -13,14 +13,6 @@ const changeActiveResponse = (id) => {
     };
 };
 
-// 提示用户去保存
-const saveCheck = () => {
-    return {
-        type: 'SAVE_CHECK'
-    };
-};
-
 export default {
-    changeActiveResponse,
-    saveCheck
+    changeActiveResponse
 };
