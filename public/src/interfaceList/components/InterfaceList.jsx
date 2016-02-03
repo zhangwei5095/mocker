@@ -38,9 +38,23 @@ class InterfaceList extends Component {
             fontSize: '14px',
             fontWeight: 'bold',
             color: '#fff',
-            backgroundColor: '#FD5B78',
-            fontFamily: 'Microsoft Yahei'
+            backgroundColor: '#fd5b78',
+            fontFamily: 'Microsoft Yahei',
+            borderRight: '1px solid #fff'
         };
+    };
+
+    /**
+     * 获取响应列表页地址
+     *
+     * @param {string} interfaceId
+     */
+    getResponseListURL(interfaceId) {
+        if (!interfaceId) {
+            return '#';
+        }
+
+        return `admin/responseList?interfaceId=${interfaceId}`;
     };
 
     render() {
@@ -66,19 +80,39 @@ class InterfaceList extends Component {
                         interfaceData.map(data => {
                             // 当前激活的响应的名字
                             let activeResponseName;
+                            // 是否有处于激活状态的响应
+                            const hasActiveResponse = !!data.activeResponse;
 
-                            activeResponseName = data.activeResponse
+                            activeResponseName = hasActiveResponse
                                 ? data.activeResponse.name
                                 : '暂无激活的响应';
 
+                            // 单元格基础样式
+                            const cellStyle = {
+                                borderRight: '1px solid #d9d6cf'
+                            };
+
+                            // 为没有激活响应的接口添加个底色提示
+                            let responseCellStyle = hasActiveResponse
+                                ? {}
+                                : {
+                                    backgroundColor: '#ff4500',
+                                    color: '#fff'
+                                };
+
+                            // 融合上基础样式
+                            responseCellStyle = Object.assign({}, responseCellStyle, cellStyle);
+
                             return (
                                 <TableRow>
-                                    <TableRowColumn>{data.url}</TableRowColumn>
-                                    <TableRowColumn>JSON</TableRowColumn>
-                                    <TableRowColumn>{data.responses.length}</TableRowColumn>
-                                    <TableRowColumn>{activeResponseName}</TableRowColumn>
-                                    <TableRowColumn>
-                                        <IconButton iconClassName="icon-pencil">
+                                    <TableRowColumn style={cellStyle}>{data.url}</TableRowColumn>
+                                    <TableRowColumn style={cellStyle}>JSON</TableRowColumn>
+                                    <TableRowColumn style={cellStyle}>{data.responses.length}</TableRowColumn>
+                                    <TableRowColumn style={responseCellStyle}>{activeResponseName}</TableRowColumn>
+                                    <TableRowColumn style={cellStyle}>
+                                        <IconButton iconClassName="icon-pencil"
+                                                    linkButton={true}
+                                                    href={this.getResponseListURL(data._id)}>
                                         </IconButton>
                                     </TableRowColumn>
                                 </TableRow>

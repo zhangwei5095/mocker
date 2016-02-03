@@ -2,6 +2,7 @@
 var express = require('express');
 var router = express.Router();
 
+// model
 var interfaceModel = require('../model/interfaceModel');
 var responseModel = require('../model/responseModel');
 
@@ -72,11 +73,37 @@ router.get('/editResponse', function(req, res, next) {
     }
 });
 
-// 指定接口的响应列表界面
-router.get('/responseSurvey', function (req, res, next) {
-    res.render('responseSurvey', {
-        title: '响应总览'
-    });
+/**
+ * 获取接口列表页接口
+ */
+router.get('/responseList', function (req, res, next) {
+    // 以这个接口id为基础查找响应
+    var interfaceId = req.query.interfaceId;
+
+    // 不能没有interfaceId
+    if (!interfaceId) {
+        next();
+        return;
+    }
+
+    // 活接响应数据
+    var promise = interfaceModel.getResponseList(interfaceId);
+
+    promise.then(
+        function (data) {
+            res.render('responseList', {
+                title: '响应总览',
+                // 首屏数据
+                initialData: JSON.stringify({
+                    responses: data.responses,
+                    activeResponseId: data.activeResponseId
+                })
+            });
+        },
+        function () {
+            next();
+        }
+    );
 });
 
 module.exports = router;

@@ -75,7 +75,6 @@ class App extends Component {
 }
 
 function extractData(state) {
-    console.log(state.snackbarData);
     return {
         modalData: state.modalData,
         interfaceData: state.interfaceList,

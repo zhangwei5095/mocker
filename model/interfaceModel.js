@@ -238,9 +238,7 @@ exports.getResponseList = function (id) {
                 });
             }
             else {
-                deferred.reject({
-                    status: 1
-                });
+                deferred.reject();
             }
         });
 
