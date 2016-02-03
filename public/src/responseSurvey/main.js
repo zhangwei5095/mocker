@@ -30,7 +30,7 @@ responseSurvey.controller('main', function ($scope, $http, $location) {
     $scope.getResponseData = function () {
         $http
             .post(
-                'admin/getResponseList',
+                '/admin/getResponseList',
                 {
                     interfaceId: $scope.interfaceId
                 }

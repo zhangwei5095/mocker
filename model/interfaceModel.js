@@ -5,7 +5,7 @@
  */
 
 // node
-var URL = require('URL');
+var URL = require('url');
 
 // mongoose
 var mongoose = require('mongoose');
