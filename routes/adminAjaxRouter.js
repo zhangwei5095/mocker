@@ -8,6 +8,9 @@
 var express = require('express');
 var router = express.Router();
 
+// 第三方
+var Q = require('q');
+
 // 模块
 var interfaceModel = require('../model/interfaceModel');
 var responseModel = require('../model/responseModel');
@@ -29,8 +32,10 @@ router.post('/addInterfaceURL', function (req, res) {
             res.json(data);
         },
         function () {
-            // TODO
-            res.end('错误');
+            res.json({
+                status: 1,
+                statusInfo: '错误'
+            })
         }
     );
 });
@@ -107,7 +112,7 @@ router.post('/editRes', function (req, res) {
 /**
  * 添加新JSON响应ajax接口
  */
-router.post('/addNewJSONRes', function (req, res) {
+router.post('/addNewJSONRes', function (req, res, next) {
     // post数据
     var postData = req.body;
 
@@ -127,7 +132,83 @@ router.post('/addNewJSONRes', function (req, res) {
                 responseId: responseData.responseId
             });
         },
-        function () {}
+        next
+    );
+});
+
+/**
+ * JSON响应新增、修改接口
+ */
+router.post('/saveJSONResponse', function (req, res, next) {
+    var postData = req.body;
+    var interfaceId = postData.interfaceId;
+    var responseId = postData.responseId;
+    var responseName = postData.responseName;
+    var responseData = postData.responseData;
+
+    // promise
+    var deferred = Q.defer();
+    var promise = deferred.promise;
+
+    if (!interfaceId && !responseId) {
+        next();
+    }
+
+    // 如果有responseId则表示这个提交的目的是保存
+    if (responseId) {
+        responseModel
+            .updateResponseDataById(
+                responseId,
+                {
+                    name: responseName,
+                    data: responseData
+                }
+            )
+            .then(
+                deferred.resolve,
+                deferred.reject
+            );
+    }
+    else {
+        // 保存响应是一定需要有接口id的
+        if (!interfaceId) {
+            deferred.reject();
+        }
+        else {
+            // 没有给responseId表示是新建
+            interfaceModel
+                .addNewJSONRes(
+                    interfaceId,
+                    responseName,
+                    responseData
+                )
+                .then(
+                    deferred.resolve,
+                    deferred.reject
+                );
+        }
+    }
+
+    /**
+     * 保存结果枚举
+     * @enum
+     */
+    var SAVE_STATUS = {
+        SUCCESS: 0,
+        FAILED: 1
+    };
+
+    promise.then(
+        function () {
+            res.json({
+                status: SAVE_STATUS.SUCCESS
+            });
+        },
+        function () {
+            res.json({
+                status: SAVE_STATUS.FAILED
+            });
+        }
     );
 });
 

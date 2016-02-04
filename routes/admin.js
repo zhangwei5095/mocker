@@ -74,7 +74,8 @@ router.get('/jsonResponseEdit', function(req, res, next) {
         function () {
             res.render('jsonResponseEdit', {
                 title: 'JSON响应编辑',
-                initialData: JSON.stringify(initData)
+                initialData: JSON.stringify(initData),
+                interfaceId: interfaceId
             });
         },
         next
