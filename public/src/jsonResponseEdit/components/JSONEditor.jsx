@@ -39,7 +39,17 @@ class JSONEditor extends Component {
      */
     getEditorContent() {
         return this.jsonEditor.getValue();
-    }
+    };
+
+    /**
+     * 获取编辑器JSON内容是否合法
+     *
+     * @return {boolean} 当前JSON是否合法
+     * @public
+     */
+    getValidity() {
+        return this.jsonEditor.getSession().getAnnotations().length <= 0;
+    };
 
     render() {
         let {content} = this.props;
