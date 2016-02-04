@@ -1,9 +1,30 @@
+html,
 body {
+    width: 100%;
+    height: 100%;
     margin: 0;
+}
+
+#main {
+    display: flex;
+    height: 100%;
+    flex-direction: row;
+}
+
+.app-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.button-container {
+    padding-top: 10px;
 }
 
 #json-editor {
     width: 600px;
     height: 500px;
-    margin: 0 auto;
 }
