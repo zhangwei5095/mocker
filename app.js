@@ -23,10 +23,11 @@ var mock = require('./routes/mock');
 
 var app = express();
 
-// TODO Jade最近不更新了，而且确实别扭，考虑Handlebars
+// 设置模板引擎
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
+// 注册helper
 require('./lib/handlebarsHelpers/extend');
 
 // 挂载中间件
