@@ -84,7 +84,7 @@ class App extends Component {
                         icon={<FontIcon className="icon-floppy-disk" />}
                         onMouseDown={this.onClickSave} />
                 </div>
-                <ResponseList />
+                <ResponseList interfaceId={this.props.interfaceId} />
                 <Snackbar open={snackbarData.open}
                           message={snackbarData.text}
                           autoHideDuration={snackbarData.autoHideDuration}

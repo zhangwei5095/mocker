@@ -5,8 +5,6 @@
 
 export default (state = [], action) => {
     switch (action.type) {
-        case 'REFRESH':
-            return action.interfaceList;
         default:
             return state;
     }

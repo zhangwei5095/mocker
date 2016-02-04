@@ -18,19 +18,38 @@ import {connect} from 'react-redux';
 class JSONEditor extends Component {
     constructor(props) {
         super(props);
+
+        this.jsonEditor = null;
     };
 
+    componentDidMount() {
+        // 生成JSON编辑器
+        this.jsonEditor = ace.edit('json-editor');
+        // 设置皮肤
+        this.jsonEditor.setTheme('ace/theme/monokai');
+        // JSON语法高亮模式
+        this.jsonEditor.session.setMode('ace/mode/json');
+    };
+
+    /**
+     * 获取编辑器内容的接口
+     *
+     * @return {string} 编辑器内容
+     * @public
+     */
+    getEditorContent() {
+        return this.jsonEditor.getValue();
+    }
+
     render() {
+        let {content} = this.props;
+
         return (
-            <div></div>
+            <div id="json-editor">
+                {JSON.stringify(content, null, 4)}
+            </div>
         );
     };
 }
 
-function extractData(state) {
-    return {
-    };
-}
-
-// 链接Redux
-export default connect(extractData)(JSONEditor);
+export default JSONEditor;

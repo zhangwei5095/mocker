@@ -71,16 +71,29 @@ class InterfaceList extends Component {
                     responseId
                 }
             )
-            .end((err, res) => {
-                // 保存成功和失败分别派发不同的action
-                (!err && res.ok)
-                    ? dispatch(actions.deleteSuccess())
-                    : dispatch(actions.deleteFailed());
-            });
+            .end(
+                (err, res) => {
+                    // 保存成功和失败分别派发不同的action
+                    (!err && res.ok)
+                        ? dispatch(actions.deleteSuccess())
+                        : dispatch(actions.deleteFailed());
+                }
+            );
+    };
+
+    /**
+     * 获取编辑某响应的页面地址
+     *
+     * @param {string} interfaceId 接口的id
+     * @param {string} responseId 响应id
+     * @return {string} 响应编辑页面地址
+     */
+    getResponseEditURL(interfaceId, responseId='') {
+        return `/admin/jsonResponseEdit?interfaceId=${interfaceId}&responseId=${responseId}`;
     };
 
     render() {
-        const {responses, activeResponseId} = this.props;
+        const {responses, activeResponseId, interfaceId} = this.props;
 
         return (
             <Table selectable={false}>
@@ -107,7 +120,9 @@ class InterfaceList extends Component {
                                     </TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>{response.name}</TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>
-                                        <IconButton iconClassName="icon-pencil" />
+                                        <IconButton iconClassName="icon-pencil"
+                                                    linkButton={true}
+                                                    href={this.getResponseEditURL(interfaceId, response._id)} />
                                     </TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>
                                         <IconButton iconClassName="icon-bin"

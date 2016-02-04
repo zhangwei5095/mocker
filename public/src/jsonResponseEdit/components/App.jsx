@@ -10,6 +10,10 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 
 // ui组件
+import RaisedButton from 'material-ui/lib/raised-button';
+
+// 组件
+import JSONEditor from './JSONEditor.jsx';
 
 /**
  * JSON编辑器组件
@@ -18,17 +22,31 @@ import {connect} from 'react-redux';
 class App extends Component {
     constructor(props) {
         super(props);
+
+        this.onClickSave = this.onClickSave.bind(this);
+    };
+
+    onClickSave() {
     };
 
     render() {
+        let {responseData} = this.props;
+
         return (
-            <div></div>
+            <div>
+                <JSONEditor ref="jsonEditor" content={responseData.data} />
+                <RaisedButton
+                    label="保存"
+                    secondary={true}
+                    onMouseDown={this.onClickSave}/>
+            </div>
         );
     };
 }
 
 function extractData(state) {
     return {
+        responseData: state.responseData
     };
 }
 

@@ -47,7 +47,7 @@ class InterfaceList extends Component {
             return '#';
         }
 
-        return `admin/responseList?interfaceId=${interfaceId}`;
+        return `/admin/responseList?interfaceId=${interfaceId}`;
     };
 
     render() {
