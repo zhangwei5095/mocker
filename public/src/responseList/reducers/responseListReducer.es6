@@ -3,8 +3,6 @@
  * @author Franck Chen(chenfan02@baidu.com)
  */
 
-import {combineReducers} from 'redux';
-
 const initState = [];
 
 export default (state = initState, action) => {
