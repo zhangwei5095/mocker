@@ -13,10 +13,17 @@ const saveSuccess = () => {
 const saveFailed = () => {
     return {
         type: 'SAVE_FAILED'
-    }
+    };
+};
+
+const hideDoubleCheck = () => {
+    return {
+        type: 'HIDE_DOUBLE_CHECK'
+    };
 };
 
 export default {
     saveSuccess,
-    saveFailed
+    saveFailed,
+    hideDoubleCheck
 };

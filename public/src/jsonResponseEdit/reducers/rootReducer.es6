@@ -7,10 +7,12 @@ import {combineReducers} from 'redux';
 
 // reducers
 import responseData from './responseDataReducer.es6';
+import doubleCheckModal from './doubleCheckModalReducer.es6';
 
 // combine
 export default combineReducers(
     {
-        responseData
+        responseData,
+        doubleCheckModal
     }
 );

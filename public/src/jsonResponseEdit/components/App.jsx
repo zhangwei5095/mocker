@@ -18,7 +18,7 @@ import request from 'superagent';
 
 // 组件
 import JSONEditor from './JSONEditor.jsx';
-import CommonModal from 'common/component/DoubleCheckModal.jsx';
+import DoubleCheckModal from 'common/component/DoubleCheckModal.jsx';
 
 // 模块
 import actions from '../actions/actions.es6';
@@ -40,6 +40,8 @@ class App extends Component {
         };
 
         this.onClickSave = this.onClickSave.bind(this);
+        this.jumpToResponseList = this.jumpToResponseList.bind(this);
+        this.hideDoubleCheck = this.hideDoubleCheck.bind(this);
     };
 
     /**
@@ -82,8 +84,22 @@ class App extends Component {
         }
     };
 
+    /**
+     * 跳转至响应列表页
+     */
+    jumpToResponseList() {
+        location.href = `/admin/responseList?interfaceId=${this.props.interfaceId}`;
+    };
+
+    /**
+     * 隐藏二次确认模态窗口
+     */
+    hideDoubleCheck() {
+        this.props.dispatch(actions.hideDoubleCheck());
+    };
+
     render() {
-        let {responseData} = this.props;
+        let {responseData, doubleCheckModal} = this.props;
 
         return (
             <div className="app-container">
@@ -100,7 +116,11 @@ class App extends Component {
                         secondary={true}
                         onMouseDown={this.onClickSave}/>
                 </div>
-                <CommonModal text={this.props.text} />
+                <DoubleCheckModal title={doubleCheckModal.title}
+                                  text={doubleCheckModal.text}
+                                  open={doubleCheckModal.open}
+                                  onClickAcceptButton={this.jumpToResponseList}
+                                  onClickRejectButton={this.hideDoubleCheck} />
             </div>
         );
     };
@@ -108,7 +128,8 @@ class App extends Component {
 
 function extractData(state) {
     return {
-        responseData: state.responseData
+        responseData: state.responseData,
+        doubleCheckModal: state.doubleCheckModal
     };
 }
 

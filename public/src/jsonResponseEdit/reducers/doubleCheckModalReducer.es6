@@ -17,6 +17,12 @@ export default (state = initState, action) => {
                 title: '保存成功',
                 text: '是否返回响应列表页面？'
             };
+        case 'HIDE_DOUBLE_CHECK':
+            return {
+                open: false,
+                title: '',
+                text: ''
+            };
         default:
             return state;
     }
