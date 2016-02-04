@@ -49,7 +49,9 @@ router.get('/jsonResponseEdit', function(req, res, next) {
     }
 
     // 首屏数据
-    var initData = {};
+    var initData = {
+        interfaceId: interfaceId
+    };
 
     // 如果有responseId表示是编辑，这时候需要查数据库
     if (responseId) {

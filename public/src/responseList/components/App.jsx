@@ -62,7 +62,7 @@ class App extends Component {
     };
 
     render() {
-        const {snackbarData} = this.props;
+        const {snackbarData, interfaceId} = this.props;
 
         return (
             <div className="app-container">
@@ -73,6 +73,8 @@ class App extends Component {
                         labelPosition="after"
                         secondary={true}
                         disabled={this.props.newBtnData.disabled}
+                        linkButton={true}
+                        href={'/admin/jsonResponseEdit?interfaceId=' + interfaceId}
                         icon={<FontIcon className="icon-plus" />} />
                     <RaisedButton
                         label="保存"

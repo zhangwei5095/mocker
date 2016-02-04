@@ -4,12 +4,19 @@
  */
 
 // 用户切换了激活的响应，但没有保存
-const save = () => {
+const saveSuccess = () => {
     return {
-        type: 'SAVE'
+        type: 'SAVE_SUCCESS'
     };
 };
 
+const saveFailed = () => {
+    return {
+        type: 'SAVE_FAILED'
+    }
+};
+
 export default {
-    save
+    saveSuccess,
+    saveFailed
 };

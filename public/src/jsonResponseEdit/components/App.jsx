@@ -18,6 +18,7 @@ import request from 'superagent';
 
 // 组件
 import JSONEditor from './JSONEditor.jsx';
+import CommonModal from 'common/component/DoubleCheckModal.jsx';
 
 // 模块
 import actions from '../actions/actions.es6';
@@ -68,11 +69,16 @@ class App extends Component {
                         responseData
                     }
                 )
-                .end((err, res) => {
-                    if (!err && res.ok) {
-                        console.log('ok');
+                .end(
+                    (err, res) => {
+                        if (!err && res.ok && (JSON.parse(res.text).status === 0)) {
+                            dispatch(actions.saveSuccess());
+                        }
+                        else {
+                            dispatch(actions.saveFailed());
+                        }
                     }
-                });
+                );
         }
     };
 
@@ -94,6 +100,7 @@ class App extends Component {
                         secondary={true}
                         onMouseDown={this.onClickSave}/>
                 </div>
+                <CommonModal text={this.props.text} />
             </div>
         );
     };

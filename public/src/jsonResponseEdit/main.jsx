@@ -39,10 +39,14 @@ const store = createStoreWithMiddleware(
     }
 );
 
+const responseId = initialData.response
+    ? initialData.response._id
+    : '';
+
 render(
     <Provider store={store}>
         <App interfaceId={initialData.interfaceId}
-             responseId={initialData.response._id} />
+             responseId={responseId} />
     </Provider>,
     rootElement
 );
