@@ -6,6 +6,9 @@ var router = express.Router();
 var interfaceModel = require('../model/interfaceModel');
 var responseModel = require('../model/responseModel');
 
+// 第三方
+var Q = require('q');
+
 /**
  * 管理页面主页,列出所有接口
  */
@@ -24,31 +27,58 @@ router.get('/', function (req, res, next) {
                 })
             });
         },
-        function () {
-            next();
-        }
+        next
     );
 });
 
 /**
- * 新增JSON响应
+ * JSON响应编辑页面接口
  */
-router.get('/newJSONResponse', function(req, res, next) {
+router.get('/jsonResponseEdit', function(req, res, next) {
     // 从查询字符串中获取interfaceID
     var interfaceId = req.query.interfaceId;
-    var promise = null;
+    var responseId = req.query.responseId;
 
-    if (interfaceId) {
-        promise = interfaceModel.getInterfaceDataById(interfaceId);
+    // promise
+    var deferred = Q.defer();
+    var promise = deferred.promise;
 
-        promise.then(
-            function () {
-                res.render('jsonResponseEdit', {
-                    title: 'JSON响应编辑'
-                });
-            }
-        );
+    // interfaceId是一定要有的
+    if (!interfaceId) {
+        next();
     }
+
+    // 首屏数据
+    var initData = {};
+
+    // 如果有responseId表示是编辑，这时候需要查数据库
+    if (responseId) {
+        responseModel
+            .getResponseDataById(responseId)
+            .then(
+                function (data) {
+                    // 填充首屏数据
+                    initData.response = data.response;
+
+                    deferred.resolve();
+                },
+                deferred.reject
+            );
+    }
+    else {
+        // 没有responseId的话是新建动作，不需要异步处理
+        deferred.resolve();
+    }
+
+    promise.then(
+        function () {
+            res.render('jsonResponseEdit', {
+                title: 'JSON响应编辑',
+                initialData: JSON.stringify(initData)
+            });
+        },
+        next
+    );
 });
 
 /**
@@ -101,9 +131,7 @@ router.get('/responseList', function (req, res, next) {
                 })
             });
         },
-        function () {
-            next();
-        }
+        next
     );
 });
 
