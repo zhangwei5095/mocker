@@ -19,6 +19,7 @@ import request from 'superagent';
 
 // 组件
 import ResponseList from './ResponseList.jsx';
+import DoubleCheck from 'common/component/DoubleCheckModal.jsx';
 
 // 模块
 import actions from '../actions/actions.es6';
@@ -37,8 +38,13 @@ class App extends Component {
         };
 
         this.onClickSave = this.onClickSave.bind(this);
+        this.hideDoubleCheck = this.hideDoubleCheck.bind(this);
+        this.onAcceptDoubleCheck = this.onAcceptDoubleCheck.bind(this);
     };
 
+    /**
+     * 点击保存按键时的处理函数
+     */
     onClickSave() {
         const interfaceId = this.props.interfaceId;
         const responseId = this.props.activeResponseId;
@@ -61,8 +67,64 @@ class App extends Component {
             });
     };
 
+    /**
+     * 隐藏二次确认浮窗
+     */
+    hideDoubleCheck() {
+        const {dispatch} = this.props;
+
+        dispatch(actions.hideDoubleCheck());
+    };
+
+    /**
+     * 以id为依据删除某个响应
+     *
+     * @param {string} responseId 要删除的响应的id
+     */
+    deleteResponse(responseId) {
+        const {dispatch} = this.props;
+
+        request
+            .post('/admin/deleteResponse')
+            .send(
+                {
+                    responseId
+                }
+            )
+            .end(
+                (err, res) => {
+                    // 保存成功和失败分别派发不同的action
+                    (!err && res.ok)
+                        // TODO JSON响应判断status
+                        ? dispatch(actions.deleteSuccess())
+                        : dispatch(actions.deleteFailed());
+                }
+            );
+    };
+
+    /**
+     * 用户接受了二次确认时的处理函数
+     */
+    onAcceptDoubleCheck() {
+        const {dispatch, doubleCheck} = this.props;
+
+        // 判断二次确认是为了确认啥
+        switch (doubleCheck.checkFor) {
+            // 如果二次确认是为了确认是否删除某个响应的话
+            case 'DELETE_RESPONSE':
+                // 删除响应
+                this.deleteResponse(doubleCheck.data.responseId);
+                // 隐藏二次确认浮窗
+                dispatch(actions.hideDoubleCheck());
+
+                break;
+            default:
+                return;
+        }
+    };
+
     render() {
-        const {snackbarData, interfaceId} = this.props;
+        const {snackbarData, interfaceId, doubleCheck} = this.props;
 
         return (
             <div className="app-container">
@@ -92,6 +154,11 @@ class App extends Component {
                           autoHideDuration={snackbarData.autoHideDuration}
                           action={snackbarData.action}
                           onActionTouchTap={this.onClickSave} />
+                <DoubleCheck title={doubleCheck.title}
+                             text={doubleCheck.text}
+                             open={doubleCheck.open}
+                             onClickAcceptButton={this.onAcceptDoubleCheck}
+                             onClickRejectButton={this.hideDoubleCheck} />
             </div>
         );
     };
@@ -102,7 +169,8 @@ function extractData(state) {
         activeResponseId: state.responseData.activeResponseId,
         snackbarData: state.snackbarData,
         saveBtnData: state.buttonsData.save,
-        newBtnData: state.buttonsData.add
+        newBtnData: state.buttonsData.add,
+        doubleCheck: state.doubleCheck
     };
 }
 

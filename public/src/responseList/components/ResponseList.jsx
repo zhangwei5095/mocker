@@ -9,7 +9,7 @@ import React, {Component, PropTypes} from 'react';
 // redux
 import {connect} from 'react-redux';
 
-// 组件
+// ui组件
 import Table from 'material-ui/lib/table/table';
 import TableHeaderColumn from 'material-ui/lib/table/table-header-column';
 import TableRow from 'material-ui/lib/table/table-row';
@@ -23,9 +23,6 @@ import Toggle from 'material-ui/lib/toggle';
 // 模块
 import tableStyle from 'common/tableStyle.es6';
 import actions from '../actions/actions.es6';
-
-// 第三方库
-import request from 'superagent';
 
 /**
  * 接口列表组件
@@ -42,6 +39,7 @@ class InterfaceList extends Component {
         ];
 
         this.onClickDelete = this.onClickDelete.bind(this);
+        this.onToggle = this.onToggle.bind(this);
     };
 
     /**
@@ -59,26 +57,13 @@ class InterfaceList extends Component {
     /**
      * 点击删除响应按键时的处理逻辑
      *
+     * @param {string} responseName 要删除的响应的名字
      * @param {string} responseId 想要删除的响应的id
      */
-    onClickDelete(responseId) {
+    onClickDelete(responseName, responseId) {
         const {dispatch} = this.props;
 
-        request
-            .post('/admin/deleteResponse')
-            .send(
-                {
-                    responseId
-                }
-            )
-            .end(
-                (err, res) => {
-                    // 保存成功和失败分别派发不同的action
-                    (!err && res.ok)
-                        ? dispatch(actions.deleteSuccess())
-                        : dispatch(actions.deleteFailed());
-                }
-            );
+        dispatch(actions.tryToDeleteResponse(responseName, responseId));
     };
 
     /**
@@ -126,7 +111,7 @@ class InterfaceList extends Component {
                                     </TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>
                                         <IconButton iconClassName="icon-bin"
-                                                    onMouseDown={() => {this.onClickDelete(response._id)}} />
+                                                    onMouseDown={() => {this.onClickDelete(response.name, response._id)}} />
                                     </TableRowColumn>
                                 </TableRow>
                             );

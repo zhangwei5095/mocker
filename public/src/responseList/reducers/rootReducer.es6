@@ -9,12 +9,14 @@ import {combineReducers} from 'redux';
 import responseData from './responseListReducer.es6';
 import snackbarData from './snackbarReducer.es6';
 import buttonsData from './buttonsReducer.es6';
+import doubleCheck from './doubleCheckReducer.es6';
 
 // combine
 export default combineReducers(
     {
         responseData,
         snackbarData,
-        buttonsData
+        buttonsData,
+        doubleCheck
     }
 );

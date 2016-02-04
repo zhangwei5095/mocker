@@ -3,8 +3,6 @@
  * @author Franck Chen(chenfan02@baidu.com)
  */
 
-import request from 'superagent';
-
 // 用户切换了激活的响应，但没有保存
 const changeActiveResponse = (id) => {
     return {
@@ -27,6 +25,15 @@ const saveFailed = () => {
     };
 };
 
+// 尝试删除某响应
+const tryToDeleteResponse = (responseName, responseId) => {
+    return {
+        type: 'TRY_TO_DELETE_RESPONSE',
+        responseId,
+        responseName
+    };
+};
+
 // 删除响应成功action
 const deleteSuccess = () => {
     return {
@@ -41,10 +48,19 @@ const deleteFailed = () => {
     };
 };
 
+// 隐藏二次确认浮窗
+const hideDoubleCheck = () => {
+    return {
+        type: 'HIDE_DOUBLE_CHECK'
+    };
+};
+
 export default {
     changeActiveResponse,
     saveSuccess,
     saveFailed,
     deleteSuccess,
-    deleteFailed
+    deleteFailed,
+    tryToDeleteResponse,
+    hideDoubleCheck
 };
