@@ -12,12 +12,10 @@
     "body-parser": "^1.x.x",
     "cookie-parser": "^1.x.x",
     "debug": "^2.x.x",
-    "exports-loader": "latest",
     "express": "^4.x.x",
     "gulp": "^3.9.0",
     "gulp-less": "^3.0.5",
     "hbs": "^4.x.x",
-    "imports-loader": "latest",
     "jquery": "^2.1.x",
     "lodash": "^3.x.x",
     "material-ui": "^0.14.3",
@@ -34,7 +32,6 @@
     "superagent": "~1.7.2",
     "validator": "latest",
     "vinyl-named": "~1.1.0",
-    "webpack": "~1.12.12",
     "webpack-stream": "latest"
   }
 }
