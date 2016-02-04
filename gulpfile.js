@@ -39,7 +39,7 @@ var removeExtension = function (fileName) {
 gulp.task('webpack', function () {
 
     // 项目中规定入口文件只有一种形式main.jsx
-    return gulp.src(srcDirGlob + 'main.jsx', {base: './public/src'})
+    return gulp.src(srcDirGlob + 'main.jsx', {base: srcDir})
         .pipe(name(function (file) {
             // webpack entry point
             return removeExtension(file.relative);
