@@ -143,7 +143,8 @@ router.post('/saveJSONResponse', function (req, res, next) {
         function (response) {
             res.json({
                 status: SAVE_STATUS.SUCCESS,
-                response: response
+                // 保存成功的响应的id
+                responseId: response._id
             });
         },
         function () {

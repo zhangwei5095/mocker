@@ -3,13 +3,16 @@
  * @author Franck Chen(chenfan02@baidu.com)
  */
 
-export default (state = [], action) => {
+export default (state = {}, action) => {
     switch (action.type) {
-        case 'REFRESH_RESPONSE_LIST':
-            return {
-                responseData: action.responseData,
-                activeResponseId: action.activeResponseId
-            };
+        case 'SAVE_SUCCESS':
+            return Object.assign(
+                {},
+                state,
+                {
+                    responseId: action.responseId
+                }
+            );
         default:
             return state;
     }

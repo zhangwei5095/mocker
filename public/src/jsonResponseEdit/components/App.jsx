@@ -51,7 +51,8 @@ class App extends Component {
         // 组件 or DOM
         const jsonEditor = this.refs.jsonEditor;
         const responseNameInput = this.refs.responseName;
-        const {dispatch, interfaceId, responseId} = this.props;
+        const {dispatch, interfaceId} = this.props;
+        const {responseId} = this.props.responseData;
 
         const validity = jsonEditor.getValidity();
 
@@ -73,12 +74,17 @@ class App extends Component {
                 )
                 .end(
                     (err, res) => {
-                        if (!err && res.ok && (JSON.parse(res.text).status === 0)) {
-                            dispatch(actions.saveSuccess());
+                        if (!err && res.ok) {
+                            let data = JSON.parse(res.text);
+
+                            // 保存无误的话
+                            if (data.status === 0) {
+                                dispatch(actions.saveSuccess(data.responseId));
+                                return;
+                            }
                         }
-                        else {
-                            dispatch(actions.saveFailed());
-                        }
+
+                        dispatch(actions.saveFailed());
                     }
                 );
         }

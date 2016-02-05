@@ -35,7 +35,7 @@ const createStoreWithMiddleware = applyMiddleware(
 const store = createStoreWithMiddleware(
     rootReducer,
     {
-        responseData: initialData.response
+        responseData: initialData.response || {}
     }
 );
 
