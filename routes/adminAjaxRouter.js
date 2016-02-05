@@ -35,7 +35,7 @@ router.post('/addInterfaceURL', function (req, res) {
             res.json({
                 status: 1,
                 statusInfo: '错误'
-            })
+            });
         }
     );
 });
@@ -173,9 +173,7 @@ router.post('/setActiveResponse', function (req, res, next) {
                 status: 0
             });
         },
-        function () {
-            next();
-        }
+        next
     );
 });
 

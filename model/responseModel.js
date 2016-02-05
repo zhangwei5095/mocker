@@ -4,11 +4,7 @@
  * @date 2015-11-08
  */
 
-// mongoose
-var mongoose = require('mongoose');
-
 // 第三方依赖
-var _ = require('lodash');
 var Q = require('q');
 
 // 连接数据库
@@ -46,9 +42,7 @@ exports.createNewResponseEntity = function (responseName, data) {
     newEntity.save(function(error, newResponseData) {
         // 新的响应保存无误
         if (!error) {
-            deferred.resolve({
-                newResponseData: newResponseData
-            });
+            deferred.resolve(newResponseData);
         }
         else {
             deferred.reject();
@@ -111,7 +105,10 @@ exports.updateResponseDataById = function (responseId, responseData) {
         responseId,
         responseData,
         function (err, data) {
-            !err ? deferred.resolve() : deferred.reject();
+            var doc = data.toObject();
+            !err
+                ? deferred.resolve(doc)
+                : deferred.reject();
         }
     );
 

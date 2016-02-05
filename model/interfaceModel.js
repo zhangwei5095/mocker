@@ -171,8 +171,8 @@ exports.addNewJSONRes = function (interfaceId, name, data) {
     var promise = responseModel.createNewResponseEntity(name, data);
 
     promise.then(
-        function (data) {
-            var newResponseData = data.newResponseData;
+        function (newResponseData) {
+            // var newResponseData = data.newResponseData;
 
             InterfaceModel.findOneAndUpdate(
                 {
@@ -186,26 +186,16 @@ exports.addNewJSONRes = function (interfaceId, name, data) {
                     }
                 },
                 function (err) {
-                    // TODO resolve,reject规则统一
                     if (!err) {
-                        deferred.resolve({
-                            status: 0,
-                            responseId: newResponseData.toObject()._id
-                        });
+                        deferred.resolve(newResponseData);
                     }
                     else {
-                        deferred.resolve({
-                            status: 1
-                        });
+                        deferred.reject();
                     }
                 }
             );
         },
-        function () {
-            deferred.reject({
-                status: 1
-            });
-        }
+        deferred.reject
     );
 
     return newPromise;
