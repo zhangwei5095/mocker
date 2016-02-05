@@ -74,69 +74,6 @@ router.post('/getResponseList', function (req, res) {
 });
 
 /**
- * 编辑JSON响应ajax接口
- */
-router.post('/editRes', function (req, res) {
-    // post数据
-    var postData = req.body;
-
-    var responseId = postData.responseId;
-    var responseName = postData.name;
-    var dataValue = postData.value;
-
-    // 以id为依据更新响应
-    var promise = responseModel.updateResponseDataById(
-        responseId,
-        {
-            name: responseName,
-            // TODO 目前只支持json
-            data: dataValue
-        }
-    );
-
-    promise.then(
-        function () {
-            // 更新成功后
-            res.json({
-                status: 0
-            });
-        },
-        function () {
-            res.json({
-                status: 1
-            });
-        }
-    );
-});
-
-/**
- * 添加新JSON响应ajax接口
- */
-router.post('/addNewJSONRes', function (req, res, next) {
-    // post数据
-    var postData = req.body;
-
-    var interfaceId = postData.interfaceId;
-    var responseName = postData.name;
-    var dataValue = postData.value;
-
-    // 添加新的JSON相应
-    var promise = interfaceModel.addNewJSONRes(interfaceId, responseName, dataValue);
-
-    promise.then(
-        // 新创建的json响应保存成功了，将这个响应的id返回给前端
-        function (responseData) {
-            res.json({
-                status: 0,
-                // 响应id
-                responseId: responseData.responseId
-            });
-        },
-        next
-    );
-});
-
-/**
  * JSON响应新增、修改接口
  */
 router.post('/saveJSONResponse', function (req, res, next) {
@@ -165,7 +102,9 @@ router.post('/saveJSONResponse', function (req, res, next) {
                 }
             )
             .then(
-                deferred.resolve,
+                function (response) {
+                    deferred.resolve(response);
+                },
                 deferred.reject
             );
     }
@@ -183,7 +122,9 @@ router.post('/saveJSONResponse', function (req, res, next) {
                     responseData
                 )
                 .then(
-                    deferred.resolve,
+                    function (response) {
+                        deferred.resolve(response);
+                    },
                     deferred.reject
                 );
         }
@@ -199,9 +140,10 @@ router.post('/saveJSONResponse', function (req, res, next) {
     };
 
     promise.then(
-        function () {
+        function (response) {
             res.json({
-                status: SAVE_STATUS.SUCCESS
+                status: SAVE_STATUS.SUCCESS,
+                response: response
             });
         },
         function () {
