@@ -54,9 +54,8 @@ class App extends Component {
         const {dispatch, interfaceId} = this.props;
         const {responseId} = this.props.responseData;
 
-        const validity = jsonEditor.getValidity();
-
         const responseName = responseNameInput.getValue().trim();
+        const validity = jsonEditor.getValidity() && (responseName.length > 0);
 
         // 校验合法的话，保存修改
         if (validity) {
