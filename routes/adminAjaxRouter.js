@@ -65,7 +65,7 @@ router.post('/getResponseList', function (req, res) {
     promise.then(
         function (data) {
             res.json({
-                responseData: data.responses,
+                responses: data.responses,
                 // 当前启动的响应的id
                 activeResponseId: data.activeResponseId
             });

@@ -3,6 +3,8 @@
  * @author Franck Chen(chenfan02@baidu.com)
  */
 
+import request from 'superagent';
+
 // 用户切换了激活的响应，但没有保存
 const changeActiveResponse = (id) => {
     return {
@@ -55,6 +57,34 @@ const hideDoubleCheck = () => {
     };
 };
 
+// 刷新响应列表
+const refreshResponseList = (interfaceId) => {
+    return (dispatch) => {
+        request
+            .post('/admin/getResponseList')
+            .send({
+                interfaceId
+            })
+            .end(
+                (err, res) => {
+                    // TODO status判断
+                    if (!err && res.ok) {
+                        dispatch(refresh(JSON.parse(res.text)));
+                    }
+                }
+            );
+    };
+};
+
+// 实际刷新
+const refresh = (data) => {
+    return {
+        type: 'REFRESH_RESPONSE_LIST',
+        responses: data.responses,
+        activeResponseId: data.activeResponseId
+    };
+};
+
 export default {
     changeActiveResponse,
     saveSuccess,
@@ -62,5 +92,6 @@ export default {
     deleteSuccess,
     deleteFailed,
     tryToDeleteResponse,
-    hideDoubleCheck
+    hideDoubleCheck,
+    refreshResponseList
 };

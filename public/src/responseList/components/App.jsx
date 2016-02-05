@@ -82,7 +82,7 @@ class App extends Component {
      * @param {string} responseId 要删除的响应的id
      */
     deleteResponse(responseId) {
-        const {dispatch} = this.props;
+        const {dispatch, interfaceId} = this.props;
 
         request
             .post('/admin/deleteResponse')
@@ -98,6 +98,9 @@ class App extends Component {
                         // TODO JSON响应判断status
                         ? dispatch(actions.deleteSuccess())
                         : dispatch(actions.deleteFailed());
+
+                    // 删除完成后刷新响应列表
+                    dispatch(actions.refreshResponseList(interfaceId));
                 }
             );
     };

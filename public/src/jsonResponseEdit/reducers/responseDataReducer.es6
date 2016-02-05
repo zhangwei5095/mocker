@@ -5,6 +5,11 @@
 
 export default (state = [], action) => {
     switch (action.type) {
+        case 'REFRESH_RESPONSE_LIST':
+            return {
+                responseData: action.responseData,
+                activeResponseId: action.activeResponseId
+            };
         default:
             return state;
     }

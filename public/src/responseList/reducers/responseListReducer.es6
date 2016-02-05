@@ -7,10 +7,10 @@ const initState = [];
 
 export default (state = initState, action) => {
     switch (action.type) {
-        case 'CHANGE_ACTIVE_RESPONSE':
+        case 'REFRESH_RESPONSE_LIST':
             return {
-                responses: state.responses,
-                activeResponseId: action.id
+                responses: action.responses,
+                activeResponseId: action.activeResponseId
             };
         default:
             return state;
