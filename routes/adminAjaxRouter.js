@@ -47,9 +47,9 @@ router.post('/getAllInterface', function (req, res) {
     var promise = interfaceModel.getInterfaceList();
 
     promise.then(
-        function (data) {
+        function (interfaceList) {
             res.json({
-                interfaceList: data.interfaceList
+                interfaceList: interfaceList
             });
         }
     );

@@ -16,12 +16,12 @@ router.get('/', function (req, res, next) {
     var promise = interfaceModel.getInterfaceList();
 
     promise.then(
-        function (data) {
+        function (interfaceList) {
             res.render('interfaceList', {
                 title: '注册接口总览',
                 // 首屏需要的数据,尽量减少一个AJAX请求
                 initialData: JSON.stringify({
-                    interfaceList: data.interfaceList,
+                    interfaceList: interfaceList,
                     // mock平台的地址+端口
                     hostURL: req.get('host')
                 })
@@ -58,9 +58,9 @@ router.get('/jsonResponseEdit', function(req, res, next) {
         responseModel
             .getResponseDataById(responseId)
             .then(
-                function (data) {
+                function (response) {
                     // 填充首屏数据
-                    initData.response = data.response;
+                    initData.response = response;
 
                     deferred.resolve();
                 },
@@ -96,9 +96,9 @@ router.get('/editResponse', function(req, res, next) {
         promise = responseModel.getResponseDataById(responseId);
 
         promise.then(
-            function (data) {
+            function (response) {
                 res.render('jsonResponseEdit', {
-                    response: data.response,
+                    response: response,
                     title: 'JSON响应编辑'
                 });
             }

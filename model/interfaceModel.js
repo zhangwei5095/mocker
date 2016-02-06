@@ -12,7 +12,6 @@ var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 
 // 第三方依赖
-var _ = require('lodash');
 var Q = require('q');
 
 // 连接数据库
@@ -50,9 +49,7 @@ exports.getInterfaceList = function () {
         .exec(function (err, interfaceList) {
             if (!err) {
                 // 成功返回数据
-                deferred.resolve({
-                    interfaceList: interfaceList
-                });
+                deferred.resolve(interfaceList);
             }
             else {
                 deferred.reject(err);
@@ -88,8 +85,6 @@ exports.registerNewInterface = function (newInterfaceUrl, type) {
             // 不允许注册同名的action，所以如果有记录则需要提示错误
             if (url) {
                 deferred.reject({
-                    // 非0都是错误
-                    status: 1,
                     statusInfo: '接口地址已存在'
                 });
             }
@@ -102,54 +97,17 @@ exports.registerNewInterface = function (newInterfaceUrl, type) {
                 var mongooseEntity = new InterfaceModel(doc);
                 mongooseEntity.save(function (error) {
                     if (!error) {
-                        deferred.resolve({
-                            status: 0
-                        });
+                        deferred.resolve();
                     }
                     else {
                         deferred.reject({
-                            status: 1,
-                            statusInfo: '接口创建失败'
+                            statusInfo: '保存失败'
                         });
                     }
                 });
             }
         }
     );
-
-    return promise;
-};
-
-/**
- * 根据接口的id获取该接口对应的数据
- *
- * @param {string} interfaceId 接口id
- * @return {Promise} Promise对象
- */
-exports.getInterfaceDataById = function (interfaceId) {
-    // promise
-    var deferred = Q.defer();
-    var promise = deferred.promise;
-
-    interfaceId = new ObjectId(interfaceId.toString());
-
-    // 根据mongodb的id来查找数据
-    InterfaceModel.findById(interfaceId)
-        .select('')
-        .lean()
-        .exec(function (err, doc) {
-            if (!err) {
-                deferred.resolve({
-                    status: 0,
-                    data: doc
-                });
-            }
-            else {
-                deferred.reject({
-                    status: 1
-                });
-            }
-        });
 
     return promise;
 };
@@ -219,7 +177,6 @@ exports.getResponseList = function (id) {
         .exec(function (err, doc) {
             if (!err) {
                 deferred.resolve({
-                    status: 0,
                     responses: doc.responses || [],
                     // 目前启动的响应的id,如果没有则返回空
                     activeResponseId: doc.activeResponse
@@ -338,17 +295,7 @@ exports.setActiveResponse = function (interfaceId, responseId) {
         interfaceId,
         operation,
         function (err) {
-            // 更新无误
-            if (!err) {
-                deferred.resolve({
-                    status: 0
-                });
-            }
-            else {
-                deferred.resolve({
-                    status: 1
-                });
-            }
+            !err ? deferred.resolve() : deferred.reject();
         }
     );
 

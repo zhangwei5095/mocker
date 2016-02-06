@@ -69,15 +69,10 @@ exports.getResponseDataById = function (responseId) {
         .lean()
         .exec(function (err, doc) {
             if (!err) {
-                deferred.resolve({
-                    status: 0,
-                    response: doc
-                });
+                deferred.resolve(doc);
             }
             else {
-                deferred.reject({
-                    status: 1
-                });
+                deferred.reject();
             }
         });
 
@@ -132,15 +127,9 @@ exports.deleteResponseById = function (responseId) {
             if (!err && !!doc) {
                 // 删除这个响应的document，特别注意不要直接调用model层的remove删除文档，否则无法触发middleware
                 doc.remove(function (err) {
-                    if (!err) {
-                        deferred.resolve({
-                            status: 0
-                        });
-                    }
-                    else {
-                        // reject都是系统级错误
-                        deferred.reject();
-                    }
+                    !err
+                        ? deferred.resolve()
+                        : deferred.reject();
                 });
             }
             else {
