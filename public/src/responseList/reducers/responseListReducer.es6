@@ -12,6 +12,11 @@ export default (state = initState, action) => {
                 responses: action.responses,
                 activeResponseId: action.activeResponseId
             };
+        case 'CHANGE_ACTIVE_RESPONSE':
+            return {
+                responses: state.responses,
+                activeResponseId: action.activeResponseId
+            };
         default:
             return state;
     }
