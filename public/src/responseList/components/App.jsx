@@ -13,6 +13,8 @@ import {connect} from 'react-redux';
 import Snackbar from 'material-ui/lib/snackbar';
 import RaisedButton from 'material-ui/lib/raised-button';
 import FontIcon from 'material-ui/lib/font-icon';
+import AppBar from 'material-ui/lib/app-bar';
+import IconButton from 'material-ui/lib/icon-button';
 
 // 第三方库
 import request from 'superagent';
@@ -131,6 +133,14 @@ class App extends Component {
 
         return (
             <div className="app-container">
+                <AppBar
+                    title={this.props.interfaceURL}
+                    iconElementLeft={
+                        <IconButton iconClassName="icon-home"
+                                    tooltip="模拟接口相对路径"
+                                    tooltipPosition="bottom-right" />
+                    }
+                />
                 <div className="top-btn-container">
                     <RaisedButton
                         label="添加新响应"

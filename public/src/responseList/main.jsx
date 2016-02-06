@@ -39,14 +39,17 @@ const store = createStoreWithMiddleware(
             // 响应集合
             responses: initialData.responses || [],
             // 当前激活的响应的id
-            activeResponseId: initialData.activeResponseId || ''
+            activeResponseId: initialData.activeResponseId || '',
+            // 列表所属的interface的地址
+            interfaceURL: initialData.interfaceURL
         }
     }
 );
 
 render(
     <Provider store={store}>
-        <App interfaceId={initialData.interfaceId} />
+        <App interfaceId={initialData.interfaceId}
+             interfaceURL={initialData.interfaceURL} />
     </Provider>,
     rootElement
 );

@@ -131,7 +131,8 @@ router.get('/responseList', function (req, res, next) {
                 initialData: JSON.stringify({
                     interfaceId: interfaceId,
                     responses: data.responses,
-                    activeResponseId: data.activeResponseId
+                    activeResponseId: data.activeResponseId,
+                    interfaceURL: data.interfaceURL
                 })
             });
         },

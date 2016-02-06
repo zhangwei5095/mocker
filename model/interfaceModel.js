@@ -181,7 +181,8 @@ exports.getResponseList = function (id) {
                     // 目前启动的响应的id,如果没有则返回空
                     activeResponseId: doc.activeResponse
                         ? doc.activeResponse
-                        : ''
+                        : '',
+                    interfaceURL: doc.url
                 });
             }
             else {
