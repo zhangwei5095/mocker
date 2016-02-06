@@ -220,7 +220,7 @@ exports.getResponseList = function (id) {
             if (!err) {
                 deferred.resolve({
                     status: 0,
-                    responses: doc.responses,
+                    responses: doc.responses || [],
                     // 目前启动的响应的id,如果没有则返回空
                     activeResponseId: doc.activeResponse
                         ? doc.activeResponse
