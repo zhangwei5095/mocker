@@ -61,6 +61,7 @@ router.get('/jsonResponseEdit', function(req, res, next) {
                 function (response) {
                     // 填充首屏数据
                     initData.response = response;
+                    initData.responseId = response._id;
 
                     deferred.resolve();
                 },

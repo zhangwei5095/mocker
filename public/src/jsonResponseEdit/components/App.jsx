@@ -52,7 +52,7 @@ class App extends Component {
         const jsonEditor = this.refs.jsonEditor;
         const responseNameInput = this.refs.responseName;
         const {dispatch, interfaceId} = this.props;
-        const {responseId} = this.props.responseData;
+        const responseId = this.props.responseData.responseId || this.props.responseId;
 
         const responseName = responseNameInput.getValue().trim();
         const validity = jsonEditor.getValidity() && (responseName.length > 0);
