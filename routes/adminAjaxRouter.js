@@ -10,6 +10,7 @@ var router = express.Router();
 
 // 第三方
 var Q = require('q');
+var Promise = require('bluebird');
 
 // 模块
 var interfaceModel = require('../model/interfaceModel');
@@ -205,8 +206,37 @@ router.post('/deleteResponse', function (req, res) {
                 status: 0
             });
         },
-        function () {}
+        function () {
+            res.json({
+                status: 1
+            });
+        }
     );
+});
+
+/**
+ * 删除指定模拟接口的ajax接口
+ */
+router.post('/deleteInterface', function (req, res) {
+    var interfaceId = req.body.interfaceId;
+
+    var promise = new Promise(function (resolve, reject) {
+        // 根据id删除接口，所以接口id必须提供
+        if (!interfaceId || typeof interfaceId !== 'string') {
+            reject();
+            return;
+        }
+
+        interfaceModel
+            .deleteInterfaceById(interfaceId)
+            .then(resolve, reject);
+    });
+
+    promise.finally(function () {
+        res.json({
+            status: promise.isFulfilled() ? 0 : 1
+        });
+    });
 });
 
 module.exports = router;

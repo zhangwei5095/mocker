@@ -9,6 +9,9 @@ import React, {Component, PropTypes} from 'react';
 // redux
 import {connect} from 'react-redux';
 
+// 第三方
+import request from 'superagent';
+
 // 组件
 import Table from 'material-ui/lib/table/table';
 import TableHeaderColumn from 'material-ui/lib/table/table-header-column';
@@ -33,7 +36,7 @@ class InterfaceList extends Component {
         // 表单的列名集合
         this.colNames = [
             '接口地址', '接口类型', '注册响应数量',
-            '当前激活响应', '编辑'
+            '当前激活响应', '编辑', '删除'
         ];
     };
 
@@ -48,6 +51,25 @@ class InterfaceList extends Component {
         }
 
         return `/admin/responseList?interfaceId=${interfaceId}`;
+    };
+
+    delInterface(interfaceId) {
+        if (!interfaceId) {
+            return;
+        }
+
+        request
+            .post('/admin/deleteInterface')
+            .send(
+                {
+                    interfaceId
+                }
+            )
+            .end(function (err, res) {
+                if (err || !res.ok) {
+                    return;
+                }
+            });
     };
 
     render() {
@@ -101,6 +123,11 @@ class InterfaceList extends Component {
                                         <IconButton iconClassName="icon-pencil"
                                                     linkButton={true}
                                                     href={this.getResponseListURL(data._id)}>
+                                        </IconButton>
+                                    </TableRowColumn>
+                                    <TableRowColumn style={tableStyle.cellStyle}>
+                                        <IconButton iconClassName="icon-pencil"
+                                                    onMouseDown={() => {this.delInterface(data._id)}}>
                                         </IconButton>
                                     </TableRowColumn>
                                 </TableRow>
