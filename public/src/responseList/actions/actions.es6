@@ -85,6 +85,13 @@ const refresh = (data) => {
     };
 };
 
+// 底部提示自动隐藏时触发
+const snackbarAutoHide = () => {
+    return {
+        type: 'SNACKBAR_AUTO_HIDE'
+    };
+};
+
 export default {
     changeActiveResponse,
     saveSuccess,
@@ -93,5 +100,6 @@ export default {
     deleteFailed,
     tryToDeleteResponse,
     hideDoubleCheck,
-    refreshResponseList
+    refreshResponseList,
+    snackbarAutoHide
 };

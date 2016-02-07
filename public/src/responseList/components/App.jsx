@@ -129,18 +129,17 @@ class App extends Component {
     };
 
     render() {
-        const {snackbarData, interfaceId, doubleCheck} = this.props;
+        const {snackbarData, interfaceId, doubleCheck, dispatch} = this.props;
 
         return (
             <div className="app-container">
                 <AppBar
-                    title={this.props.interfaceURL}
+                    title={'/' + this.props.interfaceURL}
                     iconElementLeft={
                         <IconButton iconClassName="icon-home"
                                     tooltip="模拟接口相对路径"
                                     tooltipPosition="bottom-right" />
-                    }
-                />
+                    } />
                 <div className="top-btn-container">
                     <RaisedButton
                         label="添加新响应"
@@ -166,7 +165,8 @@ class App extends Component {
                           message={snackbarData.text}
                           autoHideDuration={snackbarData.autoHideDuration}
                           action={snackbarData.action}
-                          onActionTouchTap={this.onClickSave} />
+                          onActionTouchTap={this.onClickSave}
+                          onRequestClose={() => {dispatch(actions.snackbarAutoHide())}} />
                 <DoubleCheck title={doubleCheck.title}
                              text={doubleCheck.text}
                              open={doubleCheck.open}

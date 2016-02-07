@@ -23,8 +23,49 @@ const hideDoubleCheck = () => {
     };
 };
 
+let timer = null;
+const showTempTip = (text) => {
+    clearTimeout(timer);
+
+    return (dispatch) => {
+        setTimeout(
+            () => {
+                dispatch(showTip(true, text));
+            },
+            0
+        );
+
+        timer = setTimeout(
+            () => {
+                dispatch(hideTip());
+            },
+            3000
+        );
+    };
+};
+
+const showTip = (isErrorTip, text) => {
+    let action = {
+        text,
+        type: 'TIP'
+    };
+
+    if (isErrorTip) {
+        action.type = 'ERROR_TIP';
+    }
+
+    return action;
+};
+
+const hideTip = () => {
+    return {
+        type: 'HIDE_TIP'
+    };
+};
+
 export default {
     saveSuccess,
     saveFailed,
-    hideDoubleCheck
+    hideDoubleCheck,
+    showTempTip
 };

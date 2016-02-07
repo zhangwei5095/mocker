@@ -19,6 +19,7 @@ import request from 'superagent';
 // 组件
 import JSONEditor from './JSONEditor.jsx';
 import DoubleCheckModal from 'common/component/DoubleCheckModal.jsx';
+import Tip from 'common/component/Tip.jsx';
 
 // 模块
 import actions from '../actions/actions.es6';
@@ -57,6 +58,11 @@ class App extends Component {
         const responseName = responseNameInput.getValue().trim();
         const validity = jsonEditor.getValidity() && (responseName.length > 0);
 
+        if (!responseName) {
+            dispatch(actions.showTempTip('响应名称不能为空'));
+            return;
+        }
+
         // 校验合法的话，保存修改
         if (validity) {
             const responseData = jsonEditor.getEditorContent();
@@ -87,6 +93,9 @@ class App extends Component {
                     }
                 );
         }
+        else {
+            dispatch(actions.showTempTip('请输入合法的JSON的数据'));
+        }
     };
 
     /**
@@ -104,7 +113,7 @@ class App extends Component {
     };
 
     render() {
-        let {responseData, doubleCheckModal} = this.props;
+        let {responseData, doubleCheckModal, tipData} = this.props;
 
         return (
             <div className="app-container">
@@ -114,6 +123,12 @@ class App extends Component {
                            defaultValue={responseData.name}
                            style={this.responseNameInputStyle} />
                 <JSONEditor ref="jsonEditor" content={responseData.data} />
+                <div className="tip-container">
+                    <Tip text={tipData.text}
+                         skin={tipData.skin}
+                         iconClass={tipData.iconClass}
+                         display={tipData.display} />
+                </div>
                 <div className="button-container">
                     <RaisedButton
                         label="保存"
@@ -134,7 +149,8 @@ class App extends Component {
 function extractData(state) {
     return {
         responseData: state.responseData,
-        doubleCheckModal: state.doubleCheckModal
+        doubleCheckModal: state.doubleCheckModal,
+        tipData: state.tipData
     };
 }
 

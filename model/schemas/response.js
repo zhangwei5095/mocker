@@ -62,7 +62,6 @@ var response = new mongoose.Schema({
 
 /**
  * 删除文档middleware,主要用途是删除interface中对于该接口的所有引用
- * TODO 代码有点烂 ~\(≧▽≦)/~
  */
 response.pre('remove', function (next) {
     var InterfaceModel = this.model('interface');

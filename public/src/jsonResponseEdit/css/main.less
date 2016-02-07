@@ -1,3 +1,8 @@
+@import "./iconFont.less";
+
+@contentWidth: 600px;
+@contentHeight: 500px;
+
 html,
 body {
     width: 100%;
@@ -25,6 +30,11 @@ body {
 }
 
 #json-editor {
-    width: 600px;
-    height: 500px;
+    // flex: 0.3;
+    width: @contentWidth;
+    height: @contentHeight;
+}
+
+.tip-container {
+    width: @contentWidth;
 }

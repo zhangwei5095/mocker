@@ -43,6 +43,8 @@ export default (state = initState, action) => {
                 text: '抱歉，删除失败',
                 action: ''
             };
+        case 'SNACKBAR_AUTO_HIDE':
+            return initState;
         default:
             return state;
     }

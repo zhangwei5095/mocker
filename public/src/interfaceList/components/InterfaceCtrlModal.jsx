@@ -40,7 +40,7 @@ class InterfaceCtrlModal extends Component {
 
         const interfaceURL = `${this.props.hostURL}/mock/${userInput}`;
 
-        if (interfaceURL === '') {
+        if (userInput === '') {
             dispatch(urlErrorTip('请输入URL'));
         }
         // 如果是合法有效的URL
