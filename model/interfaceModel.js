@@ -194,14 +194,6 @@ exports.getResponseList = function (id) {
 };
 
 /**
- * 根据URL查询接口数据
- *
- * @param {string} url 请求的url
- */
-exports.findInterfaceDataByURL = function (url) {
-};
-
-/**
  * 返回指定url的模拟数据
  *
  * @param {string} url 请求的地址
