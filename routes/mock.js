@@ -31,9 +31,7 @@ router.use('*', function(req, res, next) {
                     });
             }
         },
-        function () {
-            // todo 500 系统错误页面
-        }
+        next
     );
 });
 
