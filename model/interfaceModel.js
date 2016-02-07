@@ -13,6 +13,7 @@ var ObjectId = mongoose.Types.ObjectId;
 
 // 第三方依赖
 var Q = require('q');
+var Promise = require('bluebird');
 
 // 连接数据库
 var db = require('../lib/dbConnection');
@@ -293,4 +294,29 @@ exports.setActiveResponse = function (interfaceId, responseId) {
     );
 
     return promise;
+};
+
+/**
+ * 删除对应id的接口
+ *
+ * @param {string} interfaceId 要删除的接口的id
+ * @return {Promise}
+ */
+exports.deleteInterfaceById = function (interfaceId) {
+    return new Promise(function (resolve, reject) {
+        InterfaceModel
+            .findById(interfaceId)
+            .exec(function (err, doc) {
+                // 查询出错
+                if (err) {
+                    reject();
+                    return;
+                }
+
+                // 删除接口
+                doc.remove(function (err) {
+                    !err ? resolve() : reject();
+                });
+            });
+    });
 };

@@ -7,6 +7,8 @@
 // 依赖
 var mongoose = require('mongoose');
 
+var interfacePreRemove = require('../middlewares/interfacePreRemove');
+
 var interfaceSchema = new mongoose.Schema({
     /**
      * 接口URL地址, 索引
@@ -71,5 +73,10 @@ var interfaceSchema = new mongoose.Schema({
 
 // mongoose注册model
 mongoose.model('interface', interfaceSchema);
+
+/**
+ * 加载中间件
+ */
+interfaceSchema.pre('remove', interfacePreRemove);
 
 module.exports = interfaceSchema;
