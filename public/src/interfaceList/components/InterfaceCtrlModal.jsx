@@ -22,13 +22,12 @@ class InterfaceCtrlModal extends Component {
     constructor(props) {
         super(props);
 
-        const dispatch = this.props.dispatch;
-
-        this.onCancel = () => {
-            dispatch(hideModal());
-        };
-
         this.onConfirm = this.onConfirm.bind(this);
+        this.onCancel = this.onCancel.bind(this);
+    };
+
+    onCancel() {
+        this.props.dispatch(hideModal());
     };
 
     // 点击模态窗口的确定时

@@ -43,7 +43,7 @@ const saveInterface = (url) => {
                     // 保存成功，并弹出成功提示
                     dispatch(hideModal());
                     dispatch(fetchNewInterfaceList());
-                    dispatch(showSaveSuccess());
+                    dispatch(showSnackBarAWhile('新接口保存成功'));
                 }
             });
     };
@@ -51,9 +51,9 @@ const saveInterface = (url) => {
 
 let timer = null;
 // 保存接口地址
-const showSaveSuccess = () => {
+const showSnackBarAWhile = (text) => {
     return (dispatch) => {
-        dispatch(showSnackBar('新接口保存成功'));
+        dispatch(showSnackBar(text));
 
         clearTimeout(timer);
         timer = setTimeout(
@@ -77,7 +77,7 @@ const showSnackBar = (text) => {
 // 隐藏底部提示
 const hideSnackBar = () => {
     return {
-        type: 'HIDE_SNACK_BAR'
+        type: 'SNACK_BAR/HIDE'
     };
 };
 
@@ -114,6 +114,6 @@ export {
     hideModal,
     urlErrorTip,
     saveInterface,
-    showSaveSuccess,
+    showSnackBarAWhile,
     fetchNewInterfaceList
 };

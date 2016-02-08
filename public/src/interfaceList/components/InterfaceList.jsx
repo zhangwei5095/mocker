@@ -24,6 +24,7 @@ import IconButton from 'material-ui/lib/icon-button';
 
 // 模块
 import tableStyle from 'common/tableStyle.es6'
+import * as actions from '../actions/actions.es6';
 
 /**
  * 接口列表组件
@@ -38,6 +39,8 @@ class InterfaceList extends Component {
             '接口地址', '接口类型', '注册响应数量',
             '当前激活响应', '编辑', '删除'
         ];
+
+        this.delInterface = this.delInterface.bind(this);
     };
 
     /**
@@ -53,7 +56,14 @@ class InterfaceList extends Component {
         return `/admin/responseList?interfaceId=${interfaceId}`;
     };
 
+    /**
+     * 向后端请求删除指定id的接口
+     *
+     * @param {string} interfaceId 接口id
+     */
     delInterface(interfaceId) {
+        const {dispatch} = this.props;
+
         if (!interfaceId) {
             return;
         }
@@ -67,8 +77,12 @@ class InterfaceList extends Component {
             )
             .end(function (err, res) {
                 if (err || !res.ok) {
+                    dispatch(actions.showSnackBarAWhile('接口刪除失败'));
                     return;
                 }
+
+                dispatch(actions.showSnackBarAWhile('接口删除成功'));
+                dispatch(actions.fetchNewInterfaceList());
             });
     };
 
