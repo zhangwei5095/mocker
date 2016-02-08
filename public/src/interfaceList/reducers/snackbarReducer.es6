@@ -21,7 +21,7 @@ export default (state = initState, action) => {
                     text: action.text
                 }
             );
-        case 'HIDE_SNACK_BAR':
+        case 'SNACK_BAR/HIDE':
             return Object.assign(
                 {},
                 state,

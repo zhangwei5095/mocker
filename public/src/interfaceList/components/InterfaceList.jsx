@@ -39,8 +39,6 @@ class InterfaceList extends Component {
             '接口地址', '接口类型', '注册响应数量',
             '当前激活响应', '编辑', '删除'
         ];
-
-        this.delInterface = this.delInterface.bind(this);
     };
 
     /**
@@ -56,39 +54,9 @@ class InterfaceList extends Component {
         return `/admin/responseList?interfaceId=${interfaceId}`;
     };
 
-    /**
-     * 向后端请求删除指定id的接口
-     *
-     * @param {string} interfaceId 接口id
-     */
-    delInterface(interfaceId) {
-        const {dispatch} = this.props;
-
-        if (!interfaceId) {
-            return;
-        }
-
-        request
-            .post('/admin/deleteInterface')
-            .send(
-                {
-                    interfaceId
-                }
-            )
-            .end(function (err, res) {
-                if (err || !res.ok) {
-                    dispatch(actions.showSnackBarAWhile('接口刪除失败'));
-                    return;
-                }
-
-                dispatch(actions.showSnackBarAWhile('接口删除成功'));
-                dispatch(actions.fetchNewInterfaceList());
-            });
-    };
-
     render() {
         // 消息集合数组
-        const {interfaceData} = this.props;
+        const {interfaceData, dispatch} = this.props;
 
         return (
             <Table selectable={false}>
@@ -141,7 +109,7 @@ class InterfaceList extends Component {
                                     </TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>
                                         <IconButton iconClassName="icon-pencil"
-                                                    onMouseDown={() => {this.delInterface(data._id)}}>
+                                                    onMouseDown={() => {dispatch(actions.tryDeleteInterface(data._id))}}>
                                         </IconButton>
                                     </TableRowColumn>
                                 </TableRow>

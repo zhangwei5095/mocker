@@ -109,11 +109,54 @@ const refreshInterfaceList = (interfaceList) => {
     };
 };
 
+const tryDeleteInterface = (interfaceId) => {
+    return {
+        type: 'INTERFACE/TRY_DELETE',
+        interfaceId
+    };
+};
+
+// 删除指定的接口
+const delInterface = (interfaceId) => {
+    return (dispatch) => {
+        if (!interfaceId) {
+            return;
+        }
+
+        request
+            .post('/admin/deleteInterface')
+            .send(
+                {
+                    interfaceId
+                }
+            )
+            .end(function (err, res) {
+                if (err || !res.ok) {
+                    dispatch(showSnackBarAWhile('接口刪除失败'));
+                    return;
+                }
+
+                dispatch(showSnackBarAWhile('接口删除成功'));
+                dispatch(fetchNewInterfaceList());
+            });
+    };
+};
+
+// 隐藏二次确认浮窗
+const hideDoubleCheck = () => {
+    return {
+        type: 'DOUBLE_CHECK/HIDE'
+    };
+};
+
 export {
     showModal,
     hideModal,
     urlErrorTip,
     saveInterface,
     showSnackBarAWhile,
-    fetchNewInterfaceList
+    fetchNewInterfaceList,
+    delInterface,
+    tryDeleteInterface,
+    hideDoubleCheck
 };
