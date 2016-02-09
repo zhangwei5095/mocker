@@ -15,6 +15,7 @@ var name = require('vinyl-named');
 
 var srcDirGlob = './public/src/**/';
 var srcDir = './public/src/';
+
 var webpackConfig = require('./webpack.config.js');
 
 /**
