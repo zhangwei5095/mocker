@@ -23,7 +23,7 @@ import FontIcon from 'material-ui/lib/font-icon';
 import IconButton from 'material-ui/lib/icon-button';
 
 // 模块
-import tableStyle from 'common/tableStyle.es6'
+import tableStyle from 'common/tableStyle.es6';
 import * as actions from '../actions/actions.es6';
 
 /**
@@ -37,7 +37,7 @@ class InterfaceList extends Component {
         // 表单的列名集合
         this.colNames = [
             '接口地址', '接口类型', '注册响应数量',
-            '当前激活响应', '编辑', '删除'
+            '当前激活响应', '编辑', '获取fiddler配置', '删除'
         ];
     };
 
@@ -99,18 +99,26 @@ class InterfaceList extends Component {
                                 <TableRow>
                                     <TableRowColumn style={tableStyle.cellStyle}>{data.url}</TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>JSON</TableRowColumn>
-                                    <TableRowColumn style={tableStyle.cellStyle}>{data.responses.length}</TableRowColumn>
+                                    <TableRowColumn style={tableStyle.cellStyle}>
+                                        {data.responses.length}
+                                    </TableRowColumn>
                                     <TableRowColumn style={responseCellStyle}>{activeResponseName}</TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>
                                         <IconButton iconClassName="icon-pencil"
                                                     linkButton={true}
-                                                    href={this.getResponseListURL(data._id)}>
-                                        </IconButton>
+                                                    href={this.getResponseListURL(data._id)} />
                                     </TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>
-                                        <IconButton iconClassName="icon-pencil"
-                                                    onMouseDown={() => {dispatch(actions.tryDeleteInterface(data._id))}}>
-                                        </IconButton>
+                                        <IconButton iconClassName="icon-download"
+                                                    onMouseDown={() => {
+                                                        dispatch(actions.getFiddlerConfigDialogSwitch('show', data.url))}
+                                                    } />
+                                    </TableRowColumn>
+                                    <TableRowColumn style={tableStyle.cellStyle}>
+                                        <IconButton iconClassName="icon-bin"
+                                                    onMouseDown={() => {
+                                                        dispatch(actions.tryDeleteInterface(data._id))}
+                                                    } />
                                     </TableRowColumn>
                                 </TableRow>
                             );

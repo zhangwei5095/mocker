@@ -16,6 +16,9 @@ var Promise = require('bluebird');
 var interfaceModel = require('../model/interfaceModel');
 var responseModel = require('../model/responseModel');
 
+// controllers
+var getFiddlerConfig = require('../controllers/getFiddlerConfig');
+
 /**
  * 新添接口接口
  */
@@ -238,5 +241,7 @@ router.post('/deleteInterface', function (req, res) {
         });
     });
 });
+
+router.get('/getFiddlerConfig', getFiddlerConfig);
 
 module.exports = router;

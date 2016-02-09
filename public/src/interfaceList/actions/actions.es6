@@ -149,6 +149,21 @@ const hideDoubleCheck = () => {
     };
 };
 
+// 显示获取fiddler配置浮窗
+const getFiddlerConfigDialogSwitch = (mode, relativeURL) => {
+    if (mode === 'show') {
+        return {
+            type: 'FIDDLER_CONFIG_DIALOG/SHOW',
+            relativeURL
+        };
+    }
+    else if (mode === 'hide') {
+        return {
+            type: 'FIDDLER_CONFIG_DIALOG/HIDE'
+        };
+    }
+};
+
 export {
     showModal,
     hideModal,
@@ -158,5 +173,6 @@ export {
     fetchNewInterfaceList,
     delInterface,
     tryDeleteInterface,
-    hideDoubleCheck
+    hideDoubleCheck,
+    getFiddlerConfigDialogSwitch
 };

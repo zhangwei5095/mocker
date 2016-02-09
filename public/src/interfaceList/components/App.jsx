@@ -9,6 +9,9 @@ import React, {Component, PropTypes} from 'react';
 // redux
 import {connect} from 'react-redux';
 
+// 第三方
+import request from 'superagent';
+
 // ui组件
 import FontIcon from 'material-ui/lib/font-icon';
 import RaisedButton from 'material-ui/lib/raised-button';
@@ -18,6 +21,7 @@ import Snackbar from 'material-ui/lib/snackbar';
 import InterfaceList from './InterfaceList.jsx';
 import InterfaceCtrlModal from './InterfaceCtrlModal.jsx';
 import DoubleCheckModal from 'common/component/DoubleCheckModal.jsx';
+import GetFiddlerConfigDialog from './GetFiddlerConfigDialog.jsx';
 
 // actions
 import * as actions from '../actions/actions.es6';
@@ -48,6 +52,7 @@ class App extends Component {
 
         this.onAcceptDoubleCheck = this.onAcceptDoubleCheck.bind(this);
         this.onRejectDoubleCheck = this.onRejectDoubleCheck.bind(this);
+        this.onAfterGetURL = this.onAfterGetURL.bind(this);
     };
 
     /**
@@ -67,8 +72,22 @@ class App extends Component {
         this.props.dispatch(actions.hideDoubleCheck());
     };
 
+    onAfterGetURL(originURL, relativeURL) {
+        request
+            .get('/admin/getFiddlerConfig')
+            .query({
+                originURL,
+                relativeURL
+            })
+            .end(
+                () => {
+
+                }
+            );
+    };
+
     render() {
-        const {doubleCheck} = this.props;
+        const {doubleCheck, fiddlerConfigDialog, dispatch} = this.props;
 
         return (
             <div className="app-container">
@@ -96,6 +115,12 @@ class App extends Component {
                                   open={doubleCheck.open}
                                   onClickAcceptButton={this.onAcceptDoubleCheck}
                                   onClickRejectButton={this.onRejectDoubleCheck} />
+                <GetFiddlerConfigDialog open={fiddlerConfigDialog.open}
+                                        relativeURL={fiddlerConfigDialog.relativeURL}
+                                        afterGetURL={this.onAfterGetURL}
+                                        onCancel={() => {
+                                            dispatch(actions.getFiddlerConfigDialogSwitch('hide'))
+                                        }} />
             </div>
         );
     };
@@ -106,7 +131,8 @@ function extractData(state) {
         modalData: state.modalData,
         interfaceData: state.interfaceList,
         snackbarData: state.snackbarData,
-        doubleCheck: state.doubleCheck
+        doubleCheck: state.doubleCheck,
+        fiddlerConfigDialog: state.fiddlerConfigDialog
     };
 }
 
