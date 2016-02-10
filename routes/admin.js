@@ -7,7 +7,7 @@ var interfaceModel = require('../model/interfaceModel');
 var responseModel = require('../model/responseModel');
 
 // 第三方
-var Q = require('q');
+var Promise = require('bluebird');
 
 /**
  * 管理页面主页,列出所有接口
@@ -39,39 +39,37 @@ router.get('/jsonResponseEdit', function(req, res, next) {
     var interfaceId = req.query.interfaceId;
     var responseId = req.query.responseId;
 
-    // promise
-    var deferred = Q.defer();
-    var promise = deferred.promise;
-
-    // interfaceId是一定要有的
-    if (!interfaceId) {
-        next();
-    }
-
     // 首屏数据
     var initData = {
         interfaceId: interfaceId
     };
 
-    // 如果有responseId表示是编辑，这时候需要查数据库
-    if (responseId) {
-        responseModel
-            .getResponseDataById(responseId)
-            .then(
-                function (response) {
-                    // 填充首屏数据
-                    initData.response = response;
-                    initData.responseId = response._id;
+    var promise = new Promise(function (resolve, reject) {
+        // interfaceId是一定要有的
+        if (!interfaceId) {
+            next();
+        }
 
-                    deferred.resolve();
-                },
-                deferred.reject
-            );
-    }
-    else {
-        // 没有responseId的话是新建动作，不需要异步处理
-        deferred.resolve();
-    }
+        // 如果有responseId表示是编辑，这时候需要查数据库
+        if (responseId) {
+            responseModel
+                .getResponseDataById(responseId)
+                .then(
+                    function (response) {
+                        // 填充首屏数据
+                        initData.response = response;
+                        initData.responseId = response._id;
+
+                        resolve();
+                    },
+                    reject
+                );
+        }
+        else {
+            // 没有responseId的话是新建动作，不需要异步处理
+            resolve();
+        }
+    });
 
     promise.then(
         function () {
@@ -102,7 +100,8 @@ router.get('/editResponse', function(req, res, next) {
                     response: response,
                     title: 'JSON响应编辑'
                 });
-            }
+            },
+            next
         );
     }
 });
