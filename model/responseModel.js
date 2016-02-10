@@ -5,7 +5,6 @@
  */
 
 // 第三方依赖
-var Q = require('q');
 var Promise = require('bluebird');
 
 // 连接数据库
