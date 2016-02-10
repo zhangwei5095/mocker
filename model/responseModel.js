@@ -6,6 +6,7 @@
 
 // 第三方依赖
 var Q = require('q');
+var Promise = require('bluebird');
 
 // 连接数据库
 var db = require('../lib/dbConnection');
@@ -27,29 +28,20 @@ var ResponseModel = db.model(collectionName, responseSchema);
  * @return {Promise} Promise对象
  */
 exports.createNewResponseEntity = function (responseName, data) {
-    // promise
-    var deferred = Q.defer();
-    var promise = deferred.promise;
+    return new Promise(function (resolve, reject) {
+        var doc = {
+            // db中name是required, 必须有，且不能是空字符串
+            name: responseName,
+            data: JSON.parse(data)
+        };
 
-    var doc = {
-        // db中name是required, 必须有，且不能是空字符串
-        name: responseName,
-        data: JSON.parse(data)
-    };
-
-    // 创建一个新的响应document并保存
-    var newEntity = new ResponseModel(doc);
-    newEntity.save(function(error, newResponseData) {
-        // 新的响应保存无误
-        if (!error) {
-            deferred.resolve(newResponseData);
-        }
-        else {
-            deferred.reject();
-        }
+        // 创建一个新的响应document并保存
+        var newEntity = new ResponseModel(doc);
+        newEntity.save(function(error, newResponseData) {
+            // 新的响应保存无误
+            !error ? resolve(newResponseData) : reject();
+        });
     });
-
-    return promise;
 };
 
 /**
@@ -59,24 +51,15 @@ exports.createNewResponseEntity = function (responseName, data) {
  * @return {Promise}
  */
 exports.getResponseDataById = function (responseId) {
-    // promise
-    var deferred = Q.defer();
-    var promise = deferred.promise;
-
-    // 根据mongodb的id来查找数据
-    ResponseModel.findById(responseId)
-        .select('')
-        .lean()
-        .exec(function (err, doc) {
-            if (!err) {
-                deferred.resolve(doc);
-            }
-            else {
-                deferred.reject();
-            }
-        });
-
-    return promise;
+    return new Promise(function (resolve, reject) {
+        // 根据mongodb的id来查找数据
+        ResponseModel.findById(responseId)
+            .select('')
+            .lean()
+            .exec(function (err, doc) {
+                !err ? resolve(doc) : reject();
+            });
+    });
 };
 
 /**
@@ -89,25 +72,19 @@ exports.getResponseDataById = function (responseId) {
  * @return {Promise} Promise对象
  */
 exports.updateResponseDataById = function (responseId, responseData) {
-    // promise
-    var deferred = Q.defer();
-    var promise = deferred.promise;
+    return new Promise(function (resolve, reject) {
+        // responseData是个序列化过的JSON，需要解析后入库
+        responseData.data = JSON.parse(responseData.data);
 
-    // responseData是个序列化过的JSON，需要解析后入库
-    responseData.data = JSON.parse(responseData.data);
-
-    ResponseModel.findByIdAndUpdate(
-        responseId,
-        responseData,
-        function (err, data) {
-            var doc = data.toObject();
-            !err
-                ? deferred.resolve(doc)
-                : deferred.reject();
-        }
-    );
-
-    return promise;
+        ResponseModel.findByIdAndUpdate(
+            responseId,
+            responseData,
+            function (err, data) {
+                var doc = data.toObject();
+                !err ? resolve(doc) : reject();
+            }
+        );
+    });
 };
 
 /**
@@ -117,25 +94,19 @@ exports.updateResponseDataById = function (responseId, responseData) {
  * @returns {Promise} Promise对象
  */
 exports.deleteResponseById = function (responseId) {
-    // promise
-    var deferred = Q.defer();
-    var promise = deferred.promise;
-
-    ResponseModel
-        .findById(responseId, function (err, doc) {
-            // 无误且查询到了document
-            if (!err && !!doc) {
-                // 删除这个响应的document，特别注意不要直接调用model层的remove删除文档，否则无法触发middleware
-                doc.remove(function (err) {
-                    !err
-                        ? deferred.resolve()
-                        : deferred.reject();
-                });
-            }
-            else {
-                deferred.reject();
-            }
-        });
-
-    return promise;
+    return new Promise(function (resolve, reject) {
+        ResponseModel
+            .findById(responseId, function (err, doc) {
+                // 无误且查询到了document
+                if (!err && !!doc) {
+                    // 删除这个响应的document，特别注意不要直接调用model层的remove删除文档，否则无法触发middleware
+                    doc.remove(function (err) {
+                        !err ? resolve() : reject();
+                    });
+                }
+                else {
+                    reject();
+                }
+            });
+    });
 };

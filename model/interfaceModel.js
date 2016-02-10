@@ -33,31 +33,22 @@ var responseModel = require('./responseModel');
  * @return {Promise} promise对象
  */
 exports.getInterfaceList = function () {
-    // promise
-    var deferred = Q.defer();
-    var promise = deferred.promise;
-
-    // 查看全部接口
-    InterfaceModel
-        .find({})
-        .select('activeResponse responses url')
-        .populate({
-            path: 'activeResponse',
-            // populate目前激活的响应，需要的字段只有name
-            select: 'name'
-        })
-        .lean()
-        .exec(function (err, interfaceList) {
-            if (!err) {
+    return new Promise(function (resolve, reject) {
+        // 查看全部接口
+        InterfaceModel
+            .find({})
+            .select('activeResponse responses url')
+            .populate({
+                path: 'activeResponse',
+                // populate目前激活的响应，需要的字段只有name
+                select: 'name'
+            })
+            .lean()
+            .exec(function (err, interfaceList) {
                 // 成功返回数据
-                deferred.resolve(interfaceList);
-            }
-            else {
-                deferred.reject(err);
-            }
-        });
-
-    return promise;
+                (!err) ? resolve(interfaceList) : reject(err);
+            });
+    });
 };
 
 /**
@@ -68,49 +59,45 @@ exports.getInterfaceList = function () {
  * @return {Promise} promise对象
  */
 exports.registerNewInterface = function (newInterfaceUrl, type) {
-    // promise
-    var deferred = Q.defer();
-    var promise = deferred.promise;
-
     // 目前忽略查询字符串部分
     var newInterfaceURL = URL.parse(newInterfaceUrl).pathname;
 
-    // 根据url查找
-    InterfaceModel.findOne(
-        {
-            // 目前只支持常规路径，不支持查询字符串
-            url: newInterfaceURL
-        },
-        '',
-        function (err, url) {
-            // 不允许注册同名的action，所以如果有记录则需要提示错误
-            if (url) {
-                deferred.reject({
-                    statusInfo: '接口地址已存在'
-                });
-            }
-            else {
-                var doc = {
-                    url: newInterfaceURL,
-                    type: type
-                };
+    return new Promise(function (resolve, reject) {
+        // 根据url查找
+        InterfaceModel.findOne(
+            {
+                // 目前只支持常规路径，不支持查询字符串
+                url: newInterfaceURL
+            },
+            '',
+            function (err, url) {
+                // 不允许注册同名的action，所以如果有记录则需要提示错误
+                if (url) {
+                    reject({
+                        statusInfo: '接口地址已存在'
+                    });
+                }
+                else {
+                    var doc = {
+                        url: newInterfaceURL,
+                        type: type
+                    };
 
-                var mongooseEntity = new InterfaceModel(doc);
-                mongooseEntity.save(function (error) {
-                    if (!error) {
-                        deferred.resolve();
-                    }
-                    else {
-                        deferred.reject({
-                            statusInfo: '保存失败'
-                        });
-                    }
-                });
+                    var mongooseEntity = new InterfaceModel(doc);
+                    mongooseEntity.save(function (error) {
+                        if (!error) {
+                            resolve();
+                        }
+                        else {
+                            reject({
+                                statusInfo: '保存失败'
+                            });
+                        }
+                    });
+                }
             }
-        }
-    );
-
-    return promise;
+        );
+    });
 };
 
 /**
@@ -122,42 +109,33 @@ exports.registerNewInterface = function (newInterfaceUrl, type) {
  * @return {Promise} promise对象
  */
 exports.addNewJSONRes = function (interfaceId, name, data) {
-    // promise
-    var deferred = Q.defer();
-    var newPromise = deferred.promise;
-
     // 创建一个新的响应并入库
     var promise = responseModel.createNewResponseEntity(name, data);
 
-    promise.then(
-        function (newResponseData) {
-            // var newResponseData = data.newResponseData;
+    return new Promise(function (resolve, reject) {
+        promise.then(
+            function (newResponseData) {
+                // var newResponseData = data.newResponseData;
 
-            InterfaceModel.findOneAndUpdate(
-                {
-                    _id: interfaceId
-                },
-                {
-                    // 添加新的响应入数组
-                    $push: {
-                        // doc即新document
-                        responses: newResponseData
+                InterfaceModel.findOneAndUpdate(
+                    {
+                        _id: interfaceId
+                    },
+                    {
+                        // 添加新的响应入数组
+                        $push: {
+                            // doc即新document
+                            responses: newResponseData
+                        }
+                    },
+                    function (err) {
+                        !err ? resolve(newResponseData) : reject();
                     }
-                },
-                function (err) {
-                    if (!err) {
-                        deferred.resolve(newResponseData);
-                    }
-                    else {
-                        deferred.reject();
-                    }
-                }
-            );
-        },
-        deferred.reject
-    );
-
-    return newPromise;
+                );
+            },
+            reject
+        );
+    });
 };
 
 /**
@@ -167,31 +145,27 @@ exports.addNewJSONRes = function (interfaceId, name, data) {
  * @return {Promise} Promise对象
  */
 exports.getResponseList = function (id) {
-    // promise
-    var deferred = Q.defer();
-    var promise = deferred.promise;
-
-    // 根据mongodb的id来查找数据
-    InterfaceModel.findOne({_id: id})
-        .populate('responses')
-        .lean()
-        .exec(function (err, doc) {
-            if (!err) {
-                deferred.resolve({
-                    responses: doc.responses || [],
-                    // 目前启动的响应的id,如果没有则返回空
-                    activeResponseId: doc.activeResponse
-                        ? doc.activeResponse
-                        : '',
-                    interfaceURL: doc.url
-                });
-            }
-            else {
-                deferred.reject();
-            }
-        });
-
-    return promise;
+    return new Promise(function (resolve, reject) {
+        // 根据mongodb的id来查找数据
+        InterfaceModel.findOne({_id: id})
+            .populate('responses')
+            .lean()
+            .exec(function (err, doc) {
+                if (!err) {
+                    resolve({
+                        responses: doc.responses || [],
+                        // 目前启动的响应的id,如果没有则返回空
+                        activeResponseId: doc.activeResponse
+                            ? doc.activeResponse
+                            : '',
+                        interfaceURL: doc.url
+                    });
+                }
+                else {
+                    reject();
+                }
+            });
+    });
 };
 
 /**
@@ -201,57 +175,53 @@ exports.getResponseList = function (id) {
  * @return {*} 响应
  */
 exports.getActiveResponse = function (url) {
-    // promise
-    var deferred = Q.defer();
-    var promise = deferred.promise;
-
     // 消除掉/mock前缀
     url = url.replace(/^mock\//, '');
 
-    // 根据URL查询接口，取activeResponse ref并populate
-    InterfaceModel
-        .findOne({url: url})
-        .populate('activeResponse')
-        .lean()
-        .exec(function (err, doc) {
-            if (!err) {
-                // 没有doc，即这个url还没有注册成为接口，应该返回404
-                if (!doc) {
-                    deferred.resolve({
-                        status: 1,
-                        statusInfo: '当前地址未被注册为接口'
-                    });
+    return new Promise(function (resolve, reject) {
+        // 根据URL查询接口，取activeResponse ref并populate
+        InterfaceModel
+            .findOne({url: url})
+            .populate('activeResponse')
+            .lean()
+            .exec(function (err, doc) {
+                if (!err) {
+                    // 没有doc，即这个url还没有注册成为接口，应该返回404
+                    if (!doc) {
+                        resolve({
+                            status: 1,
+                            statusInfo: '当前地址未被注册为接口'
+                        });
 
-                    // 避免代码往下走，往下走就报错了
-                    return;
-                }
+                        // 避免代码往下走，往下走就报错了
+                        return;
+                    }
 
-                // 当前该接口激活的响应，目前只支持JSON
-                var activeResponse = doc.activeResponse;
+                    // 当前该接口激活的响应，目前只支持JSON
+                    var activeResponse = doc.activeResponse;
 
-                if (activeResponse) {
-                    deferred.resolve({
-                        status: 0,
-                        // 响应内容，目前支持JSON，所以这将是个对象
-                        response: activeResponse.data
-                    });
+                    if (activeResponse) {
+                        resolve({
+                            status: 0,
+                            // 响应内容，目前支持JSON，所以这将是个对象
+                            response: activeResponse.data
+                        });
+                    }
+                    else {
+                        resolve({
+                            status: 1,
+                            statusInfo: '该接口没有处于激活状态的响应，请尝试激活'
+                        });
+                    }
                 }
                 else {
-                    deferred.resolve({
-                        status: 1,
-                        statusInfo: '该接口没有处于激活状态的响应，请尝试激活'
+                    // reject一般为系统级错误
+                    reject({
+                        statusInfo: '查询错误'
                     });
                 }
-            }
-            else {
-                // reject一般为系统级错误
-                deferred.reject({
-                    statusInfo: '查询错误'
-                });
-            }
-        });
-
-    return promise;
+            });
+    });
 };
 
 /**
@@ -262,10 +232,6 @@ exports.getActiveResponse = function (url) {
  * @return {Promise} Promise对象
  */
 exports.setActiveResponse = function (interfaceId, responseId) {
-    // promise
-    var deferred = Q.defer();
-    var promise = deferred.promise;
-
     var operation = {};
 
     // responseId为空，操作行为是取消激活
@@ -284,16 +250,16 @@ exports.setActiveResponse = function (interfaceId, responseId) {
         }
     }
 
-    // 查找对应id的接口，更新数据
-    InterfaceModel.findByIdAndUpdate(
-        interfaceId,
-        operation,
-        function (err) {
-            !err ? deferred.resolve() : deferred.reject();
-        }
-    );
-
-    return promise;
+    return new Promise(function (resolve, reject) {
+        // 查找对应id的接口，更新数据
+        InterfaceModel.findByIdAndUpdate(
+            interfaceId,
+            operation,
+            function (err) {
+                !err ? resolve() : reject();
+            }
+        );
+    });
 };
 
 /**
