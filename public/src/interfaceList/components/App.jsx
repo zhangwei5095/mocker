@@ -82,6 +82,7 @@ class App extends Component {
         const downloadURL = `/admin/getFiddlerConfig?originURL=${originURL}&relativeURL=${relativeURL}`;
 
         window.open(downloadURL);
+        this.props.dispatch(actions.getFiddlerConfigDialogSwitch('hide'));
     };
 
     render() {
