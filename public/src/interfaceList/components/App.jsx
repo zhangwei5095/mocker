@@ -72,18 +72,16 @@ class App extends Component {
         this.props.dispatch(actions.hideDoubleCheck());
     };
 
+    /**
+     * 用户在输入了本机需要模拟的URL后调用该函数，目的是下载fiddler配置
+     *
+     * @param {string} originURL 本机的URL
+     * @param {string} relativeURL 模拟接口的相对URL
+     */
     onAfterGetURL(originURL, relativeURL) {
-        request
-            .get('/admin/getFiddlerConfig')
-            .query({
-                originURL,
-                relativeURL
-            })
-            .end(
-                () => {
+        const downloadURL = `/admin/getFiddlerConfig?originURL=${originURL}&relativeURL=${relativeURL}`;
 
-                }
-            );
+        window.open(downloadURL);
     };
 
     render() {

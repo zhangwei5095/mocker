@@ -13,7 +13,7 @@ var db = require('../lib/dbConnection');
 // schema
 var responseSchema = require('./schemas/response');
 
-// collection名,TODO 走可配置路线
+// collection名
 var collectionName = 'response';
 
 // model对象
