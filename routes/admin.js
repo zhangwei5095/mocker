@@ -37,7 +37,7 @@ files.forEach(function (file) {
         router[method]('/', controller);
     }
     else {
-        router.get('/' + relativePath, controller);
+        router[method]('/' + relativePath, controller);
     }
 });
 

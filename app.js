@@ -17,7 +17,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 // routers
-var adminAjaxRouter = require('./routes/adminAjaxRouter');
 var admin = require('./routes/admin');
 var mock = require('./routes/mock');
 
@@ -41,8 +40,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 /**
  * router 注意挂载顺序
  */
-// 设值端ajax接口，注意admin前缀
-app.use('/admin', adminAjaxRouter);
 // 管理页面路由
 app.use('/admin', admin);
 // mock路由
