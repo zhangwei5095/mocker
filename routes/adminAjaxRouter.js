@@ -9,7 +9,6 @@ var express = require('express');
 var router = express.Router();
 
 // 第三方
-var Q = require('q');
 var Promise = require('bluebird');
 
 // 模块
@@ -87,52 +86,50 @@ router.post('/saveJSONResponse', function (req, res, next) {
     var responseName = postData.responseName;
     var responseData = postData.responseData;
 
-    // promise
-    var deferred = Q.defer();
-    var promise = deferred.promise;
-
-    if (!interfaceId && !responseId) {
-        next();
-    }
-
-    // 如果有responseId则表示这个提交的目的是保存
-    if (responseId) {
-        responseModel
-            .updateResponseDataById(
-                responseId,
-                {
-                    name: responseName,
-                    data: responseData
-                }
-            )
-            .then(
-                function (response) {
-                    deferred.resolve(response);
-                },
-                deferred.reject
-            );
-    }
-    else {
-        // 保存响应是一定需要有接口id的
-        if (!interfaceId) {
-            deferred.reject();
+    var promise = new Promise(function (resolve, reject) {
+        if (!interfaceId && !responseId) {
+            next();
         }
-        else {
-            // 没有给responseId表示是新建
-            interfaceModel
-                .addNewJSONRes(
-                    interfaceId,
-                    responseName,
-                    responseData
+
+        // 如果有responseId则表示这个提交的目的是保存
+        if (responseId) {
+            responseModel
+                .updateResponseDataById(
+                    responseId,
+                    {
+                        name: responseName,
+                        data: responseData
+                    }
                 )
                 .then(
                     function (response) {
-                        deferred.resolve(response);
+                        resolve(response);
                     },
-                    deferred.reject
+                    reject
                 );
         }
-    }
+        else {
+            // 保存响应是一定需要有接口id的
+            if (!interfaceId) {
+                reject();
+            }
+            else {
+                // 没有给responseId表示是新建
+                interfaceModel
+                    .addNewJSONRes(
+                        interfaceId,
+                        responseName,
+                        responseData
+                    )
+                    .then(
+                        function (response) {
+                            resolve(response);
+                        },
+                        reject
+                    );
+            }
+        }
+    });
 
     /**
      * 保存结果枚举
