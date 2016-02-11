@@ -42,7 +42,7 @@ var response = new mongoose.Schema({
      * JSON各字段的评论
      */
     comment: {
-        type: Object
+        type: mongoose.Schema.Types.Mixed
     },
     /**
      * 响应最后的更新时间
@@ -50,6 +50,12 @@ var response = new mongoose.Schema({
     updateTime: {
         type: Date,
         default: Date.now
+    },
+    /**
+     * 模板
+     */
+    template: {
+        type: String
     }
 });
 

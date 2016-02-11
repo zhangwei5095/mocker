@@ -213,7 +213,10 @@ gulp.task('dev', ['webpack', 'style'], function () {
                     // 编译入口less文件
                     gulp.src(entryFileInfo.glob, {base: srcDir})
                         .pipe(less())
-                        .pipe(gulp.dest(assetDir));
+                        .pipe(gulp.dest(assetDir))
+                        .on('end', function () {
+                            gUtil.log('样式编译完成');
+                        });
                 }
                 catch (e) {
                     gUtil.log('构建发生错误');
@@ -221,7 +224,6 @@ gulp.task('dev', ['webpack', 'style'], function () {
             }
         }
         else {
-
             // 所属模块的名称
             var moduleName = getModuleName(filePath);
 
@@ -230,7 +232,10 @@ gulp.task('dev', ['webpack', 'style'], function () {
 
             // 移动
             gulp.src(path.join(srcDir, moduleName, 'css/font/*'), {base: srcDir})
-                .pipe(gulp.dest(assetDir));
+                .pipe(gulp.dest(assetDir))
+                .on('end', function () {
+                    gUtil.log('文件移动完成');
+                });
         }
     });
 });
