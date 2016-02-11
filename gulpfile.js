@@ -113,9 +113,10 @@ var getEntryFileInfo = function (filePath, entryFileName) {
 
     for (i = 0, len = modules.length; i < len; i++) {
         module = modules[i];
+        var relativePath = path.relative(srcDir, filePath);
 
-        // 变化的js文件能够匹配上所述的模块，则生成glob
-        if (filePath.indexOf(module) >= 0) {
+        // 变化的js文件能够匹配上所属的模块，则生成glob
+        if (relativePath.indexOf(module) === 0) {
             glob = path.join(srcDir, module) + '/**/' + entryFileName;
 
             break;
@@ -128,6 +129,12 @@ var getEntryFileInfo = function (filePath, entryFileName) {
     };
 };
 
+/**
+ * 根据前端资源文件路径推算出该文件所属的模块
+ *
+ * @param {string} filePath 文件路径
+ * @return {string} 模块名
+ */
 var getModuleName = function (filePath) {
     var relativePath = path.relative(srcDir, path.resolve(filePath));
 
