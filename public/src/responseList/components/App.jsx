@@ -15,6 +15,8 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import FontIcon from 'material-ui/lib/font-icon';
 import AppBar from 'material-ui/lib/app-bar';
 import IconButton from 'material-ui/lib/icon-button';
+import Popover from 'material-ui/lib/popover/popover';
+import PopoverAnimationFromTop from 'material-ui/lib/popover/popover-animation-from-top';
 
 // 第三方库
 import request from 'superagent';
@@ -39,9 +41,21 @@ class App extends Component {
             fontFamily: 'Microsoft Yahei'
         };
 
+        this.state = {
+            responseTypePopOverOpen: false
+        };
+
+        this.styles = {
+            popover: {
+                padding: 20,
+                textAlign: 'center'
+            }
+        };
+
         this.onClickSave = this.onClickSave.bind(this);
         this.hideDoubleCheck = this.hideDoubleCheck.bind(this);
         this.onAcceptDoubleCheck = this.onAcceptDoubleCheck.bind(this);
+        this.handleResponseTypePopOver = this.handleResponseTypePopOver.bind(this);
     };
 
     /**
@@ -128,6 +142,13 @@ class App extends Component {
         }
     };
 
+    handleResponseTypePopOver(e, data) {
+        this.setState({
+            responseTypePopOverOpen: data.open,
+            responseTypePopOverAnchor: e.currentTarget
+        });
+    };
+
     render() {
         const {snackbarData, interfaceId, doubleCheck, dispatch} = this.props;
 
@@ -143,13 +164,30 @@ class App extends Component {
                 <div className="top-btn-container">
                     <RaisedButton
                         label="添加新响应"
-                        style={this.topButtonStyle}
                         labelPosition="after"
+                        style={this.topButtonStyle}
                         secondary={true}
-                        disabled={this.props.newBtnData.disabled}
-                        linkButton={true}
-                        href={'/admin/jsonResponseEdit?interfaceId=' + interfaceId}
-                        icon={<FontIcon className="icon-plus" />} />
+                        icon={<FontIcon className="icon-plus" />}
+                        onTouchTap={(e) => {this.handleResponseTypePopOver(e, {open: true})}} />
+                    <Popover
+                        open={this.state.responseTypePopOverOpen}
+                        anchorEl={this.state.responseTypePopOverAnchor}
+                        anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                        targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                        onRequestClose={(e) => {this.handleResponseTypePopOver(e, {open: false})}}
+                        animation={PopoverAnimationFromTop}
+                        style={this.styles.popover}>
+                        <div>
+                            <RaisedButton
+                                label="JSON响应"
+                                style={this.topButtonStyle}
+                                labelPosition="after"
+                                secondary={true}
+                                disabled={this.props.newBtnData.disabled}
+                                linkButton={true}
+                                href={'/admin/jsonResponseEdit?interfaceId=' + interfaceId} />
+                        </div>
+                    </Popover>
                     <RaisedButton
                         label="保存"
                         className="save-btn"
