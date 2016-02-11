@@ -36,8 +36,8 @@ class InterfaceList extends Component {
 
         // 表单的列名集合
         this.colNames = [
-            '接口地址', '接口类型', '注册响应数量',
-            '当前激活响应', '编辑', '获取fiddler配置', '删除'
+            '接口地址', '注册响应数量', '当前激活响应',
+            '编辑', '获取fiddler配置', '删除'
         ];
     };
 
@@ -98,7 +98,6 @@ class InterfaceList extends Component {
                             return (
                                 <TableRow>
                                     <TableRowColumn style={tableStyle.cellStyle}>{data.url}</TableRowColumn>
-                                    <TableRowColumn style={tableStyle.cellStyle}>JSON</TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>
                                         {data.responseCount}
                                     </TableRowColumn>

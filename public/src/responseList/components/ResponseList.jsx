@@ -34,8 +34,8 @@ class InterfaceList extends Component {
 
         // 表单的列名集合
         this.colNames = [
-            '是否激活', '响应名称', '编辑',
-            '删除'
+            '是否激活', '响应名称', '响应类型',
+            '编辑', '删除'
         ];
 
         this.onClickDelete = this.onClickDelete.bind(this);
@@ -104,6 +104,7 @@ class InterfaceList extends Component {
                                                 onToggle={() => {this.onToggle(response._id)}} />
                                     </TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>{response.name}</TableRowColumn>
+                                    <TableRowColumn style={tableStyle.cellStyle}>{response.type}</TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>
                                         <IconButton iconClassName="icon-pencil"
                                                     linkButton={true}

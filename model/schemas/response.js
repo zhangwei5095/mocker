@@ -39,12 +39,6 @@ var response = new mongoose.Schema({
         default: ''
     },
     /**
-     * 模板
-     */
-    template: {
-        type: String
-    },
-    /**
      * JSON各字段的评论
      */
     comment: {

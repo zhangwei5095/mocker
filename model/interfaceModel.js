@@ -148,7 +148,12 @@ exports.getResponseList = function (id) {
     return new Promise(function (resolve, reject) {
         // 根据mongodb的id来查找数据
         InterfaceModel.findOne({_id: id})
-            .populate('responses')
+            .select('responses url activeResponse')
+            .populate({
+                path: 'responses',
+                // populate目前激活的响应，需要的字段只有name
+                select: 'name type'
+            })
             .lean()
             .exec(function (err, doc) {
                 if (!err) {
