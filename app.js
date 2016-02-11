@@ -9,6 +9,7 @@ var path = require('path');
 
 // express
 var express = require('express');
+var app = express();
 
 // 中间件
 var favicon = require('serve-favicon');
@@ -19,8 +20,6 @@ var bodyParser = require('body-parser');
 // routers
 var admin = require('./routes/admin');
 var mock = require('./routes/mock');
-
-var app = express();
 
 // 设置模板引擎
 app.set('views', path.join(__dirname, 'views'));

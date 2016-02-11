@@ -1,5 +1,5 @@
 /**
- * @file 后台管理同步接口router
+ * @file 后台管理接口router
  * @author Franck Chen(chenfan02@baidu.com)
  */
 

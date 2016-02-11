@@ -114,8 +114,6 @@ exports.addNewJSONRes = function (interfaceId, name, data) {
     return new Promise(function (resolve, reject) {
         promise.then(
             function (newResponseData) {
-                // var newResponseData = data.newResponseData;
-
                 InterfaceModel.findOneAndUpdate(
                     {
                         _id: interfaceId
