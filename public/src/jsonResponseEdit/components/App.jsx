@@ -17,7 +17,7 @@ import TextField from 'material-ui/lib/text-field';
 import request from 'superagent';
 
 // 组件
-import JSONEditor from './JSONEditor.jsx';
+import AceEditor from 'common/component/AceEditor.jsx';
 import DoubleCheckModal from 'common/component/DoubleCheckModal.jsx';
 import Tip from 'common/component/Tip.jsx';
 
@@ -122,7 +122,9 @@ class App extends Component {
                            floatingLabelText="响应名称"
                            defaultValue={responseData.name}
                            style={this.responseNameInputStyle} />
-                <JSONEditor ref="jsonEditor" content={responseData.data} />
+                <AceEditor ref="jsonEditor"
+                           lanType="json"
+                           content={responseData.data} />
                 <div className="tip-container">
                     <Tip text={tipData.text}
                          skin={tipData.skin}
