@@ -17,6 +17,7 @@ module.exports = {
         var responseId = postData.responseId;
         var responseName = postData.responseName;
         var responseData = postData.responseData;
+        var responseType = postData.type;
 
         var promise = new Promise(function (resolve, reject) {
             if (!interfaceId && !responseId) {
@@ -26,7 +27,7 @@ module.exports = {
             // 如果有responseId则表示这个提交的目的是保存
             if (responseId) {
                 responseModel
-                    .updateResponseDataById(
+                    .updateById(
                         responseId,
                         {
                             name: responseName,
@@ -48,11 +49,7 @@ module.exports = {
                 else {
                     // 没有给responseId表示是新建
                     interfaceModel
-                        .addNewJSONRes(
-                            interfaceId,
-                            responseName,
-                            responseData
-                        )
+                        .addResponse(interfaceId, responseName, responseType, responseData)
                         .then(
                             function (response) {
                                 resolve(response);

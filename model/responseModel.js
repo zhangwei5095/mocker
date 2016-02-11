@@ -22,16 +22,25 @@ var ResponseModel = db.model(collectionName, responseSchema);
 /**
  * 生成新的响应实体，并入库
  *
- * @param {string} responseName 响应的名字
+ * @param {string} name 响应的名字
+ * @param {string} type 响应的类型,如‘JSON’,‘HTML’等等
  * @param {*} data 响应内容
  * @return {Promise} Promise对象
  */
-exports.createNewResponseEntity = function (responseName, data) {
+exports.add = function (name, type, data) {
+    switch (type) {
+        case 'JSON':
+            // JSON数据需要解析后再保存
+            data = JSON.parse(data);
+            break;
+    }
+
     return new Promise(function (resolve, reject) {
         var doc = {
             // db中name是required, 必须有，且不能是空字符串
-            name: responseName,
-            data: JSON.parse(data)
+            name: name,
+            type: type,
+            data: data
         };
 
         // 创建一个新的响应document并保存
@@ -49,7 +58,7 @@ exports.createNewResponseEntity = function (responseName, data) {
  * @param {string} responseId 响应的id(每个响应、每个接口都有自己的id)
  * @return {Promise}
  */
-exports.getResponseDataById = function (responseId) {
+exports.getById = function (responseId) {
     return new Promise(function (resolve, reject) {
         // 根据mongodb的id来查找数据
         ResponseModel.findById(responseId)
@@ -70,7 +79,7 @@ exports.getResponseDataById = function (responseId) {
  * @param {*} responseData.data 新增的响应主体
  * @return {Promise} Promise对象
  */
-exports.updateResponseDataById = function (responseId, responseData) {
+exports.updateById = function (responseId, responseData) {
     return new Promise(function (resolve, reject) {
         // responseData是个序列化过的JSON，需要解析后入库
         responseData.data = JSON.parse(responseData.data);
@@ -92,7 +101,7 @@ exports.updateResponseDataById = function (responseId, responseData) {
  * @param {string} responseId 响应id
  * @returns {Promise} Promise对象
  */
-exports.deleteResponseById = function (responseId) {
+exports.deleteById = function (responseId) {
     return new Promise(function (resolve, reject) {
         ResponseModel
             .findById(responseId, function (err, doc) {

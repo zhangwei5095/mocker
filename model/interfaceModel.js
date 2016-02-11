@@ -56,7 +56,7 @@ exports.getInterfaceList = function () {
  * @param {string} newInterfaceUrl 新添接口的URL
  * @return {Promise} promise对象
  */
-exports.addNewInterface = function (newInterfaceUrl) {
+exports.add = function (newInterfaceUrl) {
     // 目前忽略查询字符串部分
     var newInterfaceURL = URL.parse(newInterfaceUrl).pathname;
 
@@ -103,16 +103,18 @@ exports.addNewInterface = function (newInterfaceUrl) {
  *
  * @param {string} interfaceId 接口id
  * @param {string} name 响应的名称
+ * @param {string} type 响应的类型
  * @param {*} data 相应数据，目前只是json字符串
  * @return {Promise} promise对象
  */
-exports.addNewJSONRes = function (interfaceId, name, data) {
+exports.addResponse = function (interfaceId, name, type, data) {
     // 创建一个新的响应并入库
-    var promise = responseModel.createNewResponseEntity(name, data);
+    var promise = responseModel.add(name, type, data);
 
     return new Promise(function (resolve, reject) {
         promise.then(
             function (newResponseData) {
+                // 创建完新的响应实体后需要更新接口的相关数据
                 InterfaceModel.findOneAndUpdate(
                     {
                         _id: interfaceId
@@ -273,7 +275,7 @@ exports.setActiveResponse = function (interfaceId, responseId) {
  * @param {string} interfaceId 要删除的接口的id
  * @return {Promise}
  */
-exports.deleteInterfaceById = function (interfaceId) {
+exports.deleteById = function (interfaceId) {
     return new Promise(function (resolve, reject) {
         InterfaceModel
             .findById(interfaceId)

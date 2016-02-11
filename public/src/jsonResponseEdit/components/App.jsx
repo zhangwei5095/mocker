@@ -49,10 +49,13 @@ class App extends Component {
      * 点击保存时处理函数
      */
     onClickSave() {
+        const {dispatch, interfaceId} = this.props;
+
         // 组件 or DOM
         const jsonEditor = this.refs.jsonEditor;
         const responseNameInput = this.refs.responseName;
-        const {dispatch, interfaceId} = this.props;
+
+        // 注意这个参数可能没有，有的话是修改，没有的话是保存
         const responseId = this.props.responseData.responseId || this.props.responseId;
 
         const responseName = responseNameInput.getValue().trim();
@@ -68,13 +71,14 @@ class App extends Component {
             const responseData = jsonEditor.getEditorContent();
 
             request
-                .post('/admin/saveJSONResponse')
+                .post('/admin/saveResponse')
                 .send(
                     {
                         interfaceId,
                         responseId,
                         responseName,
-                        responseData
+                        responseData,
+                        type: 'JSON'
                     }
                 )
                 .end(

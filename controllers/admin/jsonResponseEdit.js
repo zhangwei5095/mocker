@@ -30,7 +30,7 @@ module.exports = {
             // 如果有responseId表示是编辑，这时候需要查数据库
             if (responseId) {
                 responseModel
-                    .getResponseDataById(responseId)
+                    .getById(responseId)
                     .then(
                         function (response) {
                             // 填充首屏数据

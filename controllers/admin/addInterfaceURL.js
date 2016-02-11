@@ -13,7 +13,7 @@ module.exports = {
         var newInterfaceURL = postData.url;
 
         // 调用model层接口，注册新接口
-        var promise = interfaceModel.addNewInterface(newInterfaceURL);
+        var promise = interfaceModel.add(newInterfaceURL);
 
         promise.then(
             function (data) {

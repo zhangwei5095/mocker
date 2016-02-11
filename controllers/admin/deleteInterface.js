@@ -19,7 +19,7 @@ module.exports = {
             }
 
             interfaceModel
-                .deleteInterfaceById(interfaceId)
+                .deleteById(interfaceId)
                 .then(resolve, reject);
         });
 

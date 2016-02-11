@@ -23,7 +23,7 @@ module.exports = {
         }
 
         // model层删除对应的响应
-        var promise = responseModel.deleteResponseById(responseId);
+        var promise = responseModel.deleteById(responseId);
 
         promise.then(
             function () {
