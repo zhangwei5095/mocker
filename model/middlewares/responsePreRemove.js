@@ -24,6 +24,10 @@ module.exports = function (next) {
                     // 剔除这个节点的ref
                     $pull: {
                         responses: thisDoc._id
+                    },
+                    // 已注册的响应数量减1
+                    $inc: {
+                        responseCount: -1
                     }
                 },
                 {

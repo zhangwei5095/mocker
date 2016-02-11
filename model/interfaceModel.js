@@ -36,7 +36,7 @@ exports.getInterfaceList = function () {
         // 查看全部接口
         InterfaceModel
             .find({})
-            .select('activeResponse responses url')
+            .select('activeResponse responses url responseCount')
             .populate({
                 path: 'activeResponse',
                 // populate目前激活的响应，需要的字段只有name
@@ -54,10 +54,9 @@ exports.getInterfaceList = function () {
  * 注册新接口
  *
  * @param {string} newInterfaceUrl 新添接口的URL
- * @param {string} type 新添接口的类型，如JSON,VM,Smarty...
  * @return {Promise} promise对象
  */
-exports.registerNewInterface = function (newInterfaceUrl, type) {
+exports.addNewInterface = function (newInterfaceUrl) {
     // 目前忽略查询字符串部分
     var newInterfaceURL = URL.parse(newInterfaceUrl).pathname;
 
@@ -78,10 +77,10 @@ exports.registerNewInterface = function (newInterfaceUrl, type) {
                 }
                 else {
                     var doc = {
-                        url: newInterfaceURL,
-                        type: type
+                        url: newInterfaceURL
                     };
 
+                    // 创建新document
                     var mongooseEntity = new InterfaceModel(doc);
                     mongooseEntity.save(function (error) {
                         if (!error) {
@@ -123,6 +122,10 @@ exports.addNewJSONRes = function (interfaceId, name, data) {
                         $push: {
                             // doc即新document
                             responses: newResponseData
+                        },
+                        // 已注册的响应数量自增1
+                        $inc: {
+                            responseCount: 1
                         }
                     },
                     function (err) {

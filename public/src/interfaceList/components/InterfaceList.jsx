@@ -100,7 +100,7 @@ class InterfaceList extends Component {
                                     <TableRowColumn style={tableStyle.cellStyle}>{data.url}</TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>JSON</TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>
-                                        {data.responses.length}
+                                        {data.responseCount}
                                     </TableRowColumn>
                                     <TableRowColumn style={responseCellStyle}>{activeResponseName}</TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>

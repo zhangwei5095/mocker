@@ -23,7 +23,7 @@ var interfaceSchema = new mongoose.Schema({
      */
     enable: {
         type: Boolean,
-        default: false
+        default: true
     },
     /**
      * 使用这个接口的用户，内嵌doc未来扩展
@@ -44,7 +44,7 @@ var interfaceSchema = new mongoose.Schema({
     /**
      * 响应数量，即这个接口注册了多少个响应
      */
-    responseSize: {
+    responseCount: {
         type: Number,
         default: 0
     },

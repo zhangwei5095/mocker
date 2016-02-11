@@ -11,10 +11,9 @@ module.exports = {
         // post数据，由body parser自动解析
         var postData = req.body;
         var newInterfaceURL = postData.url;
-        var dataType = postData.type ? postData.type : 'JSON';
 
         // 调用model层接口，注册新接口
-        var promise = interfaceModel.registerNewInterface(newInterfaceURL, dataType);
+        var promise = interfaceModel.addNewInterface(newInterfaceURL);
 
         promise.then(
             function (data) {
