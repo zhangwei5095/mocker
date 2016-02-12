@@ -142,58 +142,26 @@ var getModuleName = function (filePath) {
 };
 
 /**
+ * webpack 实时监控任务
+ */
+gulp.task('webpack-watch', function () {
+    gulp.src(srcDirGlob + 'main.jsx', {base: srcDir})
+        .pipe(
+            name(function (file) {
+                // webpack entry point
+                return removeExtension(file.relative);
+            })
+        )
+        .pipe(
+            webpack(Object.assign({}, webpackConfig, {watch: true}))
+        )
+        .pipe(gulp.dest(assetDir));
+});
+
+/**
  * 开发时用的监控、增量构建任务
  */
-var jsFiles = [
-    '*.es6', '*.js', '*.jsx'
-];
-var jsFilesGlob = jsFiles.map(function (pattern) {
-    return srcDirGlob + pattern;
-});
-gulp.task('dev', ['webpack', 'style'], function () {
-    gUtil.log('构建全部完成，进入开发模式');
-
-    // js文件实时构建
-    gulp.watch(jsFilesGlob, function (e) {
-        // 发生变化的文件在静态资源目录下的相对路径
-        var relativePath = path.relative(srcDir, e.path);
-
-        // 如果变动的通用的js代码，则需要构建全部模块
-        if (relativePath.indexOf('common') === 0) {
-            gUtil.log('通用模块代码发生变化，开始全量构建...');
-
-            try {
-                // js全量构建
-                buildAllJS();
-            }
-            catch (e) {
-                gUtil.log('构建发生错误');
-            }
-
-            return;
-        }
-
-        // 修改的不是通用代码，则需要提取出入口文件相关信息，然后构建入口文件
-        var entryFileInfo = getEntryFileInfo(e.path, 'main.jsx');
-
-        if (entryFileInfo.glob) {
-            gUtil.log(gUtil.colors.magenta(entryFileInfo.moduleName) + '模块JS代码发生变化，准备开始构建...');
-
-            try {
-                gulp.src(entryFileInfo.glob, {base: srcDir})
-                    .pipe(name(function (file) {
-                        // webpack entry point
-                        return removeExtension(file.relative);
-                    }))
-                    .pipe(webpack(webpackConfig))
-                    .pipe(gulp.dest(assetDir));
-            }
-            catch (e) {
-                gUtil.log('构建发生错误');
-            }
-        }
-    });
-
+gulp.task('dev', ['style', 'webpack-watch'], function () {
     // 样式实时构建
     gulp.watch(srcDirGlob + 'css/*', function (e) {
         // 发生变化的文件的路径
