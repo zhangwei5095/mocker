@@ -49,17 +49,18 @@ class App extends Component {
      * 点击保存时处理函数
      */
     onClickSave() {
-        const {dispatch, interfaceId} = this.props;
+        const {props} = this;
+        const {dispatch, interfaceId} = props;
 
         // 组件 or DOM
-        const jsonEditor = this.refs.jsonEditor;
+        const aceEditor = this.refs.aceEditor;
         const responseNameInput = this.refs.responseName;
 
         // 注意这个参数可能没有，有的话是修改，没有的话是保存
-        const responseId = this.props.responseData.responseId || this.props.responseId;
+        const responseId = props.responseData.responseId || props.responseId;
 
         const responseName = responseNameInput.getValue().trim();
-        const validity = jsonEditor.getValidity() && (responseName.length > 0);
+        const validity = aceEditor.getValidity() && (responseName.length > 0);
 
         if (!responseName) {
             dispatch(actions.showTempTip('响应名称不能为空'));
@@ -68,7 +69,7 @@ class App extends Component {
 
         // 校验合法的话，保存修改
         if (validity) {
-            const responseData = jsonEditor.getEditorContent();
+            const responseData = aceEditor.getEditorContent();
 
             request
                 .post('/admin/saveResponse')
@@ -78,12 +79,13 @@ class App extends Component {
                         responseId,
                         responseName,
                         responseData,
-                        type: 'JSON'
+                        type: props.responseType.toUpperCase()
                     }
                 )
                 .end(
                     (err, res) => {
                         if (!err && res.ok) {
+                            // 返回的数据是JSON，所以要解析下
                             let data = JSON.parse(res.text);
 
                             // 保存无误的话
@@ -98,7 +100,7 @@ class App extends Component {
                 );
         }
         else {
-            dispatch(actions.showTempTip('请输入合法的JSON的数据'));
+            dispatch(actions.showTempTip(`请输入合法的${props.responseType}的数据`));
         }
     };
 
@@ -117,7 +119,8 @@ class App extends Component {
     };
 
     render() {
-        let {responseData, doubleCheckModal, tipData} = this.props;
+        const {props} = this;
+        let {responseData, doubleCheckModal, tipData} = props;
 
         return (
             <div className="app-container">
@@ -126,8 +129,8 @@ class App extends Component {
                            floatingLabelText="响应名称"
                            defaultValue={responseData.name}
                            style={this.responseNameInputStyle} />
-                <AceEditor ref="jsonEditor"
-                           lanType="json"
+                <AceEditor ref="aceEditor"
+                           lanType={props.responseType.toLowerCase()}
                            content={responseData.data} />
                 <div className="tip-container">
                     <Tip text={tipData.text}

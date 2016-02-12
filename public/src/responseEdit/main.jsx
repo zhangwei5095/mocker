@@ -42,11 +42,14 @@ const store = createStoreWithMiddleware(
 const responseId = initialData.response
     ? initialData.response._id
     : '';
+// 编辑器的种类，目前支持JSON和HTML
+const responseType = initialData.responseType;
 
 render(
     <Provider store={store}>
         <App interfaceId={initialData.interfaceId}
-             responseId={responseId} />
+             responseId={responseId}
+             responseType={responseType} />
     </Provider>,
     rootElement
 );

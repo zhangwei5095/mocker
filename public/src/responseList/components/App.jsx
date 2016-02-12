@@ -185,7 +185,15 @@ class App extends Component {
                                 secondary={true}
                                 disabled={this.props.newBtnData.disabled}
                                 linkButton={true}
-                                href={'/admin/jsonResponseEdit?interfaceId=' + interfaceId} />
+                                href={`/admin/responseEdit?interfaceId=${interfaceId}&type=JSON`} />
+                            <RaisedButton
+                                label="HTML响应"
+                                style={this.topButtonStyle}
+                                labelPosition="after"
+                                secondary={true}
+                                disabled={this.props.newBtnData.disabled}
+                                linkButton={true}
+                                href={`/admin/responseEdit?interfaceId=${interfaceId}&type=HTML`} />
                         </div>
                     </Popover>
                     <RaisedButton

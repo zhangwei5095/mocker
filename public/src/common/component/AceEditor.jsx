@@ -10,7 +10,7 @@ import React, {Component, PropTypes} from 'react';
  * ACE编辑器组件
  * @extend Component
  */
-class JSONEditor extends Component {
+class AceEditor extends Component {
     constructor(props) {
         super(props);
 
@@ -20,8 +20,8 @@ class JSONEditor extends Component {
             content: props.content
         };
 
-        switch (props.lanType) {
-            case 'json':
+        switch (props.lanType.toUpperCase()) {
+            case 'JSON':
                 // JSON数据在置入编辑器内时先格式化一下
                 this.state.content = JSON.stringify(props.content, null, 4);
                 break;
@@ -68,4 +68,4 @@ class JSONEditor extends Component {
     };
 }
 
-export default JSONEditor;
+export default AceEditor;

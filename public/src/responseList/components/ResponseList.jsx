@@ -74,7 +74,7 @@ class InterfaceList extends Component {
      * @return {string} 响应编辑页面地址
      */
     getResponseEditURL(interfaceId, responseId = '') {
-        return `/admin/jsonResponseEdit?interfaceId=${interfaceId}&responseId=${responseId}`;
+        return `/admin/responseEdit?interfaceId=${interfaceId}&responseId=${responseId}`;
     };
 
     render() {

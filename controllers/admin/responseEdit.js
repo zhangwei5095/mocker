@@ -1,5 +1,5 @@
 /**
- * @file JSON编辑页面接口
+ * @file 响应编辑页面接口
  * @author Franck Chen(chenfan02@baidu.com)
  */
 
@@ -24,7 +24,7 @@ module.exports = {
         var promise = new Promise(function (resolve, reject) {
             // interfaceId是一定要有的
             if (!interfaceId) {
-                next();
+                reject();
                 return;
             }
 
@@ -37,6 +37,8 @@ module.exports = {
                             // 填充首屏数据
                             initData.response = response;
                             initData.responseId = response._id;
+                            // 编辑的是哪一种数据，目前支持JSON和HTML
+                            initData.responseType = response.type;
 
                             resolve();
                         },
@@ -45,14 +47,22 @@ module.exports = {
             }
             else {
                 // 没有responseId的话是新建动作，不需要异步处理
+                initData.responseType = req.query.type;
+
+                // 新建必须提供类型
+                if (!initData.responseType) {
+                    reject();
+                    return;
+                }
+
                 resolve();
             }
         });
 
         promise.then(
             function () {
-                res.render('jsonResponseEdit', {
-                    title: 'JSON响应编辑',
+                res.render('responseEdit', {
+                    title: initData.responseType.toUpperCase() + '响应编辑',
                     initialData: JSON.stringify(initData),
                     interfaceId: interfaceId
                 });
