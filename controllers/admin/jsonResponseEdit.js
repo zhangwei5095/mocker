@@ -25,6 +25,7 @@ module.exports = {
             // interfaceId是一定要有的
             if (!interfaceId) {
                 next();
+                return;
             }
 
             // 如果有responseId表示是编辑，这时候需要查数据库
