@@ -80,7 +80,7 @@ const showSnackBarAWhile = (text) => {
 // 显示底部提示
 const showSnackBar = (text) => {
     return {
-        type: 'SHOW_SNACK_BAR',
+        type: 'SNACK_BAR/SHOW',
         text
     };
 };
@@ -177,6 +177,7 @@ const getFiddlerConfigDialogSwitch = (mode, relativeURL) => {
 
 export {
     showModal,
+    showSnackBar,
     hideModal,
     urlErrorTip,
     saveInterface,

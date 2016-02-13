@@ -5,6 +5,7 @@
 
 const initState = {
     open: false,
+    action: '',
     text: '',
     // 设置为0则永久显示，代码控制显隐，不需要自动
     autoHideDuration: 0
@@ -12,7 +13,7 @@ const initState = {
 
 export default (state = initState, action) => {
     switch (action.type) {
-        case 'SHOW_SNACK_BAR':
+        case 'SNACK_BAR/SHOW':
             return Object.assign(
                 {},
                 state,

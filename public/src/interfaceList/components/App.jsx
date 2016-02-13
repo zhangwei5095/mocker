@@ -86,7 +86,8 @@ class App extends Component {
     };
 
     render() {
-        const {doubleCheck, fiddlerConfigDialog, dispatch} = this.props;
+        const {props} = this;
+        const {doubleCheck, fiddlerConfigDialog, dispatch} = props;
 
         return (
             <div className="app-container">
@@ -103,11 +104,12 @@ class App extends Component {
                 </div>
                 <InterfaceList />
                 <InterfaceCtrlModal
-                    hostURL={this.props.hostURL} />
+                    hostURL={props.hostURL} />
                 <Snackbar
-                    open={this.props.snackbarData.open}
-                    message={this.props.snackbarData.text}
-                    autoHideDuration={this.props.snackbarData.autoHideDuration}
+                    open={props.snackbarData.open}
+                    message={props.snackbarData.text}
+                    autoHideDuration={props.snackbarData.autoHideDuration}
+                    onRequestClose={() => {dispatch(actions.hideSnackBar())}}
                 />
                 <DoubleCheckModal title={doubleCheck.title}
                                   text={doubleCheck.text}
