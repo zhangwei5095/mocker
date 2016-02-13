@@ -48,6 +48,7 @@ const responseType = initialData.responseType;
 render(
     <Provider store={store}>
         <App interfaceId={initialData.interfaceId}
+             interfaceURL={initialData.interfaceURL}
              responseId={responseId}
              responseType={responseType} />
     </Provider>,

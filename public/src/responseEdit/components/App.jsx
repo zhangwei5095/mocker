@@ -12,6 +12,8 @@ import {connect} from 'react-redux';
 // ui组件
 import RaisedButton from 'material-ui/lib/raised-button';
 import TextField from 'material-ui/lib/text-field';
+import AppBar from 'material-ui/lib/app-bar';
+import IconButton from 'material-ui/lib/icon-button';
 
 // 第三方
 import request from 'superagent';
@@ -38,6 +40,13 @@ class App extends Component {
 
         this.responseNameInputStyle = {
             width: '600px'
+        };
+
+        this.styles = {
+            appBar: {
+                position: 'fixed',
+                top: 0
+            }
         };
 
         this.onClickSave = this.onClickSave.bind(this);
@@ -124,6 +133,12 @@ class App extends Component {
 
         return (
             <div className="app-container">
+                <AppBar
+                    title={`响应所属接口地址:${props.interfaceURL}`}
+                    iconElementLeft={
+                        <IconButton iconClassName="icon-home" />
+                    }
+                    style={this.styles.appBar} />
                 <TextField ref="responseName"
                            hintText="响应名称"
                            floatingLabelText="响应名称"
