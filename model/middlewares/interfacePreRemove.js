@@ -5,8 +5,6 @@
 
 var Promise = require('bluebird');
 
-var responseModel = require('../responseModel');
-
 module.exports = function (next) {
     var ResponseModel = this.model('responses');
     // 正在准备删除的document

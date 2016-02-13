@@ -246,13 +246,13 @@ exports.setActiveResponse = function (interfaceId, responseId) {
             $unset: {
                 activeResponse: ''
             }
-        }
+        };
     }
     else {
         operation = {
             // 注意id的类型
             activeResponse: new ObjectId(responseId)
-        }
+        };
     }
 
     return new Promise(function (resolve, reject) {

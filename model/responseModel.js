@@ -45,7 +45,7 @@ exports.add = function (name, type, data) {
 
         // 创建一个新的响应document并保存
         var newEntity = new ResponseModel(doc);
-        newEntity.save(function(error, newResponseData) {
+        newEntity.save(function (error, newResponseData) {
             // 新的响应保存无误
             !error ? resolve(newResponseData) : reject();
         });
@@ -106,7 +106,7 @@ exports.updateById = function (responseId, responseData) {
  * 根据id删除指定的响应
  *
  * @param {string} responseId 响应id
- * @returns {Promise} Promise对象
+ * @return {Promise} Promise对象
  */
 exports.deleteById = function (responseId) {
     return new Promise(function (resolve, reject) {

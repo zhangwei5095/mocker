@@ -12,7 +12,7 @@ var express = require('express');
 // model
 var interfaceModel = require('../../model/interfaceModel');
 
-module.exports = function(req, res, next) {
+module.exports = function (req, res, next) {
     var originalUrl = req.originalUrl;
 
     // 获取到用户请求的模拟接口地址，目前忽略查询字符串

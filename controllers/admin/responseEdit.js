@@ -11,7 +11,7 @@ var responseModel = require('../../model/responseModel');
 
 module.exports = {
     method: 'get',
-    controller: function(req, res, next) {
+    controller: function (req, res, next) {
         // 从查询字符串中获取interfaceID
         var interfaceId = req.query.interfaceId;
         var responseId = req.query.responseId;
