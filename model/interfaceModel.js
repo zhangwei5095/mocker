@@ -71,9 +71,7 @@ exports.add = function (newInterfaceUrl) {
             function (err, url) {
                 // 不允许注册同名的action，所以如果有记录则需要提示错误
                 if (url) {
-                    reject({
-                        statusInfo: '接口地址已存在'
-                    });
+                    reject('接口地址已存在');
                 }
                 else {
                     var doc = {
@@ -87,9 +85,7 @@ exports.add = function (newInterfaceUrl) {
                             resolve();
                         }
                         else {
-                            reject({
-                                statusInfo: '保存失败'
-                            });
+                            reject('');
                         }
                     });
                 }

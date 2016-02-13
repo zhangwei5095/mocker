@@ -38,8 +38,19 @@ const saveInterface = (url) => {
                 if (err || !res.ok) {
                     // 保存失败分支
                     dispatch(hideModal());
+                    dispatch(showSnackBar('接口添加失败!'));
                 }
                 else {
+                    const data = JSON.parse(res.text);
+
+                    if (data.status !== 0) {
+                        // 保存失败分支
+                        dispatch(hideModal());
+                        dispatch(showSnackBar(`接口添加失败!${data.statusInfo}`));
+
+                        return;
+                    }
+
                     // 保存成功，并弹出成功提示
                     dispatch(hideModal());
                     dispatch(fetchNewInterfaceList());

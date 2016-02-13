@@ -15,16 +15,12 @@ module.exports = {
         // 调用model层接口，注册新接口
         var promise = interfaceModel.add(newInterfaceURL);
 
-        promise.then(
-            function (data) {
-                res.json(data);
-            },
-            function () {
-                res.json({
-                    status: 1,
-                    statusInfo: '错误'
-                });
-            }
-        );
+        promise.finally(function () {
+            var isFulfilled = promise.isFulfilled();
+            res.json({
+                status: isFulfilled ? 0 : 1,
+                statusInfo: (isFulfilled ? promise.value() : promise.reason()) || ''
+            });
+        });
     }
 };
