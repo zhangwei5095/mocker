@@ -33,6 +33,20 @@ var response = new mongoose.Schema({
         ref: 'interface'
     },
     /**
+     * 响应延迟
+     */
+    delay: {
+        type: Number,
+        default: 0
+    },
+    /**
+     * 响应的HTTP状态码
+     */
+    httpStatusCode: {
+        type: Number,
+        default: 200
+    },
+    /**
      * 响应内容,因为是JSON，所以是字符串
      */
     data: {
