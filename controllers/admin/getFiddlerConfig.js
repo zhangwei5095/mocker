@@ -20,7 +20,7 @@ module.exports = {
         // 假数据服务器所在域名
         const host = req.get('host');
         // 响应地址
-        const actionPath = `http://${host}/${relativeURL}`;
+        const actionPath = `http://${host}/mock/${relativeURL}`;
 
         const responseRule = `<ResponseRule Match="${originURL}" Action="${actionPath}" Enabled="false" />`;
 
