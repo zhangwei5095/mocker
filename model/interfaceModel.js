@@ -182,9 +182,6 @@ exports.getResponseList = function (id) {
  * @return {*} 响应
  */
 exports.getActiveResponse = function (url) {
-    // 消除掉/mock前缀
-    url = url.replace(/^mock\//, '');
-
     return new Promise(function (resolve, reject) {
         // 根据URL查询接口，取activeResponse ref并populate
         InterfaceModel
@@ -211,7 +208,8 @@ exports.getActiveResponse = function (url) {
                         resolve({
                             status: 0,
                             // 响应内容，目前支持JSON，所以这将是个对象
-                            response: activeResponse.data
+                            response: activeResponse.data,
+                            responseType: activeResponse.type
                         });
                     }
                     else {

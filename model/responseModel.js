@@ -81,8 +81,15 @@ exports.getById = function (responseId) {
  */
 exports.updateById = function (responseId, responseData) {
     return new Promise(function (resolve, reject) {
-        // responseData是个序列化过的JSON，需要解析后入库
-        responseData.data = JSON.parse(responseData.data);
+        switch (responseData.responseType.toUpperCase()) {
+            case 'JSON':
+                responseData.data = JSON.parse(responseData.data);
+                break;
+            case 'HTML':
+                break;
+            default:
+                reject();
+        }
 
         ResponseModel.findByIdAndUpdate(
             responseId,

@@ -31,6 +31,7 @@ module.exports = {
                         responseId,
                         {
                             name: responseName,
+                            responseType: responseType,
                             data: responseData
                         }
                     )
