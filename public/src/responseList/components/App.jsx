@@ -150,7 +150,7 @@ class App extends Component {
     };
 
     render() {
-        const {snackbarData, interfaceId, doubleCheck, dispatch} = this.props;
+        const {snackbarData, interfaceId, doubleCheck, interfaceURL, dispatch} = this.props;
 
         return (
             <div className="app-container">
@@ -185,7 +185,7 @@ class App extends Component {
                                 secondary={true}
                                 disabled={this.props.newBtnData.disabled}
                                 linkButton={true}
-                                href={`/admin/responseEdit?interfaceId=${interfaceId}&type=JSON`} />
+                                href={`/admin/responseEdit?interfaceId=${interfaceId}&type=JSON&interfaceURL=/${interfaceURL}`} />
                             <RaisedButton
                                 label="HTML响应"
                                 style={this.topButtonStyle}

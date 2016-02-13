@@ -21,7 +21,9 @@ module.exports = {
         // 首屏数据
         var initData = {
             interfaceId: interfaceId,
-            interfaceURL: interfaceURL
+            interfaceURL: interfaceURL,
+            httpStatusCode: 200,
+            delay: 0
         };
 
         var promise = new Promise(function (resolve, reject) {
@@ -42,6 +44,8 @@ module.exports = {
                             initData.responseId = response._id;
                             // 编辑的是哪一种数据，目前支持JSON和HTML
                             initData.responseType = response.type;
+                            initData.httpStatusCode = response.httpStatusCode;
+                            initData.delay = response.delay;
 
                             resolve();
                         },

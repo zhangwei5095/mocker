@@ -20,7 +20,7 @@ const showTip = (isErrorTip, text) => {
 
 const hideTip = () => {
     return {
-        type: 'HIDE_TIP'
+        type: 'TIP/HIDE'
     };
 };
 
@@ -37,7 +37,12 @@ export default {
             type: 'SAVE_FAILED'
         };
     },
-    hideDoubleCheck(text) {
+    hideDoubleCheck() {
+        return {
+            type: 'HIDE_DOUBLE_CHECK'
+        };
+    },
+    showTempTip(text) {
         clearTimeout(timer);
 
         return (dispatch) => {
@@ -56,9 +61,18 @@ export default {
             );
         };
     },
-    showTempTip() {
+    // 用户修改了延迟时间时触发
+    delayTimeChange(delayTime) {
         return {
-            type: 'HIDE_TIP'
+            type: 'DELAY_TIME/CHANGE',
+            delayTime
+        };
+    },
+    // 用户修改了HTTP状态码时触发
+    httpStatusCodeChange(httpStatusCode) {
+        return {
+            type: 'HTTP_STATUS_CODE/CHANGE',
+            httpStatusCode
         };
     }
 };

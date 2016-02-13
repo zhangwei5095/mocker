@@ -13,11 +13,14 @@ module.exports = {
     method: 'post',
     controller: function (req, res, next) {
         var postData = req.body;
+
         var interfaceId = postData.interfaceId;
         var responseId = postData.responseId;
         var responseName = postData.responseName;
         var responseData = postData.responseData;
         var responseType = postData.type;
+        var delay = postData.delay;
+        var httpStatusCode = postData.httpStatusCode;
 
         var promise = new Promise(function (resolve, reject) {
             if (!interfaceId && !responseId) {
@@ -32,6 +35,8 @@ module.exports = {
                         {
                             name: responseName,
                             responseType: responseType,
+                            delay: delay || 0,
+                            httpStatusCode: httpStatusCode || 200,
                             data: responseData
                         }
                     )

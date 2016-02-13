@@ -25,7 +25,7 @@ export default (state = initState, action) => {
                 text: action.text,
                 iconClass: ''
             };
-        case 'HIDE_TIP':
+        case 'TIP/HIDE':
             return initState;
         default:
             return state;

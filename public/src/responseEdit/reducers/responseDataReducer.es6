@@ -13,6 +13,22 @@ export default (state = {}, action) => {
                     responseId: action.responseId
                 }
             );
+        case 'DELAY_TIME/CHANGE':
+            return Object.assign(
+                {},
+                state,
+                {
+                    delay: action.delayTime
+                }
+            );
+        case 'HTTP_STATUS_CODE/CHANGE':
+            return Object.assign(
+                {},
+                state,
+                {
+                    httpStatusCode: action.httpStatusCode
+                }
+            );
         default:
             return state;
     }

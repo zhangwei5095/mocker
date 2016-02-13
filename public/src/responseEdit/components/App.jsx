@@ -14,6 +14,12 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import TextField from 'material-ui/lib/text-field';
 import AppBar from 'material-ui/lib/app-bar';
 import IconButton from 'material-ui/lib/icon-button';
+import Tabs from 'material-ui/lib/tabs/tabs';
+import Tab from 'material-ui/lib/tabs/tab';
+import DropDownMenu from 'material-ui/lib/DropDownMenu';
+import MenuItem from 'material-ui/lib/menus/menu-item';
+import Slider from 'material-ui/lib/slider';
+import Divider from 'material-ui/lib/divider';
 
 // 第三方
 import request from 'superagent';
@@ -42,11 +48,26 @@ class App extends Component {
             width: '600px'
         };
 
+        // 目前支持设置的HTTP状态码
+        this.httpStatusCodes = [
+            200, 404, 500
+        ];
+
         this.styles = {
-            appBar: {
-                position: 'fixed',
-                top: 0
+            headline: {
+                fontSize: 24,
+                paddingTop: 16,
+                marginBottom: 12,
+                fontWeight: 400
+            },
+            tab: {
+                marginTop: '10px'
             }
+        };
+
+        this.state = {
+            // 打开页面时激活的tab序号，从0开始计算
+            activeTabIndex: 0
         };
 
         this.onClickSave = this.onClickSave.bind(this);
@@ -78,7 +99,8 @@ class App extends Component {
 
         // 校验合法的话，保存修改
         if (validity) {
-            const responseData = aceEditor.getEditorContent();
+            const content = aceEditor.getEditorContent();
+            const {responseData} = props;
 
             request
                 .post('/admin/saveResponse')
@@ -87,8 +109,10 @@ class App extends Component {
                         interfaceId,
                         responseId,
                         responseName,
-                        responseData,
-                        type: props.responseType.toUpperCase()
+                        responseData: content,
+                        delay: responseData.delay,
+                        httpStatusCode: props.responseData.httpStatusCode,
+                        type: responseData.type.toUpperCase()
                     }
                 )
                 .end(
@@ -109,6 +133,11 @@ class App extends Component {
                 );
         }
         else {
+            // 切换到到编辑tab页
+            this.setState({
+                activeTabIndex: 0
+            });
+
             dispatch(actions.showTempTip(`请输入合法的${props.responseType}的数据`));
         }
     };
@@ -128,8 +157,8 @@ class App extends Component {
     };
 
     render() {
-        const {props} = this;
-        let {responseData, doubleCheckModal, tipData} = props;
+        const {props, styles, state} = this;
+        let {responseData, doubleCheckModal, tipData, dispatch} = props;
 
         return (
             <div className="app-container">
@@ -137,22 +166,62 @@ class App extends Component {
                     title={`响应所属接口地址:${props.interfaceURL}`}
                     iconElementLeft={
                         <IconButton iconClassName="icon-home" />
-                    }
-                    style={this.styles.appBar} />
-                <TextField ref="responseName"
-                           hintText="响应名称"
-                           floatingLabelText="响应名称"
-                           defaultValue={responseData.name}
-                           style={this.responseNameInputStyle} />
-                <AceEditor ref="aceEditor"
-                           lanType={props.responseType.toLowerCase()}
-                           content={responseData.data} />
-                <div className="tip-container">
-                    <Tip text={tipData.text}
-                         skin={tipData.skin}
-                         iconClass={tipData.iconClass}
-                         display={tipData.display} />
-                </div>
+                    } />
+                <Tabs style={styles.tab}
+                      value={state.activeTabIndex}
+                      onChange={(value) => {
+                          console.log(value);
+                          this.setState({activeTabIndex: value})}
+                      }>
+                    <Tab label="响应设置" value={0}>
+                        <div>
+                            <TextField ref="responseName"
+                                       hintText="响应名称"
+                                       floatingLabelText="响应名称"
+                                       defaultValue={responseData.name}
+                                       style={this.responseNameInputStyle} />
+                            <AceEditor ref="aceEditor"
+                                       lanType={props.responseType.toLowerCase()}
+                                       content={responseData.data} />
+                            <div className="tip-container">
+                                <Tip text={tipData.text}
+                                     skin={tipData.skin}
+                                     iconClass={tipData.iconClass}
+                                     display={tipData.display} />
+                            </div>
+                        </div>
+                    </Tab>
+                    <Tab label="参数设值" value={1}>
+                        <div className="http-code-container">
+                            <span>HTTP状态码：</span>
+                            <DropDownMenu ref="httpStatusCodeMenu"
+                                          maxHeight={300}
+                                          value={responseData.httpStatusCode}
+                                          onChange={(event, index, value) => {
+                                              dispatch(actions.httpStatusCodeChange(value));
+                                          }}>
+                                {
+                                    this.httpStatusCodes.map((code) => {
+                                        return (<MenuItem value={code} primaryText={code} />);
+                                    })
+                                }
+                            </DropDownMenu>
+                        </div>
+                        <Divider />
+                        <div className="delay-container">
+                            <span>延迟：{responseData.delay}(毫秒)</span>
+                            <Slider ref="delaySlider"
+                                    defaultValue={responseData.delay}
+                                    min={0}
+                                    max={30000}
+                                    step={200}
+                                    onChange={() => {
+                                        const delayTime = this.refs.delaySlider.getValue();
+                                        dispatch(actions.delayTimeChange(delayTime));
+                                    }} />
+                        </div>
+                    </Tab>
+                </Tabs>
                 <div className="button-container">
                     <RaisedButton
                         label="保存"
