@@ -23,11 +23,12 @@ var ResponseModel = db.model(collectionName, responseSchema);
  * 生成新的响应实体，并入库
  *
  * @param {string} name 响应的名字
+ * @param {string} interfaceId 响应所属的interface的id
  * @param {string} type 响应的类型,如‘JSON’,‘HTML’等等
  * @param {*} data 响应内容
  * @return {Promise} Promise对象
  */
-exports.add = function (name, type, data) {
+exports.add = function (name, interfaceId, type, data) {
     switch (type) {
         case 'JSON':
             // JSON数据需要解析后再保存
@@ -39,6 +40,8 @@ exports.add = function (name, type, data) {
         var doc = {
             // db中name是required, 必须有，且不能是空字符串
             name: name,
+            // 记录下这个响应属于哪个接口
+            belongTo: interfaceId,
             type: type,
             data: data
         };
@@ -56,16 +59,42 @@ exports.add = function (name, type, data) {
  * 根据响应id获取响应的相关数据
  *
  * @param {string} responseId 响应的id(每个响应、每个接口都有自己的id)
+ * @param {Object} options 选项
  * @return {Promise}
  */
-exports.getById = function (responseId) {
+exports.getById = function (responseId, options) {
+    var defaultOptions = {
+        populateInterface: false
+    };
+
+    options = Object.assign({}, defaultOptions, options);
+
     return new Promise(function (resolve, reject) {
         // 根据mongodb的id来查找数据
         ResponseModel.findById(responseId)
             .select('')
             .lean()
             .exec(function (err, doc) {
-                !err ? resolve(doc) : reject();
+                if (err || !doc) {
+                    reject();
+                    return;
+                }
+
+                // 根据选项确定是否populate参考的interface文档
+                if (options.populateInterface) {
+                    doc.populate(
+                        {
+                            path: 'belongTo',
+                            select: 'url'
+                        },
+                        function (err) {
+                            err ? reject () : resolve(doc);
+                        }
+                    );
+                }
+                else {
+                    resolve(doc);
+                }
             });
     });
 };

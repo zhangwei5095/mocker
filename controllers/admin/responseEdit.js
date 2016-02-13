@@ -12,13 +12,16 @@ var responseModel = require('../../model/responseModel');
 module.exports = {
     method: 'get',
     controller: function (req, res, next) {
+        var query = req.query;
         // 从查询字符串中获取interfaceID
-        var interfaceId = req.query.interfaceId;
-        var responseId = req.query.responseId;
+        var interfaceId = query.interfaceId;
+        var responseId = query.responseId;
+        var interfaceURL = query.interfaceURL;
 
         // 首屏数据
         var initData = {
-            interfaceId: interfaceId
+            interfaceId: interfaceId,
+            interfaceURL: interfaceURL
         };
 
         var promise = new Promise(function (resolve, reject) {
@@ -31,7 +34,7 @@ module.exports = {
             // 如果有responseId表示是编辑，这时候需要查数据库
             if (responseId) {
                 responseModel
-                    .getById(responseId)
+                    .getById(responseId, {})
                     .then(
                         function (response) {
                             // 填充首屏数据

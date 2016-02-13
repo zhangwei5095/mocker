@@ -105,7 +105,7 @@ exports.add = function (newInterfaceUrl) {
  */
 exports.addResponse = function (interfaceId, name, type, data) {
     // 创建一个新的响应并入库
-    var promise = responseModel.add(name, type, data);
+    var promise = responseModel.add(name, interfaceId, type,data);
 
     return new Promise(function (resolve, reject) {
         promise.then(

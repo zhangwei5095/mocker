@@ -26,6 +26,13 @@ var response = new mongoose.Schema({
         default: 'JSON'
     },
     /**
+     * 接口所属于哪个接口
+     */
+    belongTo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'interface'
+    },
+    /**
      * 响应内容,因为是JSON，所以是字符串
      */
     data: {
