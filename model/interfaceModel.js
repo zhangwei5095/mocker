@@ -275,7 +275,7 @@ exports.deleteById = function (interfaceId) {
             .findById(interfaceId)
             .exec(function (err, doc) {
                 // 查询出错
-                if (err) {
+                if (err || !doc) {
                     reject();
                     return;
                 }
