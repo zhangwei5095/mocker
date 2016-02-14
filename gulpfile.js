@@ -145,17 +145,22 @@ var getModuleName = function (filePath) {
  * webpack 实时监控任务
  */
 gulp.task('webpack-watch', function () {
-    gulp.src(srcDirGlob + 'main.jsx', {base: srcDir})
-        .pipe(
-            name(function (file) {
-                // webpack entry point
-                return removeExtension(file.relative);
-            })
-        )
-        .pipe(
-            webpack(Object.assign({}, webpackConfig, {watch: true}))
-        )
-        .pipe(gulp.dest(assetDir));
+    try {
+        gulp.src(srcDirGlob + 'main.jsx', {base: srcDir})
+            .pipe(
+                name(function (file) {
+                    // webpack entry point
+                    return removeExtension(file.relative);
+                })
+            )
+            .pipe(
+                webpack(Object.assign({}, webpackConfig, {watch: true}))
+            )
+            .pipe(gulp.dest(assetDir));
+    }
+    catch (e) {
+        gUtil.log('Error Catch');
+    }
 });
 
 /**
