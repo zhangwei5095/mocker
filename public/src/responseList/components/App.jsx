@@ -38,7 +38,8 @@ class App extends Component {
 
         this.topButtonStyle = {
             width: '150px',
-            fontFamily: 'Microsoft Yahei'
+            fontFamily: 'Microsoft Yahei',
+            margin: '0 5px'
         };
 
         this.state = {
@@ -180,24 +181,24 @@ class App extends Component {
                         <div>
                             <RaisedButton
                                 label="JSON响应"
-                                style={this.topButtonStyle}
                                 labelPosition="after"
                                 secondary={true}
                                 disabled={this.props.newBtnData.disabled}
                                 linkButton={true}
-                                href={`/admin/responseEdit?interfaceId=${interfaceId}&type=JSON&interfaceURL=/${interfaceURL}`} />
+                                href={`/admin/responseEdit?interfaceId=${interfaceId}&type=JSON&interfaceURL=/${interfaceURL}`}
+                                style={this.topButtonStyle} />
                             <RaisedButton
                                 label="HTML响应"
-                                style={this.topButtonStyle}
                                 labelPosition="after"
                                 secondary={true}
                                 disabled={this.props.newBtnData.disabled}
                                 linkButton={true}
-                                href={`/admin/responseEdit?interfaceId=${interfaceId}&type=HTML&interfaceURL=/${interfaceURL}`} />
+                                href={`/admin/responseEdit?interfaceId=${interfaceId}&type=HTML&interfaceURL=/${interfaceURL}`}
+                                style={this.topButtonStyle} />
                         </div>
                     </Popover>
                     <RaisedButton
-                        label="保存"
+                        label="保存修改"
                         className="save-btn"
                         style={this.topButtonStyle}
                         labelPosition="after"
