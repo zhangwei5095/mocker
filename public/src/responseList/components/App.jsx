@@ -193,7 +193,7 @@ class App extends Component {
                                 secondary={true}
                                 disabled={this.props.newBtnData.disabled}
                                 linkButton={true}
-                                href={`/admin/responseEdit?interfaceId=${interfaceId}&type=HTML`} />
+                                href={`/admin/responseEdit?interfaceId=${interfaceId}&type=HTML&interfaceURL=/${interfaceURL}`} />
                         </div>
                     </Popover>
                     <RaisedButton
