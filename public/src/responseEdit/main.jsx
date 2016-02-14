@@ -37,7 +37,8 @@ const store = createStoreWithMiddleware(
     {
         responseData: initialData.response || {
             httpStatusCode: initialData.httpStatusCode,
-            delay: initialData.delay
+            delay: initialData.delay,
+            type: initialData.type
         }
     }
 );
@@ -46,7 +47,7 @@ const responseId = initialData.response
     ? initialData.response._id
     : '';
 // 编辑器的种类，目前支持JSON和HTML
-const responseType = initialData.responseType;
+const responseType = initialData.type;
 
 render(
     <Provider store={store}>

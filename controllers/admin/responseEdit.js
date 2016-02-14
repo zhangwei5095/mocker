@@ -43,7 +43,7 @@ module.exports = {
                             initData.response = response;
                             initData.responseId = response._id;
                             // 编辑的是哪一种数据，目前支持JSON和HTML
-                            initData.responseType = response.type;
+                            initData.type = response.type;
                             initData.httpStatusCode = response.httpStatusCode;
                             initData.delay = response.delay;
 
@@ -54,10 +54,10 @@ module.exports = {
             }
             else {
                 // 没有responseId的话是新建动作，不需要异步处理
-                initData.responseType = req.query.type;
+                initData.type = req.query.type;
 
                 // 新建必须提供类型
-                if (!initData.responseType) {
+                if (!initData.type) {
                     reject();
                     return;
                 }
@@ -69,7 +69,7 @@ module.exports = {
         promise.then(
             function () {
                 res.render('responseEdit', {
-                    title: initData.responseType.toUpperCase() + '响应编辑',
+                    title: initData.type.toUpperCase() + '响应编辑',
                     initialData: JSON.stringify(initData),
                     interfaceId: interfaceId
                 });
