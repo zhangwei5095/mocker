@@ -221,8 +221,7 @@ class App extends Component {
                                     min={0}
                                     max={30000}
                                     step={200}
-                                    onChange={() => {
-                                        const delayTime = this.refs.delaySlider.getValue();
+                                    onChange={(e, delayTime) => {
                                         dispatch(actions.delayTimeChange(delayTime));
                                     }} />
                         </div>
