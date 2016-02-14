@@ -170,7 +170,6 @@ class App extends Component {
                 <Tabs style={styles.tab}
                       value={state.activeTabIndex}
                       onChange={(value) => {
-                          console.log(value);
                           this.setState({activeTabIndex: value})}
                       }>
                     <Tab label="响应设置" value={0}>
@@ -179,7 +178,10 @@ class App extends Component {
                                        hintText="响应名称"
                                        floatingLabelText="响应名称"
                                        defaultValue={responseData.name}
-                                       style={this.responseNameInputStyle} />
+                                       style={this.responseNameInputStyle}
+                                       onChange={(e) => {
+                                            e.stopPropagation();
+                                       }} />
                             <AceEditor ref="aceEditor"
                                        lanType={props.responseType.toLowerCase()}
                                        content={responseData.data} />
