@@ -37,7 +37,7 @@ class InterfaceList extends Component {
         // 表单的列名集合
         this.colNames = [
             '接口地址', '注册响应数量', '当前激活响应',
-            '编辑', '获取fiddler配置', '删除'
+            '编辑', '获取fiddler配置', '预览', '删除'
         ];
     };
 
@@ -45,6 +45,7 @@ class InterfaceList extends Component {
      * 获取响应列表页地址
      *
      * @param {string} interfaceId
+     * @return {string}
      */
     getResponseListURL(interfaceId) {
         if (!interfaceId) {
@@ -52,6 +53,16 @@ class InterfaceList extends Component {
         }
 
         return `/admin/responseList?interfaceId=${interfaceId}`;
+    };
+
+    /**
+     * 获取模拟接口预览地址
+     *
+     * @param {string} relativePath 模拟接口的相对地址
+     * @return {string}
+     */
+    getPreview(relativePath) {
+        window.open(`/mock/${relativePath}`);
     };
 
     render() {
@@ -112,6 +123,12 @@ class InterfaceList extends Component {
                                                     onMouseDown={() => {
                                                         dispatch(actions.getFiddlerConfigDialogSwitch('show', data.url))}
                                                     } />
+                                    </TableRowColumn>
+                                    <TableRowColumn style={tableStyle.cellStyle}>
+                                        <IconButton iconClassName="icon-eye"
+                                                    onMouseDown={() => {
+                                                        this.getPreview(data.url)
+                                                    }} />
                                     </TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>
                                         <IconButton iconClassName="icon-bin"
