@@ -23,29 +23,36 @@ module.exports = function (req, res, next) {
     var promise = interfaceModel.getActiveResponse(url);
 
     promise.then(
-        function (data) {
+        function (response) {
+            res.status(response.httpStatusCode);
+
+            setTimeout(
+                function () {
+                    switch (response.type.toUpperCase()) {
+                        case 'JSON':
+                            res.json(response.data);
+                            break;
+                        case 'HTML':
+                            res.type('html').end(response.data);
+                            break;
+                        default:
+                            next();
+                    }
+                },
+                response.delay
+            );
             // 准确的查到了接口和激活响应
-            if (data.status === 0) {
-                switch (data.responseType.toUpperCase()) {
-                    case 'JSON':
-                        res.json(data.response);
-                        break;
-                    case 'HTML':
-                        res.type('html').end(data.response);
-                        break;
-                    default:
-                        next();
-                }
-            }
-            else {
-                // 为查到接口，或者查询到的接口没有可用且激活的响应
-                res
-                    .status(404)
-                    .render('404', {
-                        title: '404你懂的~',
-                        errorInfo: data.statusInfo
-                    });
-            }
+            //if (data.status === 0) {
+            //}
+            //else {
+            //    // 为查到接口，或者查询到的接口没有可用且激活的响应
+            //    res
+            //        .status(404)
+            //        .render('404', {
+            //            title: '404你懂的~',
+            //            errorInfo: data.statusInfo
+            //        });
+            //}
         },
         next
     );

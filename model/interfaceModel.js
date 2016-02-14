@@ -201,25 +201,15 @@ exports.getActiveResponse = function (url) {
                     var activeResponse = doc.activeResponse;
 
                     if (activeResponse) {
-                        resolve({
-                            status: 0,
-                            // 响应内容，目前支持JSON，所以这将是个对象
-                            response: activeResponse.data,
-                            responseType: activeResponse.type
-                        });
+                        resolve(activeResponse);
                     }
                     else {
-                        resolve({
-                            status: 1,
-                            statusInfo: '该接口没有处于激活状态的响应，请尝试激活'
-                        });
+                        reject('该接口没有处于激活状态的响应，请尝试激活');
                     }
                 }
                 else {
                     // reject一般为系统级错误
-                    reject({
-                        statusInfo: '查询错误'
-                    });
+                    reject('查询错误');
                 }
             });
     });
