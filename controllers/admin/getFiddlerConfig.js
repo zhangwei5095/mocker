@@ -14,7 +14,7 @@ module.exports = {
 
         // 两个参数不能少
         if (!originURL || !relativeURL) {
-            next(new Error());
+            next({status: 0});
         }
 
         // 假数据服务器所在域名

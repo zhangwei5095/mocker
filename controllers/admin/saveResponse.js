@@ -24,7 +24,7 @@ module.exports = {
 
         var promise = new Promise(function (resolve, reject) {
             if (!interfaceId && !responseId) {
-                next();
+                next({status: 0});
             }
 
             // 如果有responseId则表示这个提交的目的是保存

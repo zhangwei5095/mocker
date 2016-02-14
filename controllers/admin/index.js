@@ -22,7 +22,9 @@ module.exports = {
                     })
                 });
             },
-            next
+            function () {
+                next({status: 0});
+            }
         );
     }
 };

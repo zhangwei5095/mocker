@@ -36,7 +36,7 @@ module.exports = function (req, res, next) {
                             res.type('html').end(response.data);
                             break;
                         default:
-                            next();
+                            next({status: 0});
                     }
                 },
                 response.delay
@@ -46,7 +46,7 @@ module.exports = function (req, res, next) {
             switch (data.status) {
                 case 1:
                     // mongodb查询失败，错误比较严重，500
-                    next();
+                    next({status: 0});
                     break;
                 // 2和3分别代码没有注册和未激活
                 case 2:
@@ -59,7 +59,7 @@ module.exports = function (req, res, next) {
                         });
                     break;
                 default:
-                    next();
+                    next({status: 0});
             }
         }
     );

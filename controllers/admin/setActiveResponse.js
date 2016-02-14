@@ -23,7 +23,9 @@ module.exports = {
                     status: 0
                 });
             },
-            next
+            function () {
+                next({status: 0});
+            }
         );
     }
 };

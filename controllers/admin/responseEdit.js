@@ -74,7 +74,9 @@ module.exports = {
                     interfaceId: interfaceId
                 });
             },
-            next
+            function () {
+                next({status: 0});
+            }
         );
     }
 };

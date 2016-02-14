@@ -13,7 +13,7 @@ module.exports = {
 
         // 不能没有interfaceId
         if (!interfaceId) {
-            next();
+            next({status: 0});
             return;
         }
 
@@ -33,7 +33,9 @@ module.exports = {
                     })
                 });
             },
-            next
+            function () {
+                next({status: 0});
+            }
         );
     }
 };
