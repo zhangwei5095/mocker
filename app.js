@@ -4,7 +4,7 @@
  * @date 2015-11-22
  */
 
-// 原生模块
+// node
 var path = require('path');
 
 // express
@@ -28,7 +28,9 @@ app.set('view engine', 'hbs');
 // 注册helper
 require('./lib/handlebarsHelpers/extend');
 
-// 挂载中间件
+/**
+ * 注册中间件
+ */
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -45,32 +47,43 @@ app.use('/admin', admin);
 app.use('/mock', mock);
 
 /**
- * 无法匹配到响应会走到这里
+ * 404处理
  */
 app.use(function (req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+    // 0-99不和http状态码冲突，留给业务使用
+    next({
+        status: 404
+    });
 });
 
-// 开发环境下应答错误信息
-if (app.get('env') === 'development') {
-    app.use(function (err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
-    });
-}
-
-// 生产环境下友好提示
+/**
+ * 错误处理
+ */
 app.use(function (err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
+    var errStatus = err.status || 0;
+
+    // 错误状态码是否是HTTP状态码，HTTP状态码是3位数
+    // 如果不是3位数就是mock系统自定义错误状态码
+    var isHTTPStatus = errStatus >= 100;
+
+    // 模板名称
+    var templateName = '';
+    var renderData = {};
+
+    // 如果不是指定的状态码，就返回500 - Internal Server Error
+    var HTTPStatusCode = isHTTPStatus ? errStatus : 500;
+    res.status(HTTPStatusCode);
+
+    if (errStatus === 404) {
+        templateName = '404';
+        renderData.errorInfo = '...啥也没有';
+    }
+    else {
+        templateName = 'error';
+        renderData.errorInfo = err.errorInfo || '';
+    }
+
+    res.render(templateName, renderData);
 });
 
 module.exports = app;

@@ -53,7 +53,7 @@ module.exports = function (req, res, next) {
                 case 3:
                     res
                         .status(404)
-                        .render('404', {
+                        .render('mock404', {
                             title: '404你懂的~',
                             errorInfo: data.statusInfo
                         });
