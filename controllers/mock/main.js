@@ -41,19 +41,26 @@ module.exports = function (req, res, next) {
                 },
                 response.delay
             );
-            // 准确的查到了接口和激活响应
-            //if (data.status === 0) {
-            //}
-            //else {
-            //    // 为查到接口，或者查询到的接口没有可用且激活的响应
-            //    res
-            //        .status(404)
-            //        .render('404', {
-            //            title: '404你懂的~',
-            //            errorInfo: data.statusInfo
-            //        });
-            //}
         },
-        next
+        function (data) {
+            switch (data.status) {
+                case 1:
+                    // mongodb查询失败，错误比较严重，500
+                    next();
+                    break;
+                // 2和3分别代码没有注册和未激活
+                case 2:
+                case 3:
+                    res
+                        .status(404)
+                        .render('404', {
+                            title: '404你懂的~',
+                            errorInfo: data.statusInfo
+                        });
+                    break;
+                default:
+                    next();
+            }
+        }
     );
 };

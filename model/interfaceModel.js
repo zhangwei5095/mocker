@@ -188,8 +188,8 @@ exports.getActiveResponse = function (url) {
                 if (!err) {
                     // 没有doc，即这个url还没有注册成为接口，应该返回404
                     if (!doc) {
-                        resolve({
-                            status: 1,
+                        reject({
+                            status: 2,
                             statusInfo: '当前地址未被注册为接口'
                         });
 
@@ -204,12 +204,18 @@ exports.getActiveResponse = function (url) {
                         resolve(activeResponse);
                     }
                     else {
-                        reject('该接口没有处于激活状态的响应，请尝试激活');
+                        reject({
+                            status: 3,
+                            statusInfo: '该接口没有处于激活状态的响应，请尝试激活'
+                        });
                     }
                 }
                 else {
-                    // reject一般为系统级错误
-                    reject('查询错误');
+                    // mongoDB查询出错
+                    reject({
+                        status: 1,
+                        statusInfo: '系统错误'
+                    });
                 }
             });
     });
