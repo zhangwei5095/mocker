@@ -94,6 +94,10 @@ class App extends Component {
 
         if (!responseName) {
             dispatch(actions.showTempTip('响应名称不能为空'));
+            // 切换到到编辑tab页
+            this.setState({
+                activeTabIndex: 0
+            });
             return;
         }
 
