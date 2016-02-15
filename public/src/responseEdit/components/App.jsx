@@ -62,6 +62,9 @@ class App extends Component {
             },
             tab: {
                 marginTop: '10px'
+            },
+            delaySlider: {
+                marginBottom: '10px'
             }
         };
 
@@ -170,7 +173,8 @@ class App extends Component {
                     title={`响应所属接口地址:${props.interfaceURL}`}
                     iconElementLeft={
                         <IconButton iconClassName="icon-home" />
-                    } />
+                    }
+                    iconClassNameRight="icon-menu" />
                 <Tabs style={styles.tab}
                       value={state.activeTabIndex}
                       onChange={(value) => {
@@ -198,32 +202,34 @@ class App extends Component {
                         </div>
                     </Tab>
                     <Tab label="参数设值" value={1}>
-                        <div className="http-code-container">
-                            <span>HTTP状态码：</span>
-                            <DropDownMenu ref="httpStatusCodeMenu"
-                                          maxHeight={300}
-                                          value={responseData.httpStatusCode}
-                                          onChange={(event, index, value) => {
-                                              dispatch(actions.httpStatusCodeChange(value));
-                                          }}>
-                                {
-                                    this.httpStatusCodes.map((code) => {
-                                        return (<MenuItem value={code} primaryText={code} />);
-                                    })
-                                }
-                            </DropDownMenu>
-                        </div>
-                        <Divider />
-                        <div className="delay-container">
-                            <span>延迟：{responseData.delay}(毫秒)</span>
-                            <Slider ref="delaySlider"
-                                    defaultValue={responseData.delay}
-                                    min={0}
-                                    max={30000}
-                                    step={200}
-                                    onChange={(e, delayTime) => {
-                                        dispatch(actions.delayTimeChange(delayTime));
-                                    }} />
+                        <div className="param-container">
+                            <div className="http-code-container">
+                                <span>HTTP状态码：</span>
+                                <DropDownMenu ref="httpStatusCodeMenu"
+                                              maxHeight={300}
+                                              value={responseData.httpStatusCode}
+                                              onChange={(event, index, value) => {
+                                                  dispatch(actions.httpStatusCodeChange(value));
+                                              }}>
+                                    {
+                                        this.httpStatusCodes.map((code) => {
+                                            return (<MenuItem value={code} primaryText={code} />);
+                                        })
+                                    }
+                                </DropDownMenu>
+                            </div>
+                            <Divider />
+                            <div className="delay-container">
+                                <span>延迟：{responseData.delay}(毫秒)</span>
+                                <Slider ref="delaySlider"
+                                        defaultValue={responseData.delay}
+                                        min={0}
+                                        max={30000}
+                                        step={200}
+                                        onChange={(e, delayTime) => {
+                                            dispatch(actions.delayTimeChange(delayTime));
+                                        }} />
+                            </div>
                         </div>
                     </Tab>
                 </Tabs>
