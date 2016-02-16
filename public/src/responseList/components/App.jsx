@@ -18,6 +18,9 @@ import IconButton from 'material-ui/lib/icon-button';
 import Popover from 'material-ui/lib/popover/popover';
 import PopoverAnimationFromTop from 'material-ui/lib/popover/popover-animation-from-top';
 
+// icon
+import HomeIcon from 'material-ui/lib/svg-icons/action/home';
+
 // 第三方库
 import request from 'superagent';
 
@@ -36,12 +39,7 @@ class App extends Component {
     constructor(props) {
         super(props);
 
-        this.topButtonStyle = {
-            width: '150px',
-            fontFamily: 'Microsoft Yahei',
-            margin: '0 5px'
-        };
-
+        // state
         this.state = {
             responseTypePopOverOpen: false
         };
@@ -50,6 +48,14 @@ class App extends Component {
             popover: {
                 padding: 20,
                 textAlign: 'center'
+            },
+            topButton: {
+                width: '150px',
+                fontFamily: 'Microsoft Yahei',
+                margin: '0 5px'
+            },
+            popoverButton: {
+                margin: '5px'
             }
         };
 
@@ -152,21 +158,18 @@ class App extends Component {
 
     render() {
         const {snackbarData, interfaceId, doubleCheck, interfaceURL, dispatch} = this.props;
+        const {styles} = this;
 
         return (
             <div className="app-container">
                 <AppBar
                     title={'/' + this.props.interfaceURL}
-                    iconElementLeft={
-                        <IconButton iconClassName="icon-home"
-                                    tooltip="模拟接口相对路径"
-                                    tooltipPosition="bottom-right" />
-                    } />
+                    iconElementLeft={<IconButton><HomeIcon /></IconButton>} />
                 <div className="top-btn-container">
                     <RaisedButton
                         label="添加新响应"
                         labelPosition="after"
-                        style={this.topButtonStyle}
+                        style={styles.topButton}
                         secondary={true}
                         icon={<FontIcon className="icon-plus" />}
                         onTouchTap={(e) => {this.handleResponseTypePopOver(e, {open: true})}} />
@@ -177,7 +180,7 @@ class App extends Component {
                         targetOrigin={{horizontal: 'left', vertical: 'top'}}
                         onRequestClose={(e) => {this.handleResponseTypePopOver(e, {open: false})}}
                         animation={PopoverAnimationFromTop}
-                        style={this.styles.popover}>
+                        style={styles.popover}>
                         <div>
                             <RaisedButton
                                 label="JSON响应"
@@ -186,7 +189,7 @@ class App extends Component {
                                 disabled={this.props.newBtnData.disabled}
                                 linkButton={true}
                                 href={`/admin/responseEdit?interfaceId=${interfaceId}&type=JSON&interfaceURL=/${interfaceURL}`}
-                                style={this.topButtonStyle} />
+                                style={styles.popoverButton} />
                             <RaisedButton
                                 label="HTML响应"
                                 labelPosition="after"
@@ -194,13 +197,13 @@ class App extends Component {
                                 disabled={this.props.newBtnData.disabled}
                                 linkButton={true}
                                 href={`/admin/responseEdit?interfaceId=${interfaceId}&type=HTML&interfaceURL=/${interfaceURL}`}
-                                style={this.topButtonStyle} />
+                                style={styles.popoverButton} />
                         </div>
                     </Popover>
                     <RaisedButton
                         label="保存修改"
                         className="save-btn"
-                        style={this.topButtonStyle}
+                        style={styles.topButton}
                         labelPosition="after"
                         secondary={true}
                         disabled={this.props.saveBtnData.disabled}

@@ -20,6 +20,10 @@ import FontIcon from 'material-ui/lib/font-icon';
 import IconButton from 'material-ui/lib/icon-button';
 import Toggle from 'material-ui/lib/toggle';
 
+// icon
+import DeleteIcon from 'material-ui/lib/svg-icons/action/delete';
+import PenIcon from 'material-ui/lib/svg-icons/content/create';
+
 // 模块
 import tableStyle from 'common/tableStyle.es6';
 import actions from '../actions/actions.es6';
@@ -107,13 +111,17 @@ class InterfaceList extends Component {
                                     <TableRowColumn style={tableStyle.cellStyle}>{response.name}</TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>{response.type}</TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>
-                                        <IconButton iconClassName="icon-pencil"
-                                                    linkButton={true}
-                                                    href={this.getResponseEditURL(interfaceId, response._id)} />
+                                        <IconButton linkButton={true}
+                                                    href={this.getResponseEditURL(interfaceId, response._id)}>
+                                            <PenIcon />
+                                        </IconButton>
                                     </TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>
-                                        <IconButton iconClassName="icon-bin"
-                                                    onMouseDown={() => {this.onClickDelete(response.name, response._id)}} />
+                                        <IconButton onMouseDown={() => {
+                                                        this.onClickDelete(response.name, response._id)}
+                                                    }>
+                                            <DeleteIcon />
+                                        </IconButton>
                                     </TableRowColumn>
                                 </TableRow>
                             );
