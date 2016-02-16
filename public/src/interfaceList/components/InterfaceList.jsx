@@ -22,6 +22,12 @@ import TableBody from 'material-ui/lib/table/table-body';
 import FontIcon from 'material-ui/lib/font-icon';
 import IconButton from 'material-ui/lib/icon-button';
 
+// icon
+import PenIcon from 'material-ui/lib/svg-icons/content/create';
+import FileDownloadIcon from 'material-ui/lib/svg-icons/file/file-download';
+import EyeIcon from 'material-ui/lib/svg-icons/action/visibility';
+import DeleteIcon from 'material-ui/lib/svg-icons/action/delete';
+
 // 模块
 import tableStyle from 'common/tableStyle.es6';
 import * as actions from '../actions/actions.es6';
@@ -114,27 +120,31 @@ class InterfaceList extends Component {
                                     </TableRowColumn>
                                     <TableRowColumn style={responseCellStyle}>{activeResponseName}</TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>
-                                        <IconButton iconClassName="icon-pencil"
-                                                    linkButton={true}
-                                                    href={this.getResponseListURL(data._id)} />
+                                        <IconButton linkButton={true}
+                                                    href={this.getResponseListURL(data._id)}>
+                                            <PenIcon />
+                                        </IconButton>
                                     </TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>
-                                        <IconButton iconClassName="icon-download"
-                                                    onMouseDown={() => {
+                                        <IconButton onMouseDown={() => {
                                                         dispatch(actions.getFiddlerConfigDialogSwitch('show', data.url))}
-                                                    } />
+                                                    }>
+                                            <FileDownloadIcon />
+                                        </IconButton>
                                     </TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>
-                                        <IconButton iconClassName="icon-eye"
-                                                    onMouseDown={() => {
+                                        <IconButton onMouseDown={() => {
                                                         this.getPreview(data.url)
-                                                    }} />
+                                                    }}>
+                                            <EyeIcon />
+                                        </IconButton>
                                     </TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>
-                                        <IconButton iconClassName="icon-bin"
-                                                    onMouseDown={() => {
+                                        <IconButton onMouseDown={() => {
                                                         dispatch(actions.tryDeleteInterface(data._id))}
-                                                    } />
+                                                    }>
+                                            <DeleteIcon />
+                                        </IconButton>
                                     </TableRowColumn>
                                 </TableRow>
                             );
