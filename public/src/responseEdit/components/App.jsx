@@ -27,6 +27,8 @@ import ListItem from 'material-ui/lib/lists/list-item';
 // icon
 import ArrowBack from 'material-ui/lib/svg-icons/navigation/arrow-back';
 import ListIcon from 'material-ui/lib/svg-icons/action/list';
+import HomeIcon from 'material-ui/lib/svg-icons/action/home';
+import MenuIcon from 'material-ui/lib/svg-icons/navigation/menu';
 
 // 第三方
 import request from 'superagent';
@@ -61,12 +63,6 @@ class App extends Component {
         ];
 
         this.styles = {
-            headline: {
-                fontSize: 24,
-                paddingTop: 16,
-                marginBottom: 12,
-                fontWeight: 400
-            },
             tab: {
                 marginTop: '10px'
             },
@@ -179,11 +175,12 @@ class App extends Component {
             <div className="app-container">
                 <AppBar
                     title={`响应所属接口地址:${props.interfaceURL}`}
-                    iconElementLeft={
-                        <IconButton iconClassName="icon-home" />
-                    }
-                    iconClassNameRight="icon-menu"
-                    onRightIconButtonTouchTap={() => {this.setState({rightMenuOpen: true})}} />
+                    iconElementLeft={<IconButton><HomeIcon /></IconButton>}
+                    iconElementRight={
+                        <IconButton onMouseUp={() => {this.setState({rightMenuOpen: true})}}>
+                            <MenuIcon />
+                        </IconButton>
+                    } />
                 <Tabs style={styles.tab}
                       value={state.activeTabIndex}
                       onChange={(value) => {

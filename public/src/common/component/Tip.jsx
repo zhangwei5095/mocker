@@ -5,6 +5,7 @@
 
 // React
 import React, {Component, PropTypes} from 'react';
+import ActionHome from 'material-ui/lib/svg-icons/action/home';
 
 export default class Tip extends Component {
     constructor(props) {
