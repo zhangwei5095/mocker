@@ -17,6 +17,9 @@ import FontIcon from 'material-ui/lib/font-icon';
 import RaisedButton from 'material-ui/lib/raised-button';
 import Snackbar from 'material-ui/lib/snackbar';
 
+// icon
+import AddIcon from 'material-ui/lib/svg-icons/content/add';
+
 // 模块组件
 import InterfaceList from './InterfaceList.jsx';
 import InterfaceCtrlModal from './InterfaceCtrlModal.jsx';
@@ -92,25 +95,21 @@ class App extends Component {
         return (
             <div className="app-container">
                 <div className="top-btn-container">
-                    <RaisedButton
-                        className="add-new-interface"
-                        label="添加新接口"
-                        labelPosition="after"
-                        labelStyle={this.buttonLabelStyle}
-                        secondary={true}
-                        style={this.addNewButtonStyle}
-                        icon={<FontIcon className="icon-plus" />}
-                        onMouseDown={this.onAddNewInterface} />
+                    <RaisedButton className="add-new-interface"
+                                  label="添加新接口"
+                                  labelPosition="after"
+                                  labelStyle={this.buttonLabelStyle}
+                                  secondary={true}
+                                  icon={<AddIcon />}
+                                  style={this.addNewButtonStyle}
+                                  onMouseDown={this.onAddNewInterface} />
                 </div>
                 <InterfaceList />
-                <InterfaceCtrlModal
-                    hostURL={props.hostURL} />
-                <Snackbar
-                    open={props.snackbarData.open}
-                    message={props.snackbarData.text}
-                    autoHideDuration={props.snackbarData.autoHideDuration}
-                    onRequestClose={() => {dispatch(actions.hideSnackBar())}}
-                />
+                <InterfaceCtrlModal hostURL={props.hostURL} />
+                <Snackbar open={props.snackbarData.open}
+                          message={props.snackbarData.text}
+                          autoHideDuration={props.snackbarData.autoHideDuration}
+                          onRequestClose={() => {dispatch(actions.hideSnackBar())}} />
                 <DoubleCheckModal title={doubleCheck.title}
                                   text={doubleCheck.text}
                                   open={doubleCheck.open}
