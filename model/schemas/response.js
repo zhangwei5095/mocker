@@ -77,6 +77,20 @@ var response = new mongoose.Schema({
      */
     template: {
         type: String
+    },
+    /**
+     * 响应队列
+     */
+    queue: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'responses'
+    },
+    /**
+     * 响应处于哪种模式,目前只有普通的，未来添加队列模式和redirect模式
+     */
+    mode: {
+        type: 'string',
+        default: 'NORMAL'
     }
 });
 
