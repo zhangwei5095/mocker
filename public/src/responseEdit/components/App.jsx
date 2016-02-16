@@ -20,6 +20,13 @@ import DropDownMenu from 'material-ui/lib/DropDownMenu';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import Slider from 'material-ui/lib/slider';
 import Divider from 'material-ui/lib/divider';
+import LeftNav from 'material-ui/lib/left-nav';
+import List from 'material-ui/lib/lists/list';
+import ListItem from 'material-ui/lib/lists/list-item';
+
+// icon
+import ArrowBack from 'material-ui/lib/svg-icons/navigation/arrow-back';
+import ListIcon from 'material-ui/lib/svg-icons/action/list';
 
 // 第三方
 import request from 'superagent';
@@ -70,7 +77,8 @@ class App extends Component {
 
         this.state = {
             // 打开页面时激活的tab序号，从0开始计算
-            activeTabIndex: 0
+            activeTabIndex: 0,
+            rightMenuOpen: false
         };
 
         this.onClickSave = this.onClickSave.bind(this);
@@ -174,7 +182,8 @@ class App extends Component {
                     iconElementLeft={
                         <IconButton iconClassName="icon-home" />
                     }
-                    iconClassNameRight="icon-menu" />
+                    iconClassNameRight="icon-menu"
+                    onRightIconButtonTouchTap={() => {this.setState({rightMenuOpen: true})}} />
                 <Tabs style={styles.tab}
                       value={state.activeTabIndex}
                       onChange={(value) => {
@@ -238,13 +247,27 @@ class App extends Component {
                         label="保存"
                         style={this.saveButtonStyle}
                         secondary={true}
-                        onMouseDown={this.onClickSave}/>
+                        onMouseDown={this.onClickSave} />
                 </div>
                 <DoubleCheckModal title={doubleCheckModal.title}
                                   text={doubleCheckModal.text}
                                   open={doubleCheckModal.open}
                                   onClickAcceptButton={this.jumpToResponseList}
                                   onClickRejectButton={this.hideDoubleCheck} />
+                <LeftNav width={300}
+                         openRight={true}
+                         open={state.rightMenuOpen}
+                         docked={false}
+                         onRequestChange={() => {this.setState({rightMenuOpen: false})}}>
+                    <AppBar title="快捷菜单"
+                            onLeftIconButtonTouchTap={() => {this.setState({rightMenuOpen: false})}} />
+                    <List>
+                        <ListItem primaryText="前往接口列表页"
+                                  leftIcon={<ListIcon />} />
+                        <ListItem primaryText="返回接口响应页"
+                                  leftIcon={<ArrowBack />} />
+                    </List>
+                </LeftNav>
             </div>
         );
     };
