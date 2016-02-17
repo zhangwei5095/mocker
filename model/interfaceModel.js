@@ -14,6 +14,9 @@ var ObjectId = mongoose.Types.ObjectId;
 // 第三方依赖
 var Promise = require('bluebird');
 
+// 模块
+var Response = require('./responseModel');
+
 // 连接数据库
 var db = require('../lib/db');
 
@@ -22,9 +25,10 @@ var interfaceSchema = require('./schemas/interface');
 
 // collection名
 var collectionName = 'interface';
-var InterfaceModel = db.model(collectionName, interfaceSchema);
+// mongoose注册model
+mongoose.model(collectionName, interfaceSchema);
 
-var responseModel = require('./responseModel');
+var Interface = db.model(collectionName, interfaceSchema);
 
 /**
  * 获取接口列表ajax接口
@@ -34,7 +38,7 @@ var responseModel = require('./responseModel');
 exports.getInterfaceList = function () {
     return new Promise(function (resolve, reject) {
         // 查看全部接口
-        InterfaceModel
+        Interface
             .find({})
             .select('activeResponse responses url responseCount')
             .populate({
@@ -62,7 +66,7 @@ exports.add = function (newInterfaceUrl) {
 
     return new Promise(function (resolve, reject) {
         // 根据url查找
-        InterfaceModel.findOne(
+        Interface.findOne(
             {
                 // 目前只支持常规路径，不支持查询字符串
                 url: newInterfaceURL
@@ -79,7 +83,7 @@ exports.add = function (newInterfaceUrl) {
                     };
 
                     // 创建新document
-                    var mongooseEntity = new InterfaceModel(doc);
+                    var mongooseEntity = new Interface(doc);
                     mongooseEntity.save(function (error) {
                         if (!error) {
                             resolve();
@@ -105,13 +109,13 @@ exports.add = function (newInterfaceUrl) {
  */
 exports.addResponse = function (interfaceId, name, type, data) {
     // 创建一个新的响应并入库
-    var promise = responseModel.add(name, interfaceId, type,data);
+    var promise = Response.add(name, interfaceId, type,data);
 
     return new Promise(function (resolve, reject) {
         promise.then(
             function (newResponseData) {
                 // 创建完新的响应实体后需要更新接口的相关数据
-                InterfaceModel.findOneAndUpdate(
+                Interface.findOneAndUpdate(
                     {
                         _id: interfaceId
                     },
@@ -145,7 +149,7 @@ exports.addResponse = function (interfaceId, name, type, data) {
 exports.getResponseList = function (id) {
     return new Promise(function (resolve, reject) {
         // 根据mongodb的id来查找数据
-        InterfaceModel.findOne({_id: id})
+        Interface.findOne({_id: id})
             .select('responses url activeResponse')
             .populate({
                 path: 'responses',
@@ -180,7 +184,7 @@ exports.getResponseList = function (id) {
 exports.getActiveResponse = function (url) {
     return new Promise(function (resolve, reject) {
         // 根据URL查询接口，取activeResponse ref并populate
-        InterfaceModel
+        Interface
             .findOne({url: url})
             .populate('activeResponse')
             .lean()
@@ -249,7 +253,7 @@ exports.setActiveResponse = function (interfaceId, responseId) {
 
     return new Promise(function (resolve, reject) {
         // 查找对应id的接口，更新数据
-        InterfaceModel.findByIdAndUpdate(
+        Interface.findByIdAndUpdate(
             interfaceId,
             operation,
             function (err) {
@@ -267,7 +271,7 @@ exports.setActiveResponse = function (interfaceId, responseId) {
  */
 exports.deleteById = function (interfaceId) {
     return new Promise(function (resolve, reject) {
-        InterfaceModel
+        Interface
             .findById(interfaceId)
             .exec(function (err, doc) {
                 // 查询出错

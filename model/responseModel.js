@@ -6,6 +6,7 @@
 
 // 第三方依赖
 var Promise = require('bluebird');
+var mongoose = require('mongoose');
 
 // 连接数据库
 var db = require('../lib/db');
@@ -16,8 +17,11 @@ var responseSchema = require('./schemas/response');
 // collection名
 var collectionName = 'response';
 
+// 注册response
+mongoose.model(collectionName, responseSchema);
+
 // model对象
-var ResponseModel = db.model(collectionName, responseSchema);
+var Response = db.model(collectionName, responseSchema);
 
 /**
  * 生成新的响应实体，并入库
@@ -47,7 +51,7 @@ exports.add = function (name, interfaceId, type, data) {
         };
 
         // 创建一个新的响应document并保存
-        var newEntity = new ResponseModel(doc);
+        var newEntity = new Response(doc);
         newEntity.save(function (error, newResponseData) {
             // 新的响应保存无误
             !error ? resolve(newResponseData) : reject();
@@ -71,7 +75,8 @@ exports.getById = function (responseId, options) {
 
     return new Promise(function (resolve, reject) {
         // 根据mongodb的id来查找数据
-        ResponseModel.findById(responseId)
+        Response
+            .findById(responseId)
             .select('')
             .lean()
             .exec(function (err, doc) {
@@ -120,7 +125,7 @@ exports.updateById = function (responseId, responseData) {
                 reject();
         }
 
-        ResponseModel.findByIdAndUpdate(
+        Response.findByIdAndUpdate(
             responseId,
             responseData,
             function (err, data) {
@@ -139,7 +144,7 @@ exports.updateById = function (responseId, responseData) {
  */
 exports.deleteById = function (responseId) {
     return new Promise(function (resolve, reject) {
-        ResponseModel
+        Response
             .findById(responseId, function (err, doc) {
                 // 无误且查询到了document
                 if (!err && !!doc) {

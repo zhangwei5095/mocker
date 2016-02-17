@@ -36,7 +36,19 @@ var interfaceSchema = new mongoose.Schema({
         type: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'responses'
+                ref: 'response'
+            }
+        ],
+        default: []
+    },
+    /**
+     * 该接口下注册的队列
+     */
+    queue: {
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'queue'
             }
         ],
         default: []
@@ -67,12 +79,9 @@ var interfaceSchema = new mongoose.Schema({
      */
     activeResponse: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'responses'
+        ref: 'response'
     }
 });
-
-// mongoose注册model
-mongoose.model('interface', interfaceSchema);
 
 /**
  * 加载中间件

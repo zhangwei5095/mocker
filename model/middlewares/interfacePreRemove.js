@@ -6,7 +6,7 @@
 var Promise = require('bluebird');
 
 module.exports = function (next) {
-    var ResponseModel = this.model('responses');
+    var Response = this.model('response');
     // 正在准备删除的document
     var thisDoc = this;
 
@@ -35,7 +35,7 @@ module.exports = function (next) {
                 // 有可能这个接口下面没有响应，所以要节省点性能
                 if (resIdColl.length > 0) {
                     // 注意这个删除不会触发中间件
-                    ResponseModel
+                    Response
                         .remove(
                             {
                                 _id: {
