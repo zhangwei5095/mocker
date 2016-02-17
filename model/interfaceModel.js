@@ -15,7 +15,7 @@ var ObjectId = mongoose.Types.ObjectId;
 var Promise = require('bluebird');
 
 // 连接数据库
-var db = require('../lib/dbConnection');
+var db = require('../lib/db');
 
 // schema
 var interfaceSchema = require('./schemas/interface');

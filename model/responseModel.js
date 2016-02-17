@@ -8,7 +8,7 @@
 var Promise = require('bluebird');
 
 // 连接数据库
-var db = require('../lib/dbConnection');
+var db = require('../lib/db');
 
 // schema
 var responseSchema = require('./schemas/response');
