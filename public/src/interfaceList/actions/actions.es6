@@ -96,7 +96,7 @@ const hideSnackBar = () => {
 const fetchNewInterfaceList = () => {
     return (dispatch) => {
         request
-            .post('admin/getAllInterface')
+            .post('/admin/getAllInterface')
             .end((err, res) => {
                 if (err) {
                     // 保存失败分支
