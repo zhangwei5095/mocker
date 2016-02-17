@@ -104,7 +104,9 @@ class App extends Component {
                                   style={this.addNewButtonStyle}
                                   onMouseDown={this.onAddNewInterface} />
                 </div>
-                <InterfaceList />
+                <div className="list-container">
+                    <InterfaceList />
+                </div>
                 <InterfaceCtrlModal hostURL={props.hostURL} />
                 <Snackbar open={props.snackbarData.open}
                           message={props.snackbarData.text}
