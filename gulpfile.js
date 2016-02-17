@@ -4,15 +4,19 @@
  */
 
 // 原生模块
-var fs = require('fs');
+var fs = require('fs-extra');
 var path = require('path');
 
 // 第三方
 var gulp = require('gulp');
 var gUtil = require('gulp-util');
+
+// 处理器
 var webpack = require('webpack-stream');
 var less = require('gulp-less');
 var name = require('vinyl-named');
+var cssNano = require('gulp-cssnano');
+var uglify = require('gulp-uglify');
 
 var srcDirGlob = './public/src/**/';
 var srcDir = './public/src/';
@@ -217,5 +221,42 @@ gulp.task('dev', ['style', 'webpack-watch'], function () {
                     gUtil.log('文件移动完成');
                 });
         }
+    });
+});
+
+/**
+ * 生成环境构建任务
+ */
+gulp.task('product', function () {
+    // 首先要清空asset目录，保证干净
+    fs.remove(assetDir, function (err) {
+        if (err) {
+            gUtil.log('Build failed, can not remove assets!');
+            return;
+        }
+
+        // css
+        gulp.src(srcDirGlob + 'main.less', {base: srcDir})
+            .pipe(less())
+            .pipe(cssNano())
+            .pipe(gulp.dest(assetDir));
+
+        // js
+        var productWebpackConfig = Object.assign({}, webpackConfig);
+        delete productWebpackConfig.devtool;
+        gulp.src(srcDirGlob + 'main.jsx', {base: srcDir})
+            .pipe(
+                name(function (file) {
+                    // webpack entry point
+                    return removeExtension(file.relative);
+                })
+            )
+            .pipe(webpack(productWebpackConfig))
+            .pipe(uglify({mangle: true}))
+            .pipe(gulp.dest(assetDir));
+
+        // others
+        gulp.src(srcDirGlob + 'fonts/*.*', {base: srcDir})
+            .pipe(gulp.dest(assetDir));
     });
 });
