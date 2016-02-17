@@ -44,7 +44,7 @@ var interfaceSchema = new mongoose.Schema({
     /**
      * 该接口下注册的队列
      */
-    queue: {
+    queues: {
         type: [
             {
                 type: mongoose.Schema.Types.ObjectId,
