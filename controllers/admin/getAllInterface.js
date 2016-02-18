@@ -3,18 +3,25 @@
  * @author Franck Chen(chenfan02@baidu.com)
  */
 
-var interfaceModel = require('../../model/interfaceModel');
+var db = require('../../lib/db');
+var Interface = db.model('interface');
 
 module.exports = {
     method: 'post',
     controller: function (req, res) {
-        var promise = interfaceModel.getInterfaceList();
+        var promise = Interface.list();
 
         promise.then(
             function (interfaceList) {
                 res.json({
+                    status: 0,
                     interfaceList: interfaceList
                 });
+            },
+            function () {
+                res.json({
+                    status: 1
+                })
             }
         );
     }

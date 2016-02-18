@@ -3,12 +3,13 @@
  * @author Franck Chen(chenfan02@baidu.com)
  */
 
-var interfaceModel = require('../../model/interfaceModel');
+var db = require('../../lib/db');
+var Interface = db.model('interface');
 
 module.exports = {
     method: 'get',
     controller: function (req, res, next) {
-        var promise = interfaceModel.getInterfaceList();
+        var promise = Interface.list();
 
         promise.then(
             function (interfaceList) {

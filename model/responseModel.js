@@ -18,9 +18,6 @@ var responseSchema = require('./schemas/response');
 var collectionName = 'response';
 
 // 注册response
-mongoose.model(collectionName, responseSchema);
-
-// model对象
 var Response = db.model(collectionName, responseSchema);
 
 /**
