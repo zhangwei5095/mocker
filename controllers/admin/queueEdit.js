@@ -3,9 +3,8 @@
  * @author Franck Chen(chenfan02@baidu.com)
  */
 
-// 第三方
-
-// model
+var db = require('../../lib/db');
+var Interface = db.model('interface');
 
 module.exports = {
     method: 'get',
