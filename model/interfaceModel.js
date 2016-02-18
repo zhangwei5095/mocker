@@ -14,43 +14,38 @@ var ObjectId = mongoose.Types.ObjectId;
 // 第三方依赖
 var Promise = require('bluebird');
 
-// 模块
+// 应用模块
 var Response = require('./responseModel');
-
-// 连接数据库
 var db = require('../lib/db');
+
+mongoose.Promise = Promise;
 
 // schema
 var interfaceSchema = require('./schemas/interface');
+
+/**
+ * 获取接口列表，用于渲染列表页
+ *
+ * @static
+ * @return {Promise}
+ */
+interfaceSchema.statics.list = function () {
+    return this
+        .find({})
+        .select('activeResponse responses url responseCount')
+        .populate({
+            path: 'activeResponse',
+            // populate目前激活的响应，需要的字段只有name
+            select: 'name'
+        })
+        .lean()
+        .exec();
+};
 
 // collection名
 var collectionName = 'interface';
 // mongoose注册model
 var Interface = db.model(collectionName, interfaceSchema);
-
-/**
- * 获取接口列表ajax接口
- *
- * @return {Promise} promise对象
- */
-exports.getInterfaceList = function () {
-    return new Promise(function (resolve, reject) {
-        // 查看全部接口
-        Interface
-            .find({})
-            .select('activeResponse responses url responseCount')
-            .populate({
-                path: 'activeResponse',
-                // populate目前激活的响应，需要的字段只有name
-                select: 'name'
-            })
-            .lean()
-            .exec(function (err, interfaceList) {
-                // 成功返回数据
-                (!err) ? resolve(interfaceList) : reject(err);
-            });
-    });
-};
 
 /**
  * 注册新接口
