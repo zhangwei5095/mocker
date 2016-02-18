@@ -26,8 +26,6 @@ var interfaceSchema = require('./schemas/interface');
 // collection名
 var collectionName = 'interface';
 // mongoose注册model
-mongoose.model(collectionName, interfaceSchema);
-
 var Interface = db.model(collectionName, interfaceSchema);
 
 /**
