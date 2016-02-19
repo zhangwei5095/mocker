@@ -11,11 +11,13 @@ var debug = require('debug')('express:server');
 var process = require('process');
 
 // 模块
-var app = require('../app');
-
 var db = require('../lib/db');
 
 db.on('open', function () {
+    // FIXME
+    require('../model/Queue');
+
+    var app = require('../app');
     // 设置端口
     var port = normalizePort(process.env.PORT || '3000');
     app.set('port', port);
