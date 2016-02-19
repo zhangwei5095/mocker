@@ -1,0 +1,32 @@
+@import "./managePanel.less";
+
+// app bar的默认高度
+@appBarHeight: 64px;
+
+html,
+body {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    height: 100%;
+}
+
+#main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-bar {
+    height: @appBarHeight;
+}
+
+.bottom {
+    height: 70px;
+}

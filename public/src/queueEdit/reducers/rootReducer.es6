@@ -6,11 +6,13 @@
 import {combineReducers} from 'redux';
 
 // reducers
+import responses from './responsesReducer.es6';
+import queuedResponses from './queuedResponsesReducer.es6';
 
 // combine
-export default (state = {}, action) => {
-    switch (action.type) {
-        default:
-            return state;
+export default combineReducers(
+    {
+        responses,
+        queuedResponses
     }
-};
+);
