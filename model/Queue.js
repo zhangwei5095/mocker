@@ -20,4 +20,4 @@ var collectionName = 'queue';
 var queueSchema = require('./schemas/queue');
 
 // model对象
-var Queue = db.model(collectionName, queueSchema);
+db.model(collectionName, queueSchema);

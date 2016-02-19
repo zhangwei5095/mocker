@@ -35,7 +35,7 @@ module.exports = {
                 function (callback) {
                     Interface
                         .findOne({_id: interfaceId})
-                        .select('responses')
+                        .select('responses url')
                         .populate(
                             {
                                 path: 'responses',
@@ -48,6 +48,7 @@ module.exports = {
                                 // 填充初始化数据
                                 initData.responses = doc.responses;
                                 initData.interfaceId = doc._id;
+                                initData.interfaceURL = doc.url;
 
                                 callback(null);
                             },

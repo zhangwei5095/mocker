@@ -199,6 +199,16 @@ class App extends Component {
                                 href={`/admin/responseEdit?interfaceId=${interfaceId}&type=HTML&interfaceURL=/${interfaceURL}`}
                                 style={styles.popoverButton} />
                         </div>
+                        <div>
+                            <RaisedButton
+                                label="响应队列"
+                                labelPosition="after"
+                                secondary={true}
+                                disabled={this.props.newBtnData.disabled}
+                                linkButton={true}
+                                href={`/admin/queueEdit?interfaceId=${interfaceId}&type=JSON&interfaceURL=/${interfaceURL}`}
+                                style={styles.popoverButton} />
+                        </div>
                     </Popover>
                     <RaisedButton
                         label="保存修改"

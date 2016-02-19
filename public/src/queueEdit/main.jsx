@@ -25,6 +25,7 @@ const rootElement = document.getElementById('main');
 
 // 初始数据,来自server
 let initialData = JSON.parse(document.getElementById('initial-data').innerHTML);
+const {responses, queuedResponses} = initialData;
 
 // 添加redux中间件
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
@@ -32,12 +33,15 @@ const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 // 创建store
 const store = createStoreWithMiddleware(
     rootReducer,
-    {}
+    {
+        responses,
+        queuedResponses
+    }
 );
 
 render(
     <Provider store={store}>
-        <App  />
+        <App interfaceURL={initialData.interfaceURL} />
     </Provider>,
     rootElement
 );
