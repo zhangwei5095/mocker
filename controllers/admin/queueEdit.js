@@ -3,6 +3,7 @@
  * @author Franck Chen(chenfan02@baidu.com)
  */
 
+// 第三方库
 var mongoose = require('mongoose');
 var async = require('async');
 
@@ -37,15 +38,16 @@ module.exports = {
                         .select('responses')
                         .populate(
                             {
-                                path: 'response',
+                                path: 'responses',
                                 select: 'name type'
                             }
                         )
                         .exec()
                         .then(
-                            function (responses) {
+                            function (doc) {
                                 // 填充初始化数据
-                                initData.responses = responses;
+                                initData.responses = doc.responses;
+                                initData.interfaceId = doc._id;
 
                                 callback(null);
                             },
@@ -67,8 +69,9 @@ module.exports = {
                             )
                             .exec()
                             .then(
-                                function (queuedResponse) {
-                                    initData.queuedResponse = queuedResponse;
+                                function (queuedResponses) {
+                                    // 已存在队列中的响应
+                                    initData.queuedResponses = queuedResponses;
                                 },
                                 function () {
                                     callback(1);
@@ -77,7 +80,7 @@ module.exports = {
                     }
                     // 不包含queueId,表示是新建
                     else {
-                        initData.queuedResponse = [];
+                        initData.queuedResponses = [];
                         callback(null);
                     }
                 }
