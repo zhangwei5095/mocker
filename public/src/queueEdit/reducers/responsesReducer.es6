@@ -6,10 +6,17 @@
 export default (state = [], action) => {
     switch (action.type) {
         case 'LEFT_MENU/CHANGE_SEL':
-            return {
-                responses: state.responses,
-                selected: action.value
-            };
+            // 不为空就表示已经选中了一个响应，按键启用
+            const moveBtnDisabled = !action.value;
+
+            return Object.assign(
+                {},
+                state,
+                {
+                    selected: action.value,
+                    moveBtnDisabled
+                }
+            );
         default:
             return state;
     }

@@ -37,12 +37,15 @@ const store = createStoreWithMiddleware(
         responsesData: {
             responses,
             // 初始菜单没有选中任何项
-            selected: ''
+            selected: '',
+            // 移动按键是否置灰，因为初始状态时没有选择任何响应，所以按键时置灰的
+            moveBtnDisabled: true
         },
         queuedResponsesData: {
             responses: queuedResponses,
             // 初始菜单没有选中任何项
-            selected: ''
+            selected: '',
+            moveBtnDisabled: true
         }
     }
 );

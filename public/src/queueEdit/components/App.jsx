@@ -14,6 +14,7 @@ import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 import AppBar from 'material-ui/lib/app-bar';
 import FloatingActionButton from 'material-ui/lib/floating-action-button';
+import IconButton from 'material-ui/lib/icon-button';
 
 // enhance
 import {SelectableContainerEnhance} from 'material-ui/lib/hoc/selectable-enhance';
@@ -22,6 +23,7 @@ let SelectableList = SelectableContainerEnhance(List);
 // icon
 import ArrowLeftIcon from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-left';
 import ArrowRightIcon from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-right';
+import HomeIcon from 'material-ui/lib/svg-icons/action/home';
 
 // 第三方
 import request from 'superagent';
@@ -57,7 +59,8 @@ class App extends Component {
         return (
             <div className="app-container">
                 <AppBar className="app-bar"
-                        title={`队列所属接口地址:/${props.interfaceURL}`} />
+                        title={`队列所属接口地址:/${props.interfaceURL}`}
+                        iconElementLeft={<IconButton><HomeIcon /></IconButton>} />
                 <div className="manage-panel">
                     <SelectableList className="list-container"
                                     subheader="所有响应"
@@ -78,10 +81,11 @@ class App extends Component {
                     </SelectableList>
                     <div className="center-button-container">
                         <div className="move-btn-container">
-                            <FloatingActionButton>
+                            <FloatingActionButton style={{marginBottom: '15px'}}
+                                                  disabled={props.moveRightBtnDisabled} >
                                 <ArrowRightIcon />
                             </FloatingActionButton>
-                            <FloatingActionButton>
+                            <FloatingActionButton disabled={props.moveLeftBtnDisabled} >
                                 <ArrowLeftIcon />
                             </FloatingActionButton>
                         </div>
@@ -117,7 +121,10 @@ function extractData(state) {
         resSelValue: responsesData.selected,
         queuedResSelValue: queuedResponsesData.selected,
         responses: responsesData.responses,
-        queuedResponses: queuedResponsesData.responses
+        queuedResponses: queuedResponsesData.responses,
+        // 右移按键(将响应移入队列)是否置灰，默认状态下，没有选择响应，所以是置灰的
+        moveRightBtnDisabled: responsesData.moveBtnDisabled,
+        moveLeftBtnDisabled: queuedResponsesData.moveBtnDisabled
     };
 }
 
