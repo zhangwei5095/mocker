@@ -5,6 +5,11 @@
 
 export default (state = [], action) => {
     switch (action.type) {
+        case 'LEFT_MENU/CHANGE_SEL':
+            return {
+                responses: state.responses,
+                selected: action.value
+            };
         default:
             return state;
     }

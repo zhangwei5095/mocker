@@ -34,8 +34,16 @@ const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 const store = createStoreWithMiddleware(
     rootReducer,
     {
-        responses,
-        queuedResponses
+        responsesData: {
+            responses,
+            // 初始菜单没有选中任何项
+            selected: ''
+        },
+        queuedResponsesData: {
+            responses: queuedResponses,
+            // 初始菜单没有选中任何项
+            selected: ''
+        }
     }
 );
 
