@@ -6,14 +6,14 @@
 export default (state = [], action) => {
     switch (action.type) {
         case 'RIGHT_MENU/CHANGE_SEL':
-            // 不为空就表示已经选中了一个响应，按键启用
-            const moveBtnDisabled = !action.value;
+            // 序号-1，表示没有选中任何一个响应，序号从0开始排
+            const moveBtnDisabled = action.selectedIndex === -1;
 
             return Object.assign(
                 {},
                 state,
                 {
-                    selected: action.value,
+                    selected: action.selectedIndex,
                     moveBtnDisabled
                 }
             );

@@ -65,17 +65,17 @@ class App extends Component {
                     <SelectableList className="list-container"
                                     subheader="所有响应"
                                     valueLink={{
-                                        value: props.resSelValue,
+                                        value: props.resSelIndex,
                                         requestChange: (e, value) => {
                                             // left表示此次点中的是左侧列表
                                             this.listChange('left', value);
                                         }
                                     }}>
                         {
-                            responses.map(function (response) {
+                            responses.map(function (response, index) {
                                 return (<ListItem primaryText={response.name}
                                                   secondaryText={`类型:${response.type}`}
-                                                  value={response._id} />);
+                                                  value={index} />);
                             })
                         }
                     </SelectableList>
@@ -93,17 +93,17 @@ class App extends Component {
                     <SelectableList className="list-container"
                                     subheader="队列中的响应"
                                     valueLink={{
-                                        value: props.queuedResSelValue,
+                                        value: props.queuedResSelIndex,
                                         requestChange: (e, value) => {
                                             // left表示此次点中的是左侧列表
                                             this.listChange('right', value);
                                         }
                                     }}>
                         {
-                            queuedResponses.map(function (response) {
+                            queuedResponses.map(function (response, index) {
                                 return (<ListItem primaryText={response.name}
                                                   secondaryText={`类型:${response.type}`}
-                                                  value={response._id} />);
+                                                  value={index} />);
                             })
                         }
                     </SelectableList>
@@ -118,8 +118,10 @@ function extractData(state) {
     const {responsesData, queuedResponsesData} = state;
 
     return {
-        resSelValue: responsesData.selected,
-        queuedResSelValue: queuedResponsesData.selected,
+        // 选中的响应的序号
+        resSelIndex: responsesData.selectedIndex,
+        // 选中的队列中的响应的序号
+        queuedResSelIndex: queuedResponsesData.selectedIndex,
         responses: responsesData.responses,
         queuedResponses: queuedResponsesData.responses,
         // 右移按键(将响应移入队列)是否置灰，默认状态下，没有选择响应，所以是置灰的
