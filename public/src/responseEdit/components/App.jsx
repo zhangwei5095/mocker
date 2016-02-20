@@ -260,9 +260,11 @@ class App extends Component {
                             onLeftIconButtonTouchTap={() => {this.setState({rightMenuOpen: false})}} />
                     <List>
                         <ListItem primaryText="前往接口列表页"
-                                  leftIcon={<ListIcon />} />
+                                  leftIcon={<ListIcon />}
+                                  onTouchTap={() => {location.href = '/admin'}} />
                         <ListItem primaryText="返回接口响应页"
-                                  leftIcon={<ArrowBack />} />
+                                  leftIcon={<ArrowBack />}
+                                  onTouchTap={this.jumpToResponseList} />
                     </List>
                 </LeftNav>
             </div>
