@@ -17,6 +17,17 @@ export default (state = [], action) => {
                     moveBtnDisabled
                 }
             );
+        case 'RESPONSE/MOVE':
+            return Object.assign(
+                {},
+                state,
+                {
+                    // 移动过后，必然是没有选中的，所以调节序号至-1
+                    selectedIndex: -1,
+                    responses: [
+                    ]
+                }
+            );
         default:
             return state;
     }

@@ -54,7 +54,7 @@ class App extends Component {
 
     render() {
         const {props} = this;
-        const {responses, queuedResponses} = props;
+        const {unQueuedResponses, queuedResponses} = props;
 
         return (
             <div className="app-container">
@@ -65,14 +65,14 @@ class App extends Component {
                     <SelectableList className="list-container"
                                     subheader="所有响应"
                                     valueLink={{
-                                        value: props.resSelIndex,
+                                        value: props.unQueuedSelIndex,
                                         requestChange: (e, value) => {
-                                            // left表示此次点中的是左侧列表
-                                            this.listChange('left', value);
+                                            // 处理选中
+                                            this.listChange('unQueued', value);
                                         }
                                     }}>
                         {
-                            responses.map(function (response, index) {
+                            unQueuedResponses.map(function (response, index) {
                                 return (<ListItem primaryText={response.name}
                                                   secondaryText={`类型:${response.type}`}
                                                   value={index} />);
@@ -82,10 +82,20 @@ class App extends Component {
                     <div className="center-button-container">
                         <div className="move-btn-container">
                             <FloatingActionButton style={{marginBottom: '15px'}}
-                                                  disabled={props.moveRightBtnDisabled} >
+                                                  disabled={props.moveRightBtnDisabled}
+                                                  onMouseUp={() => {
+                                                      props.dispatch(
+                                                          actions.moveResponse('unQueued', props.unQueuedSelIndex)
+                                                      );
+                                                  }}>
                                 <ArrowRightIcon />
                             </FloatingActionButton>
-                            <FloatingActionButton disabled={props.moveLeftBtnDisabled} >
+                            <FloatingActionButton disabled={props.moveLeftBtnDisabled}
+                                                  onMouseUp={() => {
+                                                      props.dispatch(
+                                                          actions.moveResponse('queued', props.queuedResSelIndex)
+                                                      );
+                                                  }}>
                                 <ArrowLeftIcon />
                             </FloatingActionButton>
                         </div>
@@ -95,8 +105,8 @@ class App extends Component {
                                     valueLink={{
                                         value: props.queuedResSelIndex,
                                         requestChange: (e, value) => {
-                                            // left表示此次点中的是左侧列表
-                                            this.listChange('right', value);
+                                            // 处理选中
+                                            this.listChange('queued', value);
                                         }
                                     }}>
                         {
@@ -115,18 +125,19 @@ class App extends Component {
 }
 
 function extractData(state) {
-    const {responsesData, queuedResponsesData} = state;
+    // unQueued - 所有没有入队列的响应， queued - 在队列中的响应
+    const {unQueued, queued} = state.responses;
 
     return {
         // 选中的响应的序号
-        resSelIndex: responsesData.selectedIndex,
+        unQueuedSelIndex: unQueued.selectedIndex,
         // 选中的队列中的响应的序号
-        queuedResSelIndex: queuedResponsesData.selectedIndex,
-        responses: responsesData.responses,
-        queuedResponses: queuedResponsesData.responses,
+        queuedResSelIndex: queued.selectedIndex,
+        unQueuedResponses: unQueued.responses,
+        queuedResponses: queued.responses,
         // 右移按键(将响应移入队列)是否置灰，默认状态下，没有选择响应，所以是置灰的
-        moveRightBtnDisabled: responsesData.moveBtnDisabled,
-        moveLeftBtnDisabled: queuedResponsesData.moveBtnDisabled
+        moveRightBtnDisabled: unQueued.moveBtnDisabled,
+        moveLeftBtnDisabled: queued.moveBtnDisabled
     };
 }
 

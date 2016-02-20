@@ -6,13 +6,12 @@
 import {combineReducers} from 'redux';
 
 // reducers
-import responsesData from './responsesReducer.es6';
-import queuedResponsesData from './queuedResponsesReducer.es6';
+import responses from './responseReducer.es6';
 
 // combine
 export default combineReducers(
     {
-        responsesData,
-        queuedResponsesData
+        // 两侧列表内容相关的reducer
+        responses
     }
 );
