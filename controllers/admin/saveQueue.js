@@ -114,14 +114,16 @@ module.exports = {
         // 保存逻辑
         else {
             Queue
-                .find({_id: queueId})
-                .update({
-                    $set: {
-                        name: queueName,
-                        responses: responses,
-                        position: position
+                .findByIdAndUpdate(
+                    queueId,
+                    {
+                        $set: {
+                            name: queueName,
+                            responses: responses,
+                            position: position
+                        }
                     }
-                })
+                )
                 .exec()
                 .then(
                     function (doc) {
