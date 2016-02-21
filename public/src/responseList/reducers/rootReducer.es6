@@ -10,6 +10,7 @@ import responseData from './responseListReducer.es6';
 import snackbarData from './snackbarReducer.es6';
 import buttonsData from './buttonsReducer.es6';
 import doubleCheck from './doubleCheckReducer.es6';
+import basic from './basicReducer.es6';
 
 // combine
 export default combineReducers(
@@ -17,6 +18,7 @@ export default combineReducers(
         responseData,
         snackbarData,
         buttonsData,
-        doubleCheck
+        doubleCheck,
+        basic
     }
 );

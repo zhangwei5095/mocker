@@ -92,6 +92,14 @@ const snackbarAutoHide = () => {
     };
 };
 
+// 过滤条件发生变化的filter
+const filterChange = (filter) => {
+    return {
+        type: 'FILTER/CHANGE',
+        filter
+    };
+};
+
 export default {
     changeActiveResponse,
     saveSuccess,
@@ -101,5 +109,6 @@ export default {
     tryToDeleteResponse,
     hideDoubleCheck,
     refreshResponseList,
-    snackbarAutoHide
+    snackbarAutoHide,
+    filterChange
 };

@@ -42,6 +42,13 @@ class InterfaceList extends Component {
             '编辑', '删除'
         ];
 
+        // 组件样式集合
+        this.styles = {
+            table: {
+                borderBottom: '1px solid #d9d6cf'
+            }
+        };
+
         this.onClickDelete = this.onClickDelete.bind(this);
         this.onToggle = this.onToggle.bind(this);
     };
@@ -86,7 +93,8 @@ class InterfaceList extends Component {
         const {responses, activeResponseId, interfaceId} = this.props;
 
         return (
-            <Table selectable={false}>
+            <Table style={this.styles.table}
+                   selectable={false}>
                 <TableHeader
                     displaySelectAll={false}
                     adjustForCheckbox={false}>

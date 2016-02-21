@@ -1,7 +1,33 @@
 @import "./fontIcon.less";
 
+@appBarHeight: 64px;
+
+html,
 body {
+    height: 100%;
     margin: 0;
+}
+
+#main {
+    height: 100%;
+}
+
+.app-container {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+}
+
+.app-bar {
+    display: flex;
+    height: @appBarHeight;
+}
+
+// 除appBar之外的内容均为主体内容
+.main-content {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
 }
 
 .top-btn-container {
@@ -12,6 +38,12 @@ body {
     height: 50px;
 }
 
+// 左侧菜单容器
+.left-menu {
+    flex: 1;
+    border-right: 1px solid #d9d6cf;
+}
+
 .list-container {
-    border-bottom: 1px solid #d9d6cf;
+    flex: 6;
 }

@@ -17,6 +17,12 @@ import AppBar from 'material-ui/lib/app-bar';
 import IconButton from 'material-ui/lib/icon-button';
 import Popover from 'material-ui/lib/popover/popover';
 import PopoverAnimationFromTop from 'material-ui/lib/popover/popover-animation-from-top';
+import List from 'material-ui/lib/lists/list';
+import ListItem from 'material-ui/lib/lists/list-item';
+
+// enhance
+import {SelectableContainerEnhance} from 'material-ui/lib/hoc/selectable-enhance';
+let SelectableList = SelectableContainerEnhance(List);
 
 // icon
 import HomeIcon from 'material-ui/lib/svg-icons/action/home';
@@ -63,6 +69,7 @@ class App extends Component {
         this.hideDoubleCheck = this.hideDoubleCheck.bind(this);
         this.onAcceptDoubleCheck = this.onAcceptDoubleCheck.bind(this);
         this.handleResponseTypePopOver = this.handleResponseTypePopOver.bind(this);
+        this.filterChange = this.filterChange.bind(this);
     };
 
     /**
@@ -149,6 +156,10 @@ class App extends Component {
         }
     };
 
+    filterChange(e, filter) {
+        this.props.dispatch(actions.filterChange(filter));
+    };
+
     handleResponseTypePopOver(e, data) {
         this.setState({
             responseTypePopOverOpen: data.open,
@@ -157,72 +168,90 @@ class App extends Component {
     };
 
     render() {
-        const {snackbarData, interfaceId, doubleCheck, interfaceURL, dispatch} = this.props;
+        const {props} = this;
+        const {snackbarData, interfaceId, doubleCheck, interfaceURL, dispatch} = props;
         const {styles} = this;
 
         return (
             <div className="app-container">
-                <AppBar
-                    title={'/' + this.props.interfaceURL}
-                    iconElementLeft={<IconButton><HomeIcon /></IconButton>} />
-                <div className="top-btn-container">
-                    <RaisedButton
-                        label="添加新响应"
-                        labelPosition="after"
-                        style={styles.topButton}
-                        secondary={true}
-                        icon={<FontIcon className="icon-plus" />}
-                        onTouchTap={(e) => {this.handleResponseTypePopOver(e, {open: true})}} />
-                    <Popover
-                        open={this.state.responseTypePopOverOpen}
-                        anchorEl={this.state.responseTypePopOverAnchor}
-                        anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-                        targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                        onRequestClose={(e) => {this.handleResponseTypePopOver(e, {open: false})}}
-                        animation={PopoverAnimationFromTop}
-                        style={styles.popover}>
-                        <div>
+                <AppBar className="app-bar"
+                        title={'/' + props.interfaceURL}
+                        iconElementLeft={<IconButton><HomeIcon /></IconButton>} />
+                <div className="main-content">
+                    <div className="left-menu">
+                        <SelectableList className=""
+                                        subheader="响应类型"
+                                        valueLink={{
+                                            value: props.filter,
+                                            requestChange: this.filterChange
+                                        }}>
+                            {
+                                ['JSON', 'HTML', 'QUEUE'].map((name) => {
+                                    return (<ListItem primaryText={name}
+                                                      value={name} />);
+                                })
+                            }
+                        </SelectableList>
+                    </div>
+                    <div className="list-container">
+                        <div className="top-btn-container">
                             <RaisedButton
-                                label="JSON响应"
+                                label="添加新响应"
+                                labelPosition="after"
+                                style={styles.topButton}
+                                secondary={true}
+                                icon={<FontIcon className="icon-plus" />}
+                                onTouchTap={(e) => {this.handleResponseTypePopOver(e, {open: true})}} />
+                            <Popover
+                                open={this.state.responseTypePopOverOpen}
+                                anchorEl={this.state.responseTypePopOverAnchor}
+                                anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                                targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                                onRequestClose={(e) => {this.handleResponseTypePopOver(e, {open: false})}}
+                                animation={PopoverAnimationFromTop}
+                                style={styles.popover}>
+                                <div>
+                                    <RaisedButton
+                                        label="JSON响应"
+                                        labelPosition="after"
+                                        secondary={true}
+                                        disabled={this.props.newBtnData.disabled}
+                                        linkButton={true}
+                                        href={`/admin/responseEdit?interfaceId=${interfaceId}&type=JSON&interfaceURL=/${interfaceURL}`}
+                                        style={styles.popoverButton} />
+                                    <RaisedButton
+                                        label="HTML响应"
+                                        labelPosition="after"
+                                        secondary={true}
+                                        disabled={this.props.newBtnData.disabled}
+                                        linkButton={true}
+                                        href={`/admin/responseEdit?interfaceId=${interfaceId}&type=HTML&interfaceURL=/${interfaceURL}`}
+                                        style={styles.popoverButton} />
+                                </div>
+                                <div>
+                                    <RaisedButton
+                                        label="响应队列"
+                                        labelPosition="after"
+                                        secondary={true}
+                                        disabled={this.props.newBtnData.disabled}
+                                        linkButton={true}
+                                        href={`/admin/queueEdit?interfaceId=${interfaceId}&type=JSON&interfaceURL=/${interfaceURL}`}
+                                        style={styles.popoverButton} />
+                                </div>
+                            </Popover>
+                            <RaisedButton
+                                label="保存修改"
+                                className="save-btn"
+                                style={styles.topButton}
                                 labelPosition="after"
                                 secondary={true}
-                                disabled={this.props.newBtnData.disabled}
-                                linkButton={true}
-                                href={`/admin/responseEdit?interfaceId=${interfaceId}&type=JSON&interfaceURL=/${interfaceURL}`}
-                                style={styles.popoverButton} />
-                            <RaisedButton
-                                label="HTML响应"
-                                labelPosition="after"
-                                secondary={true}
-                                disabled={this.props.newBtnData.disabled}
-                                linkButton={true}
-                                href={`/admin/responseEdit?interfaceId=${interfaceId}&type=HTML&interfaceURL=/${interfaceURL}`}
-                                style={styles.popoverButton} />
+                                disabled={props.saveBtnData.disabled}
+                                icon={<FontIcon className="icon-floppy-disk" />}
+                                onMouseDown={this.onClickSave} />
                         </div>
-                        <div>
-                            <RaisedButton
-                                label="响应队列"
-                                labelPosition="after"
-                                secondary={true}
-                                disabled={this.props.newBtnData.disabled}
-                                linkButton={true}
-                                href={`/admin/queueEdit?interfaceId=${interfaceId}&type=JSON&interfaceURL=/${interfaceURL}`}
-                                style={styles.popoverButton} />
-                        </div>
-                    </Popover>
-                    <RaisedButton
-                        label="保存修改"
-                        className="save-btn"
-                        style={styles.topButton}
-                        labelPosition="after"
-                        secondary={true}
-                        disabled={this.props.saveBtnData.disabled}
-                        icon={<FontIcon className="icon-floppy-disk" />}
-                        onMouseDown={this.onClickSave} />
-                </div>
-                <div className="list-container">
-                    <ResponseList interfaceId={this.props.interfaceId}
-                                  interfaceURL={'/' + this.props.interfaceURL} />
+                        <ResponseList interfaceId={props.interfaceId}
+                                      interfaceURL={'/' + props.interfaceURL} />
+                    </div>
                 </div>
                 <Snackbar open={snackbarData.open}
                           message={snackbarData.text}
@@ -246,7 +275,8 @@ function extractData(state) {
         snackbarData: state.snackbarData,
         saveBtnData: state.buttonsData.save,
         newBtnData: state.buttonsData.add,
-        doubleCheck: state.doubleCheck
+        doubleCheck: state.doubleCheck,
+        filter: state.basic.filter
     };
 }
 
