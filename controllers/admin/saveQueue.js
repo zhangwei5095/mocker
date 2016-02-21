@@ -23,7 +23,12 @@ module.exports = {
         var interfaceId = postData.interfaceId;
 
         // 校验id的合法性
-        if (!ObjectId.isValid(queueId) || !ObjectId.isValid(interfaceId)) {
+        if (!ObjectId.isValid(interfaceId)) {
+            next({status: 0});
+            return;
+        }
+
+        if (queueId && !ObjectId.isValid(queueId)) {
             next({status: 0});
             return;
         }
@@ -42,6 +47,8 @@ module.exports = {
         var i;
         var len;
         for (i = 0, len = responses.length; i < len; i++) {
+            var responseId = responses[i];
+
             if (!ObjectId.isValid(responseId)) {
                 next({status: 0});
                 return;
@@ -49,7 +56,7 @@ module.exports = {
         }
 
         // 未提供queue id，表示是新建逻辑
-        if (queueId) {
+        if (!queueId) {
             async.waterfall(
                 [
                     function (callback) {

@@ -49,6 +49,7 @@ module.exports = {
                                 initData.responses = doc.responses;
                                 initData.interfaceId = doc._id;
                                 initData.interfaceURL = doc.url;
+                                initData.name = doc.name;
 
                                 callback(null);
                             },

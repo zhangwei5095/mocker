@@ -81,6 +81,7 @@ export default (state = {}, action) => {
                                 }
                             );
 
+                            // 已经完成移动了
                             hasMoved = true;
                         }
                     }

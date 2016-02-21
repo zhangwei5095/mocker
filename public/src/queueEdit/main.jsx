@@ -48,13 +48,19 @@ const store = createStoreWithMiddleware(
                 selectedIndex: -1,
                 moveBtnDisabled: true
             }
+        },
+        basic: {
+            // 根据有没有queueId来判断保存时是新建还是更新
+            queueId: initialData.queueId || ''
         }
     }
 );
 
 render(
     <Provider store={store}>
-        <App interfaceURL={initialData.interfaceURL} />
+        <App interfaceId={initialData.interfaceId}
+             interfaceURL={initialData.interfaceURL}
+             queueName={initialData.name || ''} />
     </Provider>,
     rootElement
 );
