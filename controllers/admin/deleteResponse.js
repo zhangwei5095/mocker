@@ -20,6 +20,8 @@ module.exports = {
                 status: 1,
                 statusInfo: '请提供有效的响应id'
             });
+
+            return;
         }
 
         // model层删除对应的响应
