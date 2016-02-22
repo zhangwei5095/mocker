@@ -6,6 +6,7 @@
 // 第三方库
 var mongoose = require('mongoose');
 var async = require('async');
+var _ = require('lodash');
 
 var db = require('../../lib/db');
 var Interface = db.model('interface');
@@ -79,6 +80,22 @@ module.exports = {
                                     // 已存在队列中的响应
                                     initData.queuedResponses = doc.responses;
                                     initData.name = doc.name;
+                                    initData.queueId = doc._id;
+
+                                    // 队列中响应的数量
+                                    var queuedResponseLen = initData.queuedResponses.length;
+                                    // 在所有响应中去除掉已入队列的响应
+                                    _.remove(initData.responses, function (doc) {
+                                        var i;
+                                        for (i = 0; i < queuedResponseLen; i++) {
+                                            if (doc._id.toString() === initData.queuedResponses[i]._id.toString()) {
+                                                return true;
+                                            }
+                                        }
+
+                                        return false;
+                                    });
+
                                     callback(null);
                                 },
                                 function () {
@@ -89,6 +106,7 @@ module.exports = {
                     // 不包含queueId,表示是新建
                     else {
                         initData.queuedResponses = [];
+
                         callback(null);
                     }
                 }
