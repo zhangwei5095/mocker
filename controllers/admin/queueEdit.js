@@ -35,7 +35,7 @@ module.exports = {
                 function (callback) {
                     Interface
                         .findOne({_id: interfaceId})
-                        .select('responses url')
+                        .select('responses name url')
                         .populate(
                             {
                                 path: 'responses',
@@ -45,6 +45,8 @@ module.exports = {
                         .exec()
                         .then(
                             function (doc) {
+                                doc = doc.toObject();
+
                                 // 填充初始化数据
                                 initData.responses = doc.responses;
                                 initData.interfaceId = doc._id;
@@ -74,6 +76,7 @@ module.exports = {
                                 function (queuedResponses) {
                                     // 已存在队列中的响应
                                     initData.queuedResponses = queuedResponses;
+                                    callback(null);
                                 },
                                 function () {
                                     callback(1);
