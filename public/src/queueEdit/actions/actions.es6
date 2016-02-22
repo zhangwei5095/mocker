@@ -70,7 +70,7 @@ export default {
                         responses
                     }
                 )
-                .end(function (err, res) {
+                .end((err, res) => {
                     if (err || !res.ok) {
                         // false表示保存不正确
                         dispatch(saveFinished(false));
