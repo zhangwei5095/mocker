@@ -3,24 +3,52 @@
  * @author Franck Chen(chenfan02@baidu.com)
  */
 
-var interfaceModel = require('../../model/interfaceModel');
+var mongoose = require('mongoose');
+var ObjectId = mongoose.Types.ObjectId;
+
+var db = require('../../lib/db');
+
+var Interface = db.model('interface');
 
 module.exports = {
     method: 'post',
-    controller: function (req, res) {
+    controller: function (req, res, next) {
         // 需要获取响应列表的接口的id
         var interfaceId = req.body.interfaceId;
 
-        var promise = interfaceModel.getResponseList(interfaceId);
+        if (!ObjectId.isValid(interfaceId)) {
+            next({status: 1});
+            return;
+        }
 
-        promise.then(
-            function (data) {
-                res.json({
-                    responses: data.responses,
-                    // 当前启动的响应的id
-                    activeResponseId: data.activeResponseId
-                });
-            }
-        );
+        // 用户请求的需要列出的响应，目前有JSON,HTML,QUEUE
+        var type = req.body.type;
+        type = type ? type : 'JSON';
+
+        Interface
+            .findOne({_id: interfaceId})
+            .select('responses url activeResponse')
+            .populate({
+                path: 'responses',
+                match: {
+                    type: type
+                },
+                // populate目前激活的响应，需要的字段只有name
+                select: 'name type'
+            })
+            .lean()
+            .exec()
+            .then(
+                function (data) {
+                    res.json({
+                        responses: data.responses,
+                        // 当前启动的响应的id
+                        activeResponseId: data._id
+                    });
+                },
+                function () {
+                    next({status: 1});
+                }
+            );
     }
 };
