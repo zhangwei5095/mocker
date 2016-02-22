@@ -44,7 +44,7 @@ module.exports = {
                         status: 0,
                         responses: data.responses,
                         // 当前启动的响应的id
-                        activeResponseId: data._id
+                        activeResponseId: data.activeResponse
                     });
                 },
                 function () {
