@@ -28,27 +28,14 @@ const saveFailed = () => {
 };
 
 // 尝试删除某响应
-const tryToDeleteResponse = (responseName, responseId) => {
+const tryToDeleteResponse = (responseName, responseId, responseType) => {
     return {
         type: 'RESPONSE/TRY_DELETE',
         responseName,
         data: {
-            responseId
+            responseId,
+            responseType
         }
-    };
-};
-
-// 删除响应成功action
-const deleteSuccess = () => {
-    return {
-        type: 'DELETE_SUCCESS'
-    };
-};
-
-// 删除响应失败的action
-const deleteFailed = () => {
-    return {
-        type: 'DELETE_FAILED'
     };
 };
 
@@ -126,8 +113,6 @@ export default {
     changeActiveResponse,
     saveSuccess,
     saveFailed,
-    deleteSuccess,
-    deleteFailed,
     tryToDeleteResponse,
     hideDoubleCheck,
     refreshResponseList,

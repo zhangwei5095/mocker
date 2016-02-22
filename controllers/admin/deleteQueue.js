@@ -13,13 +13,15 @@ var ObjectId = mongoose.Types.ObjectId;
 module.exports = {
     method: 'post',
     controller: function (req, res) {
-        var queueId = req.body.queueId;
+        var queueId = req.body.id;
 
         if (!ObjectId.isValid(queueId)) {
             res.json({
                 status: 1,
                 statusInfo: 'id错误'
             });
+
+            return;
         }
 
         Queue

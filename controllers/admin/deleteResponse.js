@@ -12,7 +12,7 @@ module.exports = {
         var postData = req.body;
 
         // 需要删除的响应的id
-        var responseId = postData.responseId;
+        var responseId = postData.id;
 
         if (!responseId || typeof responseId !== 'string') {
             // 没有提供有效id直接报错

@@ -110,29 +110,46 @@ class App extends Component {
     /**
      * 以id为依据删除某个响应
      *
-     * @param {string} responseId 要删除的响应的id
+     * @param {string} id 要删除的响应的id
+     * @param {string} responseType 要删除的响应的类型
      */
-    deleteResponse(responseId) {
+    deleteResponse(id, responseType) {
         const {dispatch, interfaceId} = this.props;
-        const responseType = this.props.responseType;
+        let postURL;
+
+        if (responseType === 'JSON' || responseType === 'HTML') {
+            postURL = '/admin/deleteResponse';
+        }
+        else if (responseType === 'QUEUE') {
+            postURL = '/admin/deleteQueue';
+        }
+        else {
+            return;
+        }
 
         request
-            .post('/admin/deleteResponse')
+            .post(postURL)
             .send(
                 {
-                    responseId
+                    id
                 }
             )
             .end(
                 (err, res) => {
                     // 保存成功和失败分别派发不同的action
-                    (!err && res.ok)
-                        // TODO JSON响应判断status
-                        ? dispatch(actions.deleteSuccess())
-                        : dispatch(actions.deleteFailed());
+                    if (err || !res.ok || (JSON.parse(res.text).status !== 0)) {
+                        dispatch({
+                            type: 'DELETE/FAILED'
+                        });
+                        return;
+                    }
 
+                    // 删除成功
+                    dispatch({
+                        type: 'DELETE/SUCCESS'
+                    });
                     // 删除完成后刷新响应列表
-                    dispatch(actions.refreshResponseList(interfaceId, responseType));
+                    dispatch(actions.refreshResponseList(interfaceId, this.props.responseType));
                 }
             );
     };
@@ -146,9 +163,10 @@ class App extends Component {
         // 判断二次确认是为了确认啥
         switch (doubleCheck.checkFor) {
             // 如果二次确认是为了确认是否删除某个响应的话
-            case 'DELETE_RESPONSE':
+            case 'RESPONSE/DELETE':
+                const {responseId, responseType} = doubleCheck.data;
                 // 删除响应
-                this.deleteResponse(doubleCheck.data.responseId);
+                this.deleteResponse(responseId, responseType);
                 // 隐藏二次确认浮窗
                 dispatch(actions.hideDoubleCheck());
 
@@ -240,7 +258,11 @@ class App extends Component {
                                         secondary={true}
                                         disabled={this.props.newBtnData.disabled}
                                         linkButton={true}
-                                        href={`/admin/queueEdit?interfaceId=${interfaceId}&type=JSON&interfaceURL=/${interfaceURL}`}
+                                        href={
+                                            `/admin/queueEdit`
+                                            + `?interfaceId=${interfaceId}`
+                                            + `&type=JSON&interfaceURL=/${interfaceURL}`
+                                        }
                                         style={styles.popoverButton} />
                                 </div>
                             </Popover>

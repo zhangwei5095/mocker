@@ -19,7 +19,7 @@ export default (state = initState, action) => {
                 open: true,
                 title: '删除确认',
                 text: `是否确定要删除名为${action.responseName}响应？`,
-                checkFor: 'DELETE_RESPONSE',
+                checkFor: 'RESPONSE/DELETE',
                 data: action.data
             };
         case 'HIDE_DOUBLE_CHECK':

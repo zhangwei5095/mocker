@@ -71,11 +71,12 @@ class InterfaceList extends Component {
      *
      * @param {string} responseName 要删除的响应的名字
      * @param {string} responseId 想要删除的响应的id
+     * @param {string} responseType 要删除的响应的类型
      */
-    onClickDelete(responseName, responseId) {
+    onClickDelete(responseName, responseId, responseType) {
         const {dispatch} = this.props;
 
-        dispatch(actions.tryToDeleteResponse(responseName, responseId));
+        dispatch(actions.tryToDeleteResponse(responseName, responseId, responseType));
     };
 
     /**
@@ -141,7 +142,7 @@ class InterfaceList extends Component {
                                     </TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>
                                         <IconButton onMouseDown={() => {
-                                                        this.onClickDelete(response.name, response._id)}
+                                                        this.onClickDelete(response.name, response._id, response.type)}
                                                     }>
                                             <DeleteIcon />
                                         </IconButton>
