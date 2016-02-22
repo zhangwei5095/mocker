@@ -73,9 +73,12 @@ module.exports = {
                             )
                             .exec()
                             .then(
-                                function (queuedResponses) {
+                                function (doc) {
+                                    doc = doc.toObject();
+
                                     // 已存在队列中的响应
-                                    initData.queuedResponses = queuedResponses;
+                                    initData.queuedResponses = doc.responses;
+                                    initData.name = doc.name;
                                     callback(null);
                                 },
                                 function () {

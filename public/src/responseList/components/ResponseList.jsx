@@ -51,6 +51,7 @@ class InterfaceList extends Component {
 
         this.onClickDelete = this.onClickDelete.bind(this);
         this.onToggle = this.onToggle.bind(this);
+        this.getResponseEditURL = this.getResponseEditURL.bind(this);
     };
 
     /**
@@ -80,17 +81,31 @@ class InterfaceList extends Component {
     /**
      * 获取编辑某响应的页面地址
      *
-     * @param {string} interfaceId 接口的id
+     * @param {string} responseType 响应的类型
      * @param {string} responseId 响应id
      * @return {string} 响应编辑页面地址
      */
-    getResponseEditURL(interfaceId, responseId = '') {
-        const {interfaceURL} = this.props;
-        return `/admin/responseEdit?interfaceId=${interfaceId}&responseId=${responseId}&interfaceURL=${interfaceURL}`;
+    getResponseEditURL(responseType, responseId = '') {
+        const {interfaceId, interfaceURL} = this.props;
+
+        // JSON和HTML进入ace editor编辑页面
+        if (responseType === 'JSON' || responseType === 'HTML') {
+            return `/admin/responseEdit`
+                + `?interfaceId=${interfaceId}`
+                + `&responseId=${responseId}`
+                + `&interfaceURL=${interfaceURL}`;
+        }
+
+        // 队列进入队列编辑页
+        if (responseType === 'QUEUE') {
+            return `/admin/queueEdit`
+                + `?interfaceId=${interfaceId}`
+                + `&queueId=${responseId}`;
+        }
     };
 
     render() {
-        const {responses, activeResponseId, interfaceId} = this.props;
+        const {responses, activeResponseId} = this.props;
 
         return (
             <Table style={this.styles.table}
@@ -120,7 +135,7 @@ class InterfaceList extends Component {
                                     <TableRowColumn style={tableStyle.cellStyle}>{response.type}</TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>
                                         <IconButton linkButton={true}
-                                                    href={this.getResponseEditURL(interfaceId, response._id)}>
+                                                    href={this.getResponseEditURL(response.type, response._id)}>
                                             <PenIcon />
                                         </IconButton>
                                     </TableRowColumn>
