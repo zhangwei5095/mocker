@@ -30,9 +30,11 @@ const saveFailed = () => {
 // 尝试删除某响应
 const tryToDeleteResponse = (responseName, responseId) => {
     return {
-        type: 'TRY_TO_DELETE_RESPONSE',
-        responseId,
-        responseName
+        type: 'RESPONSE/TRY_DELETE',
+        responseName,
+        data: {
+            responseId
+        }
     };
 };
 

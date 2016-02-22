@@ -70,6 +70,7 @@ class App extends Component {
         this.onAcceptDoubleCheck = this.onAcceptDoubleCheck.bind(this);
         this.handleResponseTypePopOver = this.handleResponseTypePopOver.bind(this);
         this.responseTypeChange = this.responseTypeChange.bind(this);
+        this.deleteResponse = this.deleteResponse.bind(this);
     };
 
     /**
@@ -113,6 +114,7 @@ class App extends Component {
      */
     deleteResponse(responseId) {
         const {dispatch, interfaceId} = this.props;
+        const responseType = this.props.responseType;
 
         request
             .post('/admin/deleteResponse')
@@ -130,7 +132,7 @@ class App extends Component {
                         : dispatch(actions.deleteFailed());
 
                     // 删除完成后刷新响应列表
-                    dispatch(actions.refreshResponseList(interfaceId, this.props.basic.responseTypeChange));
+                    dispatch(actions.refreshResponseList(interfaceId, responseType));
                 }
             );
     };
