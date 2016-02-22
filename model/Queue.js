@@ -6,7 +6,6 @@
 // 第三方依赖
 var Promise = require('bluebird');
 var mongoose = require('mongoose');
-var ObjectId = mongoose.Types.ObjectId;
 
 mongoose.Promise = Promise;
 
@@ -19,5 +18,5 @@ var collectionName = 'queue';
 // schema
 var queueSchema = require('./schemas/queue');
 
-// model对象
+// 注册为model对象
 db.model(collectionName, queueSchema);

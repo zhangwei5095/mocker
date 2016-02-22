@@ -25,33 +25,67 @@ module.exports = {
         var responseType = req.body.responseType;
         responseType = responseType ? responseType : 'JSON';
 
-        Interface
-            .findOne({_id: interfaceId})
-            .select('responses url activeResponse')
-            .populate({
-                path: 'responses',
-                match: {
-                    type: responseType
-                },
-                // populate目前激活的响应，需要的字段只有name
-                select: 'name type'
-            })
-            .lean()
-            .exec()
-            .then(
-                function (data) {
-                    res.json({
-                        status: 0,
-                        responses: data.responses,
-                        // 当前启动的响应的id
-                        activeResponseId: data.activeResponse
-                    });
-                },
-                function () {
-                    res.json({
-                        status: 1
-                    });
-                }
-            );
+        if (responseType === 'JSON' || responseType === 'HTML') {
+            Interface
+                .findOne({_id: interfaceId})
+                .select('responses activeResponse')
+                .populate({
+                    path: 'responses',
+                    match: {
+                        type: responseType
+                    },
+                    // populate目前激活的响应，需要的字段只有name
+                    select: 'name type'
+                })
+                .lean()
+                .exec()
+                .then(
+                    function (data) {
+                        res.json({
+                            status: 0,
+                            responses: data.responses,
+                            // 当前启动的响应的id
+                            activeResponseId: data.activeResponse
+                        });
+                    },
+                    function () {
+                        res.json({
+                            status: 1
+                        });
+                    }
+                );
+        }
+        else if (responseType === 'QUEUE') {
+            Interface
+                .findOne({_id: interfaceId})
+                .select('queues activeResponse')
+                .populate(
+                    {
+                        path: 'queues',
+                        select: 'name type'
+                    }
+                )
+                .lean()
+                .exec()
+                .then(
+                    function (doc) {
+                        res.json({
+                            status: 0,
+                            responses: doc.queues,
+                            activeResponseId: doc.activeResponse
+                        });
+                    },
+                    function () {
+                        res.json({
+                            status: 1
+                        });
+                    }
+                );
+        }
+        else {
+            res.json({
+                status: 1
+            });
+        }
     }
 };
