@@ -27,9 +27,7 @@ const rootElement = document.getElementById('main');
 let initialData = JSON.parse(document.getElementById('initial-data').innerHTML);
 
 // 添加redux中间件
-const createStoreWithMiddleware = applyMiddleware(
-    thunk
-)(createStore);
+const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 
 // 创建store
 const store = createStoreWithMiddleware(

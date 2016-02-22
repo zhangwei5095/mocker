@@ -7,7 +7,7 @@ const initState = [];
 
 export default (state = initState, action) => {
     switch (action.type) {
-        case 'REFRESH_RESPONSE_LIST':
+        case 'RESPONSE_LIST/REFRESH':
             return {
                 responses: action.responses,
                 activeResponseId: action.activeResponseId

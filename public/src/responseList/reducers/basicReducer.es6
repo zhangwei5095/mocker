@@ -4,17 +4,18 @@
  */
 
 const initData = {
-    filter: 'JSON'
+    // 初始状态下，显示JSON响应
+    responseType: 'JSON'
 };
 
 export default (state = initData, action) => {
     switch (action.type) {
-        case 'FILTER/CHANGE':
+        case 'RESPONSE_TYPE/CHANGE':
             return Object.assign(
                 {},
                 state,
                 {
-                    filter: action.filter
+                    responseType: action.responseType
                 }
             );
         default:

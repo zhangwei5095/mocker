@@ -57,20 +57,40 @@ const hideDoubleCheck = () => {
     };
 };
 
+const showSnackTip = (text) => {
+    return {
+        type: 'SNACKBAR/TIP',
+        text
+    };
+};
+
 // 刷新响应列表
-const refreshResponseList = (interfaceId) => {
+const refreshResponseList = (interfaceId, responseType) => {
     return (dispatch) => {
         request
             .post('/admin/getResponseList')
             .send({
-                interfaceId
+                interfaceId,
+                responseType
             })
             .end(
                 (err, res) => {
-                    // TODO status判断
-                    if (!err && res.ok) {
-                        dispatch(refresh(JSON.parse(res.text)));
+                    if (err || !res.ok) {
+                        dispatch(showSnackTip('刷新失败'));
+                        return;
                     }
+
+                    let data = JSON.parse(res.text);
+
+                    if (data.status !== 0) {
+                        dispatch(showSnackTip('刷新失败'));
+                        return;
+                    }
+
+                    // 刷新响应列表
+                    dispatch(refresh(data));
+
+                    dispatch(responseTypeChange(responseType));
                 }
             );
     };
@@ -79,7 +99,7 @@ const refreshResponseList = (interfaceId) => {
 // 实际刷新
 const refresh = (data) => {
     return {
-        type: 'REFRESH_RESPONSE_LIST',
+        type: 'RESPONSE_LIST/REFRESH',
         responses: data.responses,
         activeResponseId: data.activeResponseId
     };
@@ -88,15 +108,15 @@ const refresh = (data) => {
 // 底部提示自动隐藏时触发
 const snackbarAutoHide = () => {
     return {
-        type: 'SNACKBAR_AUTO_HIDE'
+        type: 'SNACKBAR/AUTO_HIDE'
     };
 };
 
 // 过滤条件发生变化的filter
-const filterChange = (filter) => {
+const responseTypeChange = (responseType) => {
     return {
-        type: 'FILTER/CHANGE',
-        filter
+        type: 'RESPONSE_TYPE/CHANGE',
+        responseType
     };
 };
 
@@ -110,5 +130,5 @@ export default {
     hideDoubleCheck,
     refreshResponseList,
     snackbarAutoHide,
-    filterChange
+    responseTypeChange
 };

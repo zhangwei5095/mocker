@@ -22,8 +22,8 @@ module.exports = {
         }
 
         // 用户请求的需要列出的响应，目前有JSON,HTML,QUEUE
-        var type = req.body.type;
-        type = type ? type : 'JSON';
+        var responseType = req.body.responseType;
+        responseType = responseType ? responseType : 'JSON';
 
         Interface
             .findOne({_id: interfaceId})
@@ -31,7 +31,7 @@ module.exports = {
             .populate({
                 path: 'responses',
                 match: {
-                    type: type
+                    type: responseType
                 },
                 // populate目前激活的响应，需要的字段只有name
                 select: 'name type'
@@ -41,13 +41,16 @@ module.exports = {
             .then(
                 function (data) {
                     res.json({
+                        status: 0,
                         responses: data.responses,
                         // 当前启动的响应的id
                         activeResponseId: data._id
                     });
                 },
                 function () {
-                    next({status: 1});
+                    res.json({
+                        status: 1
+                    });
                 }
             );
     }

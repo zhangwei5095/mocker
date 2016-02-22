@@ -69,7 +69,7 @@ class App extends Component {
         this.hideDoubleCheck = this.hideDoubleCheck.bind(this);
         this.onAcceptDoubleCheck = this.onAcceptDoubleCheck.bind(this);
         this.handleResponseTypePopOver = this.handleResponseTypePopOver.bind(this);
-        this.filterChange = this.filterChange.bind(this);
+        this.responseTypeChange = this.responseTypeChange.bind(this);
     };
 
     /**
@@ -130,7 +130,7 @@ class App extends Component {
                         : dispatch(actions.deleteFailed());
 
                     // 删除完成后刷新响应列表
-                    dispatch(actions.refreshResponseList(interfaceId));
+                    dispatch(actions.refreshResponseList(interfaceId, this.props.basic.responseTypeChange));
                 }
             );
     };
@@ -156,8 +156,10 @@ class App extends Component {
         }
     };
 
-    filterChange(e, filter) {
-        this.props.dispatch(actions.filterChange(filter));
+    responseTypeChange(e, responseType) {
+        // this.props.dispatch(actions.filterChange(filter));
+
+        this.props.dispatch(actions.refreshResponseList(this.props.interfaceId, responseType));
     };
 
     handleResponseTypePopOver(e, data) {
@@ -182,8 +184,9 @@ class App extends Component {
                         <SelectableList className=""
                                         subheader="响应类型"
                                         valueLink={{
-                                            value: props.filter,
-                                            requestChange: this.filterChange
+                                            value: props.responseType,
+                                            // 列表切换即过滤类型变化
+                                            requestChange: this.responseTypeChange
                                         }}>
                             {
                                 ['JSON', 'HTML', 'QUEUE'].map((name) => {
@@ -276,7 +279,7 @@ function extractData(state) {
         saveBtnData: state.buttonsData.save,
         newBtnData: state.buttonsData.add,
         doubleCheck: state.doubleCheck,
-        filter: state.basic.filter
+        responseType: state.basic.responseType
     };
 }
 
