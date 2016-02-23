@@ -11,7 +11,6 @@ var async = require('async');
 
 // 引用模块
 var db = require('../../lib/db');
-var interfaceModel = require('../../model/interfaceModel');
 var Interface = db.model('interface');
 
 module.exports = function (req, res, next) {
@@ -184,6 +183,11 @@ module.exports = function (req, res, next) {
         }
     );
 
+    /**
+     * 渲染mock数据异常页面
+     *
+     * @param {Object} data 错误信息
+     */
     function renderError(data) {
         switch (data.status) {
             case 1:
@@ -206,6 +210,11 @@ module.exports = function (req, res, next) {
         }
     }
 
+    /**
+     * 渲染mock数据
+     *
+     * @param {data} response mock数据信息
+     */
     function sendResponse(response) {
         res.status(response.httpStatusCode);
 
