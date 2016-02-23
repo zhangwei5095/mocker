@@ -75,6 +75,13 @@ var interfaceSchema = new mongoose.Schema({
         default: Date.now
     },
     /**
+     * 当前接口激活的响应的模式，目前是扩充字段
+     */
+    mode: {
+        type: String,
+        default: 'NORMAL'
+    },
+    /**
      * 当前激活的响应
      */
     activeResponse: {

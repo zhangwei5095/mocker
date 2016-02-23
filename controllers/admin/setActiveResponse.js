@@ -8,14 +8,14 @@ var interfaceModel = require('../../model/interfaceModel');
 module.exports = {
     method: 'post',
     controller: function (req, res, next) {
-        // post数据,由body-parser解析
+        // post数据
         var postData = req.body;
 
         var interfaceId = postData.interfaceId;
-        var responseId = postData.responseId;
+        var activeResponseId = postData.activeResponseId;
 
         // 更新启用的id
-        var promise = interfaceModel.setActiveResponse(interfaceId, responseId);
+        var promise = interfaceModel.setActiveResponse(interfaceId, activeResponseId);
 
         promise.then(
             function () {

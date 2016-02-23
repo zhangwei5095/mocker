@@ -77,9 +77,8 @@ class App extends Component {
      * 点击保存按键时的处理函数
      */
     onClickSave() {
-        const interfaceId = this.props.interfaceId;
-        const responseId = this.props.activeResponseId;
-        const dispatch = this.props.dispatch;
+        const {props} = this;
+        const {dispatch, interfaceId, activeResponseId} = props;
 
         // 修改了激活的响应，保存！
         request
@@ -87,10 +86,11 @@ class App extends Component {
             .send(
                 {
                     interfaceId,
-                    responseId
+                    activeResponseId
                 }
             )
             .end((err, res) => {
+                // TODO 判断优化
                 // 保存成功和失败分别派发不同的action
                 (!err && res.ok)
                     ? dispatch(actions.saveSuccess())
@@ -274,7 +274,7 @@ class App extends Component {
                                 secondary={true}
                                 disabled={props.saveBtnData.disabled}
                                 icon={<FontIcon className="icon-floppy-disk" />}
-                                onMouseDown={this.onClickSave} />
+                                onMouseUp={this.onClickSave} />
                         </div>
                         <ResponseList interfaceId={props.interfaceId}
                                       interfaceURL={'/' + props.interfaceURL} />

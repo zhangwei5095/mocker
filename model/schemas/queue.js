@@ -24,7 +24,7 @@ var queueSchema = new mongoose.Schema({
         type: String
     },
     /**
-     * 队列中的响应
+     * 队列中的响应，最多10个
      */
     responses: {
         type: [
