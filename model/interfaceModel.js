@@ -46,8 +46,7 @@ interfaceSchema.statics.getActiveResponseByURL = function (url) {
     return this
         .findOne({url: url})
         // activeResponse的主要作用是方便populate
-        .populate('activeResponse activeResponseType')
-        .lean()
+        .select('activeResponse activeResponseType')
         .exec();
 };
 

@@ -21,9 +21,9 @@ module.exports = function (req, res, next) {
     var urlObj = URL.parse(originalUrl);
     var url = urlObj.pathname.replace(/^\/mock\//, '');
 
-    aysnc.waterfall(
+    async.waterfall(
         [
-            // waterline第一步，查找激活的响应的id
+            // waterfall第一步，查找激活的响应的id
             function (callback) {
                 Interface
                     .getActiveResponseByURL(url)
@@ -59,14 +59,14 @@ module.exports = function (req, res, next) {
                         }
                     );
             },
-            // waterline第二步,populate响应
-            function (doc, callback) {
+            // waterfall第二步,populate响应
+            function (interfaceDoc, callback) {
                 // 激活的响应是什么类型
-                var activeResponseType = doc.activeResponseType;
+                var activeResponseType = interfaceDoc.activeResponseType;
 
                 if (activeResponseType === 'JSON' || activeResponseType === 'HTML') {
                     // JSON和HTML同属响应，是一个collection,一种schema, populate
-                    doc
+                    interfaceDoc
                         .populate(
                             {
                                 path: 'activeResponse',
@@ -75,17 +75,8 @@ module.exports = function (req, res, next) {
                         )
                         .execPopulate()
                         .then(
-                            function (response) {
-                                switch (response.type.toUpperCase()) {
-                                    case 'JSON':
-                                        res.json(response.data);
-                                        break;
-                                    case 'HTML':
-                                        res.type('html').end(response.data);
-                                        break;
-                                    default:
-                                        callback(1, '响应解析错误');
-                                }
+                            function (interfaceDoc) {
+                                sendResponse(interfaceDoc.activeResponse)
                             },
                             function () {
                                 callback(1, '响应解析错误');
@@ -94,7 +85,7 @@ module.exports = function (req, res, next) {
                 }
                 else if (activeResponseType === 'QUEUE') {
                     // 队列单独属于一个collection, populate
-                    doc
+                    interfaceDoc
                         .populate(
                             {
                                 path: 'activeResponse',
@@ -103,9 +94,9 @@ module.exports = function (req, res, next) {
                         )
                         .execPopulate()
                         .then(
-                            function (queue) {
-                                // 进入第三步
-                                callback(null, queue);
+                            function (interfaceDoc) {
+                                // 进入第三步,注意此时的activeResponse就是队列文档
+                                callback(null, interfaceDoc.activeResponse);
                             },
                             function () {
                                 callback(1, '队列查询失败');
@@ -116,7 +107,7 @@ module.exports = function (req, res, next) {
                     callback(1, '响应类型错误');
                 }
             },
-            // waterline第三步，处理queue,如果是JSON或者HTML响应的话是走不到这一步的
+            // waterfall第三步，处理queue,如果是JSON或者HTML响应的话是走不到这一步的
             function (queue, callback) {
                 // populate, 因为队列中最多有10个响应，所以全部populate的话性能也能够接受
                 queue
@@ -128,30 +119,60 @@ module.exports = function (req, res, next) {
                     .execPopulate()
                     .then(
                         function (queue) {
-                            callback(null, queue.responses, queue.position)
+                            callback(null, queue)
                         },
                         function () {
                             callback(1, '队列响应解析错误');
                         }
                     );
             },
-            // waterline第四步，主要是读取游标对应的响应，然后返回，并更新游标
-            function (responses, position, callback) {
+            // waterfall第四步，主要是读取游标对应的响应，然后返回，并更新游标
+            function (queue, callback) {
+                // 队列游标
+                var position = queue.position;
+                // 队列中的响应
+                var responses = queue.responses;
+
+                // 如果队列中没有任何响应的话，404
+                if (responses.length === 0) {
+                    renderError({
+                        status: 3,
+                        statusInfo: '队列为空'
+                    });
+
+                    return;
+                }
+
+                var nextPosition;
+                // 游标位置大约队列长度，这种情况在删除了响应以后可能会出现，这个时候调整游标就ok了
                 if (position > responses.length) {
                     position = 0;
+                    nextPosition = 1;
                 }
-                var response = responses[position];
+                else {
+                    nextPosition = position++;
+                }
 
-                switch (response.type.toUpperCase()) {
-                    case 'JSON':
-                        res.json(response.data);
-                        break;
-                    case 'HTML':
-                        res.type('html').end(response.data);
-                        break;
-                    default:
-                        callback(1, '响应解析错误');
-                }
+                // 更新游标
+                queue
+                    .update(
+                        {
+                            $set: {
+                                position: nextPosition
+                            }
+                        }
+                    )
+                    .exec()
+                    .then(
+                        function () {
+                            var response = responses[position];
+
+                            sendResponse(response);
+                        },
+                        function () {
+                            callback(1, '队列游标更新出错');
+                        }
+                    );
             }
         ],
         function (errStatus, errorInfo) {
@@ -168,9 +189,10 @@ module.exports = function (req, res, next) {
                 // mongodb查询失败，错误比较严重，500
                 next({status: 0});
                 break;
-            // 2和3分别代码没有注册和未激活
+            // 2和3分别代码没有注册和未激活, 4表示队列为空
             case 2:
             case 3:
+            case 4:
                 res
                     .status(404)
                     .render('mock404', {
@@ -183,28 +205,23 @@ module.exports = function (req, res, next) {
         }
     }
 
-    // 根据URL查询模拟数据
-    var promise = interfaceModel.getActiveResponse(url);
+    function sendResponse(response) {
+        res.status(response.httpStatusCode);
 
-    promise.then(
-        function (response) {
-            res.status(response.httpStatusCode);
-
-            setTimeout(
-                function () {
-                    switch (response.type.toUpperCase()) {
-                        case 'JSON':
-                            res.json(response.data);
-                            break;
-                        case 'HTML':
-                            res.type('html').end(response.data);
-                            break;
-                        default:
-                            next({status: 0});
-                    }
-                },
-                response.delay
-            );
-        }
-    );
+        setTimeout(
+            function () {
+                switch (response.type.toUpperCase()) {
+                    case 'JSON':
+                        res.json(response.data);
+                        break;
+                    case 'HTML':
+                        res.type('html').end(response.data);
+                        break;
+                    default:
+                        next({status: 0});
+                }
+            },
+            response.delay
+        );
+    }
 };
