@@ -42,6 +42,11 @@ module.exports = {
             .exec()
             .then(
                 function (data) {
+                    if (!data) {
+                        next({status: 0});
+                        return;
+                    }
+
                     res.render('responseList', {
                         title: '响应总览',
                         // 首屏数据

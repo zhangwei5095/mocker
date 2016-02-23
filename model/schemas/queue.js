@@ -6,6 +6,9 @@
 // 依赖
 var mongoose = require('mongoose');
 
+// 中间件
+var queuePreRemove = require('../middlewares/queuePreRemove');
+
 var queueSchema = new mongoose.Schema({
     /**
      * 响应的类型 -- 队列
@@ -40,5 +43,10 @@ var queueSchema = new mongoose.Schema({
         default: 0
     }
 });
+
+/**
+ * 应用中间件
+ */
+queueSchema.pre('remove', queuePreRemove);
 
 module.exports = queueSchema;

@@ -25,12 +25,15 @@ module.exports = {
         }
 
         Queue
-            .findByIdAndRemove(queueId)
+            .findById(queueId)
             .exec()
             .then(
-                function () {
-                    res.json({
-                        status: 0
+                function (doc) {
+                    // 删除这个响应的document，特别注意不要直接调用model层的remove删除文档，否则无法触发middleware
+                    doc.remove(function (err) {
+                        res.json({
+                            status: !err ? 0 : 1
+                        });
                     });
                 },
                 function () {
