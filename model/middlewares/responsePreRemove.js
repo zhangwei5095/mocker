@@ -97,16 +97,11 @@ module.exports = function (next) {
                         function () {
                             callback(1);
                         }
-                    )
+                    );
             }
         ],
         function (err) {
-            if (err) {
-                next(new Error());
-            }
-            else {
-                next();
-            }
+            err ? next(new Error()) : next();
         }
     );
 };
