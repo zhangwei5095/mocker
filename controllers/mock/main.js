@@ -128,10 +128,11 @@ module.exports = function (req, res, next) {
             },
             // waterfall第四步，主要是读取游标对应的响应，然后返回，并更新游标
             function (queue, callback) {
+                var queueData = queue.toObject();
                 // 队列游标
-                var position = queue.position;
+                var position = queueData.position;
                 // 队列中的响应
-                var responses = queue.responses;
+                var responses = queueData.responses;
 
                 // 如果队列中没有任何响应的话，404
                 if (responses.length === 0) {
@@ -145,12 +146,12 @@ module.exports = function (req, res, next) {
 
                 var nextPosition;
                 // 游标位置大约队列长度，这种情况在删除了响应以后可能会出现，这个时候调整游标就ok了
-                if (position > responses.length) {
+                if (position >= responses.length) {
                     position = 0;
                     nextPosition = 1;
                 }
                 else {
-                    nextPosition = position++;
+                    nextPosition = position + 1;
                 }
 
                 // 更新游标
