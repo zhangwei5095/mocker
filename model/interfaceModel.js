@@ -42,6 +42,14 @@ interfaceSchema.statics.list = function () {
         .exec();
 };
 
+interfaceSchema.statics.getActiveResponseByURL = function (url) {
+    return this
+        .findOne({url: url})
+        .populate('activeResponse')
+        .lean()
+        .exec();
+};
+
 // collection名
 var collectionName = 'interface';
 // mongoose注册model
@@ -215,44 +223,6 @@ exports.getActiveResponse = function (url) {
                     });
                 }
             });
-    });
-};
-
-/**
- * 更新目标接口的启用响应
- *
- * @param {string} interfaceId 要更新启动响应的接口的id
- * @param {string} responseId 启用的响应的id
- * @return {Promise} Promise对象
- */
-exports.setActiveResponse = function (interfaceId, responseId) {
-    var operation = {};
-
-    // responseId为空，操作行为是取消激活
-    if (responseId === '') {
-        operation = {
-            // 删除掉activeResponse字段，成功后接口没有处于激活状态的响应
-            $unset: {
-                activeResponse: ''
-            }
-        };
-    }
-    else {
-        operation = {
-            // 注意id的类型
-            activeResponse: new ObjectId(responseId)
-        };
-    }
-
-    return new Promise(function (resolve, reject) {
-        // 查找对应id的接口，更新数据
-        Interface.findByIdAndUpdate(
-            interfaceId,
-            operation,
-            function (err) {
-                !err ? resolve() : reject();
-            }
-        );
     });
 };
 

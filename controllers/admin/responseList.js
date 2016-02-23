@@ -28,7 +28,7 @@ module.exports = {
 
         Interface
             .findOne({_id: interfaceId})
-            .select('responses url activeResponse')
+            .select('responses url activeResponse activeResponseType')
             .populate({
                 path: 'responses',
                 // 根据类型查询
@@ -54,7 +54,8 @@ module.exports = {
                             interfaceId: interfaceId,
                             responses: data.responses,
                             activeResponseId: data.activeResponse,
-                            interfaceURL: data.url
+                            interfaceURL: data.url,
+                            activeResponseType: data.activeResponseType || ''
                         })
                     });
                 },

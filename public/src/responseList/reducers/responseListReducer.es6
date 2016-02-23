@@ -15,7 +15,8 @@ export default (state = initState, action) => {
         case 'CHANGE_ACTIVE_RESPONSE':
             return {
                 responses: state.responses,
-                activeResponseId: action.activeResponseId
+                activeResponseId: action.activeResponseId,
+                activeResponseType: action.activeResponseType
             };
         default:
             return state;

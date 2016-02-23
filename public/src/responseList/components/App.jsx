@@ -78,7 +78,7 @@ class App extends Component {
      */
     onClickSave() {
         const {props} = this;
-        const {dispatch, interfaceId, activeResponseId} = props;
+        const {dispatch, interfaceId, activeResponseId, activeResponseType} = props;
 
         // 修改了激活的响应，保存！
         request
@@ -86,7 +86,8 @@ class App extends Component {
             .send(
                 {
                     interfaceId,
-                    activeResponseId
+                    activeResponseId,
+                    activeResponseType
                 }
             )
             .end((err, res) => {
@@ -303,7 +304,8 @@ function extractData(state) {
         saveBtnData: state.buttonsData.save,
         newBtnData: state.buttonsData.add,
         doubleCheck: state.doubleCheck,
-        responseType: state.basic.responseType
+        responseType: state.basic.responseType,
+        activeResponseType: state.responseData.activeResponseType
     };
 }
 

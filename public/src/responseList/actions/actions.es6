@@ -6,10 +6,11 @@
 import request from 'superagent';
 
 // 用户切换了激活的响应，但没有保存
-const changeActiveResponse = (activeResponseId) => {
+const changeActiveResponse = (activeResponseId, activeResponseType) => {
     return {
         type: 'CHANGE_ACTIVE_RESPONSE',
-        activeResponseId
+        activeResponseId,
+        activeResponseType
     };
 };
 

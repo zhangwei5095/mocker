@@ -87,6 +87,13 @@ var interfaceSchema = new mongoose.Schema({
     activeResponse: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'response'
+    },
+    /**
+     * 当前激活的响应的类型
+     */
+    activeResponseType: {
+        type: String,
+        default: ''
     }
 });
 

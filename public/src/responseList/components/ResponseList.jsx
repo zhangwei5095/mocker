@@ -58,12 +58,16 @@ class InterfaceList extends Component {
      * 点击某开关时触发的处理逻辑
      *
      * @param {string} id 响应的id
+     * @param {string} responseType 用于意图激活的响应的类型
      */
-    onToggle(id) {
+    onToggle(id, responseType) {
         const {activeResponseId, dispatch} = this.props;
 
+        responseType = activeResponseId === id ? '' : responseType;
+        id = activeResponseId === id ? '' : id;
+
         // 包括反选逻辑
-        dispatch(actions.changeActiveResponse((activeResponseId === id) ? '' : id));
+        dispatch(actions.changeActiveResponse(id, responseType));
     };
 
     /**
@@ -130,7 +134,7 @@ class InterfaceList extends Component {
                                 <TableRow>
                                     <TableRowColumn style={tableStyle.cellStyle}>
                                         <Toggle defaultToggled={response._id === activeResponseId}
-                                                onToggle={() => {this.onToggle(response._id)}} />
+                                                onToggle={() => {this.onToggle(response._id, response.type)}} />
                                     </TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>{response.name}</TableRowColumn>
                                     <TableRowColumn style={tableStyle.cellStyle}>{response.type}</TableRowColumn>

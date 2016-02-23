@@ -39,7 +39,9 @@ const store = createStoreWithMiddleware(
             // 当前激活的响应的id
             activeResponseId: initialData.activeResponseId || '',
             // 列表所属的interface的地址
-            interfaceURL: initialData.interfaceURL
+            interfaceURL: initialData.interfaceURL,
+            // 激活的响应属于何种类型
+            activeResponseType: initialData.activeResponseType
         }
     }
 );
