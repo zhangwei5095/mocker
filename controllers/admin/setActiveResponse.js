@@ -10,7 +10,6 @@ var mongoose = require('mongoose');
 var db = require('../../lib/db');
 
 var Interface = db.model('interface');
-var interfaceModel = require('../../model/interfaceModel');
 
 var ObjectId = mongoose.Types.ObjectId;
 

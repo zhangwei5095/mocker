@@ -23,8 +23,8 @@ module.exports = function (req, res, next) {
 
     aysnc.waterfall(
         [
+            // waterline第一步，查找激活的响应的id
             function (callback) {
-                // waterline第一步，查找激活的响应的id
                 Interface
                     .getActiveResponseByURL(url)
                     .then(
@@ -52,15 +52,106 @@ module.exports = function (req, res, next) {
                             }
 
                             // 有激活的响应，waterline模式走向下一步
-                            callback(null, activeResponse)
+                            callback(null, doc);
                         },
                         function () {
-                            callback(1, '查询失败')
+                            callback(1, '查询失败');
                         }
                     );
             },
-            function (activeResponseId, callback) {
+            // waterline第二步,populate响应
+            function (doc, callback) {
+                // 激活的响应是什么类型
+                var activeResponseType = doc.activeResponseType;
 
+                if (activeResponseType === 'JSON' || activeResponseType === 'HTML') {
+                    // JSON和HTML同属响应，是一个collection,一种schema, populate
+                    doc
+                        .populate(
+                            {
+                                path: 'activeResponse',
+                                model: 'response'
+                            }
+                        )
+                        .execPopulate()
+                        .then(
+                            function (response) {
+                                switch (response.type.toUpperCase()) {
+                                    case 'JSON':
+                                        res.json(response.data);
+                                        break;
+                                    case 'HTML':
+                                        res.type('html').end(response.data);
+                                        break;
+                                    default:
+                                        callback(1, '响应解析错误');
+                                }
+                            },
+                            function () {
+                                callback(1, '响应解析错误');
+                            }
+                        );
+                }
+                else if (activeResponseType === 'QUEUE') {
+                    // 队列单独属于一个collection, populate
+                    doc
+                        .populate(
+                            {
+                                path: 'activeResponse',
+                                model: 'queue'
+                            }
+                        )
+                        .execPopulate()
+                        .then(
+                            function (queue) {
+                                // 进入第三步
+                                callback(null, queue);
+                            },
+                            function () {
+                                callback(1, '队列查询失败');
+                            }
+                        );
+                }
+                else {
+                    callback(1, '响应类型错误');
+                }
+            },
+            // waterline第三步，处理queue,如果是JSON或者HTML响应的话是走不到这一步的
+            function (queue, callback) {
+                // populate, 因为队列中最多有10个响应，所以全部populate的话性能也能够接受
+                queue
+                    .populate(
+                        {
+                            path: 'responses'
+                        }
+                    )
+                    .execPopulate()
+                    .then(
+                        function (queue) {
+                            callback(null, queue.responses, queue.position)
+                        },
+                        function () {
+                            callback(1, '队列响应解析错误');
+                        }
+                    );
+            },
+            // waterline第四步，主要是读取游标对应的响应，然后返回，并更新游标
+            function (responses, position, callback) {
+                if (position > responses.length) {
+                    position = 0;
+                }
+                var response = responses[position];
+
+                switch (response.type.toUpperCase()) {
+                    case 'JSON':
+                        res.json(response.data);
+                        break;
+                    case 'HTML':
+                        res.type('html').end(response.data);
+                        break;
+                    default:
+                        callback(1, '响应解析错误');
+                }
             }
         ],
         function (errStatus, errorInfo) {
